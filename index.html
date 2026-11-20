@@ -1,0 +1,1502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MeasureQuest · EE236AI</title>
+<meta name="description" content="MeasureQuest — the gamified course website for EE236AI Foundations of Electrical and Electronics Measurements (Bajaj BEST), RV College of Engineering, Section C, 2026-27.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23101B23'/><path d='M12 44 A20 20 0 0 1 52 44' stroke='%237CFFB2' stroke-width='4' fill='none'/><line x1='32' y1='44' x2='46' y2='26' stroke='%23FF6B5B' stroke-width='4' stroke-linecap='round'/><circle cx='32' cy='44' r='4' fill='%23C8962E'/></svg>">
+<style>:root{
+  --paper:#F5F2EA; --card:#FFFFFF; --ink:#18222D; --ink2:#4A5866; --line:#DDD6C8;
+  --navy:#1F4E79; --teal:#2E8B8B; --gold:#C8962E; --brick:#B5473A; --green:#2F8F5B;
+  --panel:#101B23; --panel2:#17262F; --phos:#7CFFB2; --phos2:#FFD166; --glow:none;
+  --u1:#2E8B8B; --u2:#1F4E79; --u3:#B5473A;
+  --r:14px; --shadow:0 1px 2px rgba(20,30,40,.06),0 6px 24px rgba(20,30,40,.07);
+  font-family:"Times New Roman",Times,serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0E151B; --card:#16212A; --ink:#E9EEF2; --ink2:#A9B6C1; --line:#2A3945;
+  --navy:#6FA8DC; --teal:#5CC7C7; --gold:#E2B458; --brick:#E07A6C; --green:#5CC98E;
+  --u1:#5CC7C7; --u2:#6FA8DC; --u3:#E07A6C; --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 24px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --paper:#0E151B; --card:#16212A; --ink:#E9EEF2; --ink2:#A9B6C1; --line:#2A3945;
+  --navy:#6FA8DC; --teal:#5CC7C7; --gold:#E2B458; --brick:#E07A6C; --green:#5CC98E;
+  --u1:#5CC7C7; --u2:#6FA8DC; --u3:#E07A6C; --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-size:17px;line-height:1.5}
+body{min-height:100vh;padding-bottom:76px}
+a{color:var(--navy)}
+button{font:inherit;cursor:pointer}
+input,select{font:inherit}
+h1,h2,h3{line-height:1.2;margin:.2em 0 .4em}
+h1{font-size:clamp(28px,5vw,46px)} h2{font-size:clamp(22px,3.4vw,30px)} h3{font-size:20px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+.muted{color:var(--ink2)} .small{font-size:14px} .center{text-align:center}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+.card h3{margin-top:0}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:99px;border:1px solid var(--line);font-size:14px;background:var(--card)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:10px;padding:10px 16px;background:#1F4E79;color:#fff;font-weight:700;text-decoration:none;transition:transform .12s, filter .12s}
+.btn:hover{filter:brightness(1.1)} .btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--navy);border:1.5px solid var(--navy)}
+.btn.gold{background:#C8962E;color:#1b1305} .btn.teal{background:#1d6b6b} .btn.brick{background:#9c3a2e}
+.btn.sm{padding:6px 12px;font-size:15px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+/* header */
+header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:14px;height:62px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:700;font-size:20px;white-space:nowrap}
+.brand small{display:block;font-weight:400;font-size:12px;color:var(--ink2);letter-spacing:.06em}
+nav.main{display:flex;gap:2px;margin-left:auto}
+nav.main a{padding:8px 11px;border-radius:9px;text-decoration:none;color:var(--ink2);font-weight:700;font-size:16px}
+nav.main a.on,nav.main a:hover{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+.hud{display:flex;align-items:center;gap:8px}
+.hud .chip{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:15px;white-space:nowrap}
+.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:#fff;font-weight:700;border:0}
+nav.bottom{display:none}
+@media (max-width:900px){
+  nav.main{display:none}
+  nav.bottom{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--card);border-top:1px solid var(--line);justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  nav.bottom a{display:flex;flex-direction:column;align-items:center;font-size:12px;text-decoration:none;color:var(--ink2);gap:1px;padding:2px 6px;border-radius:8px}
+  nav.bottom a span{font-size:20px} nav.bottom a.on{color:var(--navy);font-weight:700}
+  .hud .chip.hide-m{display:none}
+  .brand small{display:none}
+}
+main{padding:22px 0 40px}
+section.view{display:none;animation:fade .25s ease}
+section.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;align-items:center;margin-bottom:22px}
+@media (max-width:820px){.hero{grid-template-columns:1fr}}
+.hero h1 em{font-style:italic;color:var(--teal)}
+.kicker{letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--brick);font-weight:700}
+.meter-card{background:#FBF8F1;border:1px solid #d9d2c2;border-radius:22px;padding:16px 16px 10px;color:#1d2733;box-shadow:var(--shadow)}
+.meter-card .lbl{display:flex;justify-content:space-between;font-size:14px;color:#4a5866}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.stat{background:#F1ECE0;border-radius:12px;padding:8px;text-align:center}
+.stat b{display:block;font-size:22px;color:#1F4E79}
+.stat span{font-size:12px;color:#4a5866}
+/* unit cards */
+.ucard{position:relative;overflow:hidden;cursor:pointer;transition:transform .15s}
+.ucard:hover{transform:translateY(-3px)}
+.ucard .band{position:absolute;inset:0 auto 0 0;width:6px}
+.ring{--p:0;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--c) calc(var(--p)*1%),var(--line) 0);flex:none}
+.ring b{width:50px;height:50px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:15px}
+.progress{height:10px;background:var(--line);border-radius:99px;overflow:hidden}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:99px;transition:width .6s}
+/* mission */
+.mission{background:linear-gradient(135deg,var(--navy),#163a5a);color:#fff;border:0}
+.mission .muted{color:#c8d8e6}
+/* topic list */
+details.topic{border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--card);margin-bottom:8px}
+details.topic summary{cursor:pointer;font-weight:700}
+/* labs */
+.labtile{display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:transform .15s}
+.labtile:hover{transform:translateY(-2px)}
+.labtile .ico{font-size:30px;width:52px;height:52px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 16%,transparent);flex:none}
+.labbox{background:var(--panel);color:#dfe8ee;border-radius:18px;padding:16px}
+.labbox label{display:block;font-size:14px;color:#9fb3c0;margin-top:8px}
+.labbox input[type=range]{width:100%;accent-color:var(--phos)}
+.labbox select,.labbox input[type=number],.labbox input[type=text]{background:#0b141a;color:#e9f3f6;border:1px solid #2c4350;border-radius:8px;padding:7px 10px;width:100%}
+.readout{font-weight:700;color:var(--phos);font-size:20px}
+.readout.warn{color:var(--phos2)}
+canvas,svg.full{width:100%;display:block}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+@media (max-width:820px){.cols{grid-template-columns:1fr}}
+.feedback{margin-top:10px;padding:10px 12px;border-radius:10px;font-weight:700}
+.feedback.ok{background:rgba(47,143,91,.18);color:var(--green)}
+.feedback.no{background:rgba(181,71,58,.16);color:var(--brick)}
+.labbox .feedback.ok{color:#7CFFB2}.labbox .feedback.no{color:#ffb4a8}
+/* arena */
+.qcard{max-width:780px;margin:0 auto}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.timer{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin:10px 0 16px}
+.timer i{display:block;height:100%;background:var(--teal);width:100%}
+.qtext{font-size:21px;font-weight:700;margin:6px 0 14px}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;padding:13px 16px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-size:18px;transition:border-color .12s, transform .1s}
+.opt:hover:not([disabled]){border-color:var(--navy);transform:translateX(3px)}
+.opt .k{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:7px;background:var(--paper);margin-right:10px;font-weight:700;font-size:15px}
+.opt.right{border-color:var(--green);background:rgba(47,143,91,.13)}
+.opt.wrong{border-color:var(--brick);background:rgba(181,71,58,.12)}
+.explain{margin-top:14px;padding:12px 14px;border-left:4px solid var(--gold);background:color-mix(in srgb,var(--gold) 10%,transparent);border-radius:8px}
+.modes .card{cursor:pointer;transition:transform .15s}
+.modes .card:hover{transform:translateY(-3px)}
+.combo{font-weight:700;color:var(--brick)}
+.xpfloat{position:fixed;z-index:90;font-weight:700;font-size:26px;color:var(--gold);pointer-events:none;animation:up 1.1s ease forwards;text-shadow:0 2px 0 rgba(0,0,0,.15)}
+@keyframes up{to{transform:translateY(-70px);opacity:0}}
+/* flashcards */
+.flip{perspective:900px;height:190px;cursor:pointer}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .f,.flip .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);display:grid;place-items:center;padding:16px;text-align:center;border:1px solid var(--line);box-shadow:var(--shadow)}
+.flip .f{background:var(--card);font-size:22px;font-weight:700}
+.flip .b{background:var(--panel);color:var(--phos);transform:rotateY(180deg);font-size:19px}
+/* leaderboard */
+.podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:12px;align-items:end;max-width:640px;margin:0 auto 18px}
+.pod{text-align:center;border-radius:14px 14px 4px 4px;padding:12px 8px;color:#fff}
+.pod .medal{font-size:34px}
+.pod.p1{background:linear-gradient(180deg,#C8962E,#9c7120);min-height:170px}
+.pod.p2{background:linear-gradient(180deg,#7d8b96,#5b6872);min-height:140px}
+.pod.p3{background:linear-gradient(180deg,#a8683c,#7d4c2a);min-height:120px}
+table.lb{width:100%;border-collapse:collapse}
+table.lb th,table.lb td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left}
+table.lb tr.me td{background:color-mix(in srgb,var(--gold) 16%,transparent);font-weight:700}
+/* badges */
+.badge{text-align:center;padding:12px 8px;border-radius:14px;border:1px dashed var(--line);opacity:.45;filter:grayscale(1)}
+.badge.got{opacity:1;filter:none;border-style:solid;background:var(--card);box-shadow:var(--shadow)}
+.badge .e{font-size:34px}
+/* modal */
+.modal{position:fixed;inset:0;z-index:80;background:rgba(10,16,22,.55);display:none;place-items:center;padding:16px}
+.modal.on{display:grid}
+.modal .box{background:var(--card);border-radius:18px;max-width:460px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.field{margin:10px 0}
+.field label{display:block;font-weight:700;font-size:15px;margin-bottom:4px}
+.field input{width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink)}
+.tabs{display:flex;gap:6px;margin-bottom:8px}
+.tabs button{flex:1;padding:8px;border-radius:10px;border:1.5px solid var(--line);background:transparent;color:var(--ink);font-weight:700}
+.tabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.toasts{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:95;display:grid;gap:8px;width:max-content;max-width:calc(100vw - 32px)}
+.toast{background:var(--panel);color:#fff;padding:12px 18px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);display:flex;gap:10px;align-items:center;animation:pop .3s ease}
+@keyframes pop{from{transform:translateY(20px);opacity:0}}
+/* course page */
+table.plain{width:100%;border-collapse:collapse}
+table.plain td,table.plain th{border-bottom:1px solid var(--line);padding:8px;vertical-align:top;text-align:left}
+.fact{border-left:4px solid var(--teal);padding:6px 12px;background:var(--card);border-radius:0 10px 10px 0}
+.hazard{cursor:pointer}
+.hazard.found{pointer-events:none}
+.sortlist{list-style:none;padding:0;margin:0}
+.sortlist li{display:flex;align-items:center;gap:8px;background:#0b141a;border:1px solid #2c4350;border-radius:10px;padding:8px 10px;margin-bottom:6px}
+.sortlist li span{flex:1}
+.sortlist li button{background:#1d3340;color:#fff;border:0;border-radius:6px;width:30px;height:30px}
+footer{border-top:1px solid var(--line);padding:22px 0;color:var(--ink2);font-size:14px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+a.card{display:block;text-decoration:none;color:inherit}
+a.labtile{display:flex}
+button.card{text-align:left;width:100%;font:inherit;color:inherit;cursor:pointer}
+button.flip{border:0;background:none;padding:0;width:100%;font:inherit;color:inherit;display:block}
+.flip .in{display:block}
+.mission .btn.gold{color:#1b1305}
+.reslist{list-style:none;padding:0;margin:0}
+.reslist li{padding:8px 0;border-bottom:1px solid var(--line)}
+.reslist li:last-child{border-bottom:0}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#home"><svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#101B23"/><path d="M12 44 A20 20 0 0 1 52 44" stroke="#7CFFB2" stroke-width="4" fill="none"/><line x1="32" y1="44" x2="46" y2="26" stroke="#FF6B5B" stroke-width="4" stroke-linecap="round"/><circle cx="32" cy="44" r="4" fill="#C8962E"/></svg>
+    <span>MeasureQuest<small>EE236AI · BAJAJ BEST · RVCE</small></span></a>
+  <nav class="main"><a href="#home">Home</a><a href="#course">Course</a><a href="#labs">Labs</a><a href="#watch">Watch</a><a href="#arena">Arena</a><a href="#cards">Formulas</a><a href="#board">Leaderboard</a></nav>
+  <div class="hud"><span class="chip hide-m" id="hudRank">🔧 Trainee</span><span class="chip">⚡ <span id="hudXP">0</span></span><span class="chip" title="Current streak of correct answers">🔥 <span id="hudStreak">0</span></span>
+    <button class="avatar" id="hudAvatar" onclick="location.hash='#me'" aria-label="My profile">👤</button></div>
+</div></header>
+
+<main class="wrap">
+<!-- HOME -->
+<section class="view" id="v-home">
+  <div class="hero">
+    <div>
+      <div class="kicker">EE236AI · Foundations of Electrical and Electronics Measurements</div>
+      <h1>Every reading tells a story. <em>Learn to read it right.</em></h1>
+      <p class="muted" id="hmHello">Welcome, measurement engineer.</p>
+      <p>Play interactive labs, take on the daily mission, collect badges and climb the Section C leaderboard — from <b>Trainee</b> to <b>Chief Measurement Officer</b>.</p>
+      <div class="row"><button class="btn gold" id="missionBtnTop" onclick="startArena('daily')">⚡ Daily mission</button><a class="btn" href="#labs">Explore the labs</a><a class="btn ghost" href="#course">Course details</a></div>
+    </div>
+    <div class="meter-card">
+      <div class="lbl"><span id="hmRank">🔧 Trainee</span><span id="hmNext"></span></div>
+      <svg id="homeMeter" viewBox="0 0 320 170" style="width:100%" role="img"></svg>
+      <div class="stats"><div class="stat"><b id="hmXP">0</b><span>XP</span></div><div class="stat"><b id="hmAcc">–</b><span>accuracy</span></div><div class="stat"><b id="hmStreak">0</b><span>best streak</span></div><div class="stat"><b id="hmBadges">0</b><span>badges</span></div></div>
+    </div>
+  </div>
+  <div class="grid g2">
+    <div class="card mission"><div class="kicker" style="color:#FFD166">Daily mission · resets at midnight</div><h2>Today's five</h2><p class="muted" id="missionTxt"></p><button class="btn gold" id="missionBtn" onclick="startArena(S.daily[today()]?'quick':'daily')">Start today's mission</button></div>
+    <div class="card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">🏆 This week's top five</h3><a href="#board" class="small">Full leaderboard →</a></div><div id="miniBoard" style="margin-top:8px"></div></div>
+  </div>
+  <h2 style="margin-top:26px">Your units</h2><div class="grid g3" id="homeUnits"></div>
+  <h2 style="margin-top:26px">Try a lab</h2><div class="grid g3" id="homeLabs"></div>
+  <div class="fact" style="margin-top:22px"><b>Did you know?</b> <span id="fact"></span></div>
+</section>
+
+<!-- COURSE -->
+<section class="view" id="v-course">
+  <div class="kicker">Course details</div><h1>Foundations of Electrical and Electronics Measurements</h1>
+  <p class="muted">EE236AI · Bajaj BEST Initiative · III Semester B.E. (ECE), Section C · AY 2026-27 (Odd Semester)</p>
+  <div class="grid g4" style="margin:14px 0"><div class="card center"><div class="muted small">Credits</div><b>L:T:P = 2:0:1</b></div><div class="card center"><div class="muted small">Contact hours</div><b>28 L + 18 P</b></div><div class="card center"><div class="muted small">CIE</div><b>50 + 50 marks</b></div><div class="card center"><div class="muted small">SEE</div><b>50 + 50 marks (2 + 2 h)</b></div></div>
+  <h2>Syllabus</h2><div class="grid g3" id="coSyl"></div>
+  <h2 style="margin-top:22px">Course outcomes</h2><div class="card"><table class="plain" id="coCos"></table></div>
+  <h2 style="margin-top:22px">Laboratory experiments</h2><div class="card"><table class="plain" id="coLabs"></table></div>
+  <h2 style="margin-top:22px">Reference books</h2><div class="card"><ol id="coBooks"></ol></div>
+  <h2 style="margin-top:22px">Faculty</h2>
+  <div class="card"><div class="row" style="align-items:flex-start;flex-wrap:nowrap"><div class="avatar" style="width:64px;height:64px;font-size:26px;flex:none">V</div><div>
+    <h3 style="margin:0">Dr. Veena Divya Krishnappa</h3><p class="muted" style="margin:.2em 0">Assistant Professor (Senior Scale), Department of Electronics and Communication Engineering, RV College of Engineering, Bengaluru</p>
+    <p>Ph.D. in Biomedical Imaging and Deep Learning (VTU, 2021); M.Tech in VLSI and Embedded Systems; B.E. in Instrumentation Technology. Over 16 years of teaching and laboratory experience in measurements, instrumentation, VLSI and embedded systems.</p>
+    <div class="row"><a class="btn sm ghost" href="https://scholar.google.com/citations?user=jlX52pwAAAAJ" target="_blank" rel="noopener">Google Scholar</a><a class="btn sm ghost" href="https://www.linkedin.com/in/dr-veena-divya-krishnappa-3a7698bb" target="_blank" rel="noopener">LinkedIn</a></div></div></div></div>
+  <h2 style="margin-top:22px">How MeasureQuest works</h2>
+  <div class="grid g3"><div class="card"><h3>⚡ Earn XP</h3><p>10–20 XP per correct answer depending on difficulty, +5 for answering in under 10 s, and a streak bonus. Repeating a question already answered correctly earns reduced XP. Labs and challenges give 10–40 XP.</p></div>
+    <div class="card"><h3>🎖️ Climb the ranks</h3><p>Trainee → Lab Assistant → Technician → Calibration Engineer → Test Engineer → Instrumentation Engineer → Metrologist → Chief Measurement Officer.</p></div>
+    <div class="card"><h3>🏆 Play fair</h3><p>Only Section C USNs can register. Each student signs in with a personal 4-digit PIN; five wrong PINs lock the account for 15 minutes. The leaderboard is visible only to signed-in students and shows nicknames and the last three USN digits. Leaderboard XP is checked by the server with a daily cap. Answers and response times are recorded for course improvement and outcome assessment.</p></div></div>
+</section>
+
+<!-- UNIT -->
+<section class="view" id="v-unit">
+  <div id="unHead"></div>
+  <div class="cols" style="margin-top:14px"><div><h2>Topics</h2><div id="unTopics"></div></div><div><h2>Labs for this unit</h2><div class="grid" id="unLabs"></div></div></div>
+  <h2 style="margin-top:22px">Formula cards — tap to flip</h2><div class="grid g4" id="unCards"></div>
+  <h2 style="margin-top:22px">Watch &amp; learn — animations and explainers</h2><div class="grid g2" id="unWatch"></div>
+</section>
+
+<!-- LABS -->
+<section class="view" id="v-labs"><div class="kicker">Interactive labs</div><h1>Play with the physics</h1><p class="muted">Every lab is a mini-simulation with a challenge. Opening a lab earns 5 XP; solving its challenges earns more.</p><div id="labsAll"></div></section>
+<section class="view" id="v-lab"><div id="labHead"></div><div id="labBody"></div></section>
+
+<!-- WATCH -->
+<section class="view" id="v-watch"><div class="kicker">Watch &amp; learn</div><h1>Animations, videos and explainers</h1>
+  <p class="muted">Working principles shown by instrument makers, safety agencies, universities and engineering educators. Each resource opens in a new tab (YouTube videos can also play here). These are external sites: their content and adverts are not controlled by RVCE.</p>
+  <div class="row" style="margin-bottom:12px"><select id="wUnit" onchange="VIEWS.watch()" style="padding:8px;border-radius:8px" aria-label="Filter by unit"><option value="all">All units</option><option value="1">Unit I</option><option value="2">Unit II</option><option value="3">Unit III</option></select>
+  <input id="wSearch" oninput="VIEWS.watch()" placeholder="Search, e.g. thermocouple" aria-label="Search resources" style="padding:8px 10px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);min-width:220px"><span class="small muted" id="wCount"></span></div>
+  <div class="grid g2" id="watchAll"></div></section>
+
+<!-- ARENA -->
+<section class="view" id="v-arena">
+  <div id="arenaModes"><div class="kicker">Quiz arena</div><h1>Choose your challenge</h1><p class="muted">Questions adapt to you: the ones you got wrong come back until you master them.</p>
+    <div class="grid g3 modes">
+      <button class="card" onclick="startArena('daily')"><h3>📅 Daily Mission</h3><p class="muted">Five questions, the same for the whole class today. A +50 XP bonus once per day.</p></button>
+      <button class="card" onclick="startArena('quick')"><h3>⚡ Quick Five</h3><p class="muted">Five adaptive questions from all units — perfect for a two-minute break.</p></button>
+      <button class="card" onclick="startArena('boss')"><h3>🐉 Boss Round</h3><p class="muted">Ten harder questions, 25 seconds each. A score of 8 or more earns the Boss Slayer badge.</p></button>
+      <button class="card" onclick="startArena('unit',1)"><h3 style="color:var(--u1)">Unit I drill</h3><p class="muted">Measurements, standards, characteristics, safety and LOTO.</p></button>
+      <button class="card" onclick="startArena('unit',2)"><h3 style="color:var(--u2)">Unit II drill</h3><p class="muted">PMMC, MI, DMM, DSO, PQA, LCR meter and probes.</p></button>
+      <button class="card" onclick="startArena('unit',3)"><h3 style="color:var(--u3)">Unit III drill</h3><p class="muted">CMRR, isolation, conditioning, strain, LVDT, temperature, flow.</p></button>
+      <button class="card" onclick="startArena('review')"><h3>🩹 Weak-spot Review</h3><p class="muted">Only the questions you have missed. Turn red into green.</p></button>
+      <button class="card" onclick="location.hash='#course'"><h3>🧪 Pre-lab checks</h3><p class="muted">Quick checks before each experiment — open the course page and pick the experiment.</p></button>
+    </div></div>
+  <div id="arenaPlay" style="display:none"></div>
+</section>
+
+<!-- CARDS -->
+<section class="view" id="v-cards"><div class="kicker">Formula deck</div><h1>Flash cards</h1><p class="muted">Tap a card to flip it. Revise the night before CIE.</p>
+  <select id="cardFilter" onchange="VIEWS.cards()" style="padding:8px;border-radius:8px;margin-bottom:12px"><option value="all">All units</option><option value="1">Unit I</option><option value="2">Unit II</option><option value="3">Unit III</option></select>
+  <div class="grid g4" id="cardsAll"></div></section>
+
+<!-- BOARD -->
+<section class="view" id="v-board"><div class="kicker">Section C</div><h1>Leaderboard</h1>
+  <select id="boardMode" onchange="VIEWS.board()" style="padding:8px;border-radius:8px;margin-bottom:12px"><option value="week">This week</option><option value="all">All time</option></select><div id="boardBody"></div></section>
+
+<!-- ME -->
+<section class="view" id="v-me"><div id="meHead"></div>
+  <h2 style="margin-top:22px">Unit mastery</h2><div class="card grid" id="meUnits"></div>
+  <h2 style="margin-top:22px">Badges</h2><div class="grid g4" id="meBadges"></div>
+  <h2 style="margin-top:22px">Weak spots</h2><div class="card"><ul id="meWeak"></ul></div>
+  <div class="row" style="margin-top:16px"><button class="btn ghost sm" onclick="toggleTheme()">Toggle light/dark</button></div>
+</section>
+</main>
+
+<footer><div class="wrap">MeasureQuest · EE236AI Foundations of Electrical and Electronics Measurements · Bajaj BEST Initiative · Department of Electronics and Communication Engineering, RV College of Engineering®, Bengaluru – 560059 · Section C, AY 2026-27 · Faculty: Dr. Veena Divya Krishnappa</div></footer>
+
+<nav class="bottom"><a href="#home"><span>🏠</span>Home</a><a href="#labs"><span>🧪</span>Labs</a><a href="#watch"><span>🎬</span>Watch</a><a href="#arena"><span>⚡</span>Arena</a><a href="#board"><span>🏆</span>Board</a><a href="#course"><span>📘</span>Course</a></nav>
+
+<div class="modal" id="login" role="dialog" aria-modal="true" aria-labelledby="lgT"><div class="box">
+  <h2 id="lgT" style="margin-top:0">Sign in to MeasureQuest</h2>
+  <div class="tabs" role="tablist"><button role="tab" data-t="in" onclick="setTab('in')">Sign in</button><button role="tab" data-t="reg" onclick="setTab('reg')">Register</button></div>
+  <div class="field"><label for="lgUsn">USN</label><input id="lgUsn" autocomplete="username" placeholder="1RV25EC001" style="text-transform:uppercase"></div>
+  <div class="field reg"><label for="lgName">Full name</label><input id="lgName" autocomplete="name"></div>
+  <div class="field reg"><label for="lgNick">Nickname for the leaderboard (3–20 characters; shown to the class)</label><input id="lgNick" maxlength="20" placeholder="e.g. NeedleNinja"></div>
+  <div class="field"><label for="lgPin">4-digit PIN</label><input id="lgPin" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password"></div>
+  <p class="small muted reg">Choose a PIN you will remember. If you forget it, ask the faculty to reset it.</p>
+  <div id="lgErr" class="small" style="color:var(--brick);min-height:1.2em"></div><div id="lgNote" class="small muted"></div>
+  <div class="row" style="margin-top:10px"><button class="btn" id="lgGo" onclick="doLogin()">Sign in</button><button class="btn ghost" onclick="guest()">Just explore</button></div>
+</div></div>
+
+<div class="modal" id="vmodal" role="dialog" aria-modal="true" aria-labelledby="vtitle"><div class="box" style="max-width:860px">
+  <div class="row" style="justify-content:space-between;flex-wrap:nowrap"><h3 id="vtitle" style="margin:0"></h3><button class="btn sm ghost" id="vclose" onclick="closeVideo()">Close</button></div>
+  <div id="vframe" style="margin-top:10px"></div></div></div>
+<div id="toasts" class="toasts" aria-live="polite" role="status"></div>
+<script>/* ===================== COURSE DATA ===================== */
+const COURSE = {
+  code: "EE236AI",
+  title: "Foundations of Electrical and Electronics Measurements",
+  tag: "Bajaj BEST Initiative · Engineering Measurements and Safety",
+  sem: "III Semester B.E. (ECE) · Section C · AY 2026-27 (Odd Semester)",
+  credits: "L:T:P = 2:0:1 · 28 L + 18 P hours",
+  cie: "CIE 50 + 50 marks · SEE 50 + 50 marks (2 + 2 hours)",
+  faculty: {
+    name: "Dr. Veena Divya Krishnappa",
+    role: "Assistant Professor (Senior Scale), Department of Electronics and Communication Engineering, RV College of Engineering, Bengaluru",
+    bio: "Ph.D. in Biomedical Imaging and Deep Learning (VTU, 2021); M.Tech in VLSI and Embedded Systems; B.E. in Instrumentation Technology. Over 16 years of teaching and laboratory experience in measurements, instrumentation, VLSI and embedded systems.",
+    scholar: "https://scholar.google.com/citations?user=jlX52pwAAAAJ",
+    linkedin: "https://www.linkedin.com/in/dr-veena-divya-krishnappa-3a7698bb"
+  },
+  cos: [
+    ["CO1", "Analyze engineering measurement principles, standards, calibration methods, and static & dynamic characteristics of instruments."],
+    ["CO2", "Apply analog and digital instruments (DMM, DSO, signal generators) to measure electrical parameters like voltage, current, and power."],
+    ["CO3", "Analyze the working and applications of transducers (RTD, thermistor, LVDT, thermocouple, piezoelectric) and high-frequency/high-voltage probes."],
+    ["CO4", "Apply safety practices by identifying hazards, performing risk assessment, and using standards (ISO 45001, IEC, LOTO, PPE)."]
+  ],
+  books: [
+    "H. S. Kalsi, Electronic Instrumentation, 4th ed., Tata McGraw-Hill, 2019. ISBN 9780074621868.",
+    "W. D. Cooper and A. D. Helfrick, Modern Electronic Instrumentation and Measurement Techniques, PHI, 2016. ISBN 8120307526.",
+    "A. K. Sawhney, A Course in Electrical and Electronic Measurements and Instrumentation, 19th ed., Dhanpat Rai & Co., 2016. ISBN 8177001000.",
+    "D. A. Bell, Electronic Instrumentation and Measurements, 2nd ed., PHI, 2013. ISBN 0132499541."
+  ],
+  labs: [
+    ["Basic measurements using digital Vernier calipers and micrometer", 1, "Least count, zero error, repeatability of readings."],
+    ["Measurement of voltage, current and resistance using multimeter and clamp meter", 2, "DMM accuracy spec, loading effect, clamp-on current sensing."],
+    ["Measurement of R, L, C using LCR meter at various frequencies", 2, "Test frequency, ESR, Q and D factors, series vs parallel models."],
+    ["Function generator exploration and signal measurement using DSO", 2, "Waveforms, amplitude, offset, V/div, s/div, triggering, cursors."],
+    ["High voltage and current measurement using isolation probe, current probe and DSO", 2, "Differential HV probes, current probes, floating measurements."],
+    ["Power measurement in AC and DC circuits using power quality analyzer", 2, "Active, reactive and apparent power; power factor."],
+    ["Harmonic measurement using power quality analyzer", 2, "Harmonic spectrum, THD, effects of non-linear loads."],
+    ["Measurement and error compensation in energy meter", 2, "kWh registration, creep, percentage error and its correction."],
+    ["Transducer characteristics: thermistor, RTD and thermocouple", 3, "Temperature–output curves, linearity, sensitivity."],
+    ["Transducer characteristics: LVDT and piezoelectric sensors", 3, "Displacement–voltage curve, null, phase; dynamic force sensing."]
+  ],
+  units: [
+    { n: 1, hrs: "10 h", title: "Introduction to Engineering Measurements and Safety", color: "var(--u1)",
+      blurb: "What a measurement is, how it is trusted (standards, calibration, traceability), how instruments behave (static and dynamic characteristics), three field instruments, and the safety engineering every engineer must practise.",
+      topics: [
+        ["Introduction to measurements", "Definition, purpose and importance of measurement in engineering; methods of measurement; elements of a measurement system."],
+        ["Standards, calibration and traceability", "International, primary, secondary and working standards; calibration against a higher-accuracy standard; an unbroken chain of comparisons back to SI units."],
+        ["Static characteristics", "Accuracy, precision, range, span, linearity, hysteresis, dead zone, sensitivity, resolution, repeatability."],
+        ["Dynamic characteristics", "Speed of response, fidelity, lag, dynamic error, overshoot — how an instrument follows a changing input."],
+        ["Vernier caliper", "Main scale + vernier scale; least count = 1 MSD − 1 VSD; zero error correction."],
+        ["Earth resistance meter", "Three-terminal fall-of-potential test; 62 % rule for the potential electrode; AC test current."],
+        ["Insulation resistance meter", "High DC test voltage (250 V–5 kV); readings in MΩ/GΩ; polarisation index."],
+        ["Safety engineering", "Hazard identification, risk assessment (likelihood × severity), hierarchy of controls, OHS, PPE, common industrial hazards."],
+        ["Safety standards and LOTO", "ISO 45001, IEC/UL product safety, GHS and REACH, ISO/ANSI/ASME machinery standards; Lockout–Tagout procedure."]
+      ] },
+    { n: 2, hrs: "9 h", title: "Electrical, Electronic Instruments & Measurement Techniques", color: "var(--u2)",
+      blurb: "From the moving needle to the digital screen: analog movements, range extension, voltage/current/power measurement, the generalized digital system, DMM, DSO, PQA, LCR meter, function generator, and HV/HF probes.",
+      topics: [
+        ["Moving coil (PMMC) instruments", "Torque on a coil in a permanent-magnet field; spring control; eddy-current damping; uniform scale; DC only."],
+        ["Moving iron (MI) instruments", "Attraction and repulsion types; torque ∝ I²; works on AC and DC; non-uniform scale."],
+        ["Measurement of V, I and power", "Shunts and multipliers; loading effect and sensitivity (Ω/V); wattmeter connections; power in AC circuits."],
+        ["Major specifications", "Range, accuracy (± % of reading + digits), resolution, input impedance, bandwidth, CAT safety rating."],
+        ["Generalized digital measurement system", "Input → transducer → signal conditioning → processing (ADC, µC) → output display."],
+        ["DMM and DSO", "Dual-slope ADC, counts and digits, True-RMS; sampling, bandwidth, rise time, triggering, probe compensation."],
+        ["PQA, LCR meter, function generator", "Power, PF, harmonics and THD; impedance at a test frequency, Q, D, ESR; DDS waveform generation."],
+        ["HV and HF measurement", "HV differential probe; HF current probe; clamp-on probes (CT and Hall); Rogowski coils."]
+      ] },
+    { n: 3, hrs: "9 h", title: "Sensing, Signal Conditioning & Non-Electrical Quantities", color: "var(--u3)",
+      blurb: "Measuring safely and cleanly: differential and isolated sensing, signal-conditioner design and interfaces, and the transducers that turn strain, motion, force, temperature, pressure and flow into signals.",
+      topics: [
+        ["Differential voltage measurement", "Single-ended vs differential; common-mode voltage; CMRR; the three op-amp instrumentation amplifier."],
+        ["Isolated voltage and current sensing", "Optical, magnetic and capacitive isolation; isolation amplifiers; shunt, Hall, CT and Rogowski current sensing."],
+        ["Signal conditioner design and interfaces", "Amplification, filtering, anti-aliasing, ADC resolution, bridges, 4–20 mA current loops."],
+        ["Strain and force", "Gauge factor, Wheatstone bridge (quarter/half/full), temperature compensation, load cells, torque sensing."],
+        ["Displacement, velocity, acceleration", "LVDT, potentiometric sensors, tachogenerators, encoders, piezoelectric accelerometers."],
+        ["Temperature", "RTD (Pt100), thermistor (NTC/PTC), thermocouples and cold-junction compensation."],
+        ["Pressure, vacuum, flow and liquid level", "Bourdon tube, diaphragm, Pirani and ionisation gauges; orifice, turbine, electromagnetic and ultrasonic flowmeters; level sensors."]
+      ] }
+  ]
+};
+
+/* ===================== RANKS & BADGES ===================== */
+const RANKS = [
+  [0, "Trainee", "🔧"], [150, "Lab Assistant", "🧪"], [400, "Technician", "🔌"], [800, "Calibration Engineer", "📏"],
+  [1400, "Test Engineer", "📟"], [2200, "Instrumentation Engineer", "📈"], [3200, "Metrologist", "⚖️"], [4500, "Chief Measurement Officer", "🏆"]
+];
+const BADGES = [
+  ["first", "First Reading", "Answer your first question.", "🎯"],
+  ["ten", "Ten Readings", "Answer 10 questions correctly.", "🔟"],
+  ["fifty", "Half Century", "Answer 50 questions correctly.", "🏏"],
+  ["century", "Century", "Answer 100 questions correctly.", "💯"],
+  ["streak5", "Hot Probe", "5 correct answers in a row.", "🔥"],
+  ["streak10", "Calibrated", "10 correct answers in a row.", "🎯"],
+  ["speed", "Quick Trigger", "Answer correctly in under 8 seconds, 5 times.", "⚡"],
+  ["u1", "Safety First", "Reach 80 % mastery in Unit I.", "🦺"],
+  ["u2", "Needle Whisperer", "Reach 80 % mastery in Unit II.", "🧭"],
+  ["u3", "Sensor Sage", "Reach 80 % mastery in Unit III.", "🌡️"],
+  ["boss", "Boss Slayer", "Score 8/10 or more in a Boss Round.", "🐉"],
+  ["daily3", "Regular", "Complete the Daily Mission on 3 days.", "📅"],
+  ["daily7", "Week Warrior", "Complete the Daily Mission on 7 days.", "🗓️"],
+  ["vernier", "Steady Hands", "Read 5 vernier scales correctly.", "📏"],
+  ["hazard", "Hazard Hunter", "Find every hazard in the workshop.", "⚠️"],
+  ["loto", "Locked Out", "Put the LOTO steps in the right order.", "🔒"],
+  ["scope", "Scope Master", "Clear 3 DSO challenges.", "📺"],
+  ["designer", "Range Designer", "Design 3 correct shunts or multipliers.", "🛠️"],
+  ["sensor", "Sensor Detective", "Identify 5 sensors from their curves.", "🕵️"],
+  ["explorer", "Explorer", "Open every lab on the site.", "🧭"],
+  ["curious", "Curious Mind", "Open 10 Watch & Learn resources.", "🎬"]
+];
+
+/* ===================== QUESTION BANK =====================
+   id: U<unit>-<nn>; u: unit; co: course outcome; d: difficulty 1–3 (Bloom: 1 Understand, 2 Apply, 3 Analyse);
+   x: related experiment number (optional); a: index of the correct option in o[] (options are shuffled on screen) */
+const QB = [
+/* ---------- UNIT I : measurement fundamentals (CO1) ---------- */
+{id:"U1-01",u:1,co:1,d:1,q:"Calibration of an instrument means:",o:["Comparing its readings with a more accurate standard and correcting them","Adjusting the pointer so that it rests exactly on zero before use","Extending its range by adding a shunt or a multiplier resistor","Checking that the battery, fuse and test leads are in good order"],a:0,e:"Calibration compares the instrument against a standard of known, higher accuracy so that its errors can be found and corrected. Zero adjustment is only one small part of it."},
+{id:"U1-02",u:1,co:1,d:1,q:"Traceability of a measurement result means:",o:["The instrument stores every reading in its internal memory","An unbroken chain of calibrations links it to SI standards","The instrument carries a unique serial number for audits","Another operator can repeat it and get the same value"],a:1,e:"Traceability is a documented, unbroken chain of comparisons back to national or international (SI) standards, each with a stated uncertainty."},
+{id:"U1-03",u:1,co:1,d:1,q:"A primary standard is:",o:["A cheap reference kept on every lab bench for daily checks","The highest-accuracy standard, kept by a national laboratory","Any instrument that has been calibrated within the last year","The working standard used to check meters in a workshop"],a:1,e:"Primary standards are maintained by national metrology institutes (in India, CSIR–NPL). They calibrate secondary standards, which in turn calibrate working standards."},
+{id:"U1-04",u:1,co:1,d:1,q:"Readings of 10.51, 10.50 and 10.52 V are taken for a true value of 10.00 V. The instrument is:",o:["Accurate and precise","Precise but not accurate","Accurate but not precise","Neither accurate nor precise"],a:1,e:"The readings agree closely with each other (precise) but are about 0.5 V away from the true value (not accurate)."},
+{id:"U1-05",u:1,co:1,d:1,q:"A thermometer is graduated from −10 °C to +50 °C. Its span is:",o:["40 °C","50 °C","60 °C","−10 to 50 °C"],a:2,e:"The range is −10 to +50 °C; span = upper limit − lower limit = 50 − (−10) = 60 °C."},
+{id:"U1-06",u:1,co:1,d:1,q:"The smallest change in input that produces a detectable change in the output is called the:",o:["Sensitivity","Resolution","Dead zone","Threshold drift"],a:1,e:"Resolution (discrimination) is the smallest input increment that gives a detectable output change. Sensitivity is the ratio Δoutput/Δinput."},
+{id:"U1-07",u:1,co:1,d:2,q:"A sensor's output rises by 10 mV when the temperature rises by 2 °C. Its sensitivity is:",o:["0.2 °C/mV","5 mV/°C","20 mV/°C","12 mV/°C"],a:1,e:"Sensitivity = Δoutput/Δinput = 10 mV / 2 °C = 5 mV/°C."},
+{id:"U1-08",u:1,co:1,d:1,q:"Different readings for the same input, depending on whether the input is increasing or decreasing, indicate:",o:["Drift","Hysteresis","Dead zone","Non-linearity"],a:1,e:"Hysteresis is the difference between up-scale and down-scale readings for the same input, caused by friction, backlash or magnetic effects."},
+{id:"U1-09",u:1,co:1,d:1,q:"The largest change of input over which the instrument shows no response at all is the:",o:["Dead zone","Resolution","Span","Threshold of hearing"],a:0,e:"Dead zone (dead band) is the range of input over which there is no output change, usually due to friction or backlash."},
+{id:"U1-10",u:1,co:1,d:1,q:"Linearity of an instrument describes:",o:["How closely its calibration curve follows a straight line","How quickly the pointer settles after the input changes","How small an input change it is able to detect","How long it keeps its calibration between services"],a:0,e:"Linearity is the closeness of the input–output calibration curve to a straight line, usually quoted as the maximum deviation in % of full scale."},
+{id:"U1-11",u:1,co:1,d:2,q:"A voltmeter reads 98 V when the true voltage is 100 V. The static error and relative error are:",o:["+2 V and +2 %","−2 V and −2 %","−2 V and +2 %","+2 V and −2 %"],a:1,e:"Static error = measured − true = 98 − 100 = −2 V; relative error = −2/100 = −2 %."},
+{id:"U1-12",u:1,co:1,d:3,q:"A 0–150 V voltmeter has a guaranteed accuracy of ±1 % of full scale. When it reads 75 V, the limiting error is:",o:["±1 %","±1.5 %","±2 %","±0.75 %"],a:2,e:"Error = ±1 % × 150 V = ±1.5 V. At 75 V this is ±1.5/75 = ±2 %. Readings in the lower part of the scale have a larger percentage error."},
+{id:"U1-13",u:1,co:1,d:1,q:"Agreement among repeated readings of the same input, under the same conditions and over a short time, is called:",o:["Repeatability","Reproducibility","Accuracy","Linearity"],a:0,e:"Repeatability uses the same conditions; reproducibility allows changed conditions such as operator, time or place."},
+{id:"U1-14",u:1,co:1,d:1,q:"Speed of response of an instrument is:",o:["How quickly it responds to a change in the measured quantity", "The number of readings it can store before its memory is full", "The time it takes to warm up after it is first switched on", "The highest supply frequency it can tolerate without damage"],a:0,e:"Speed of response is how quickly the instrument follows a change in the measurand; it is one of the dynamic characteristics, together with lag, fidelity and dynamic error."},
+{id:"U1-15",u:1,co:1,d:1,q:"The ability of an instrument to reproduce a changing input without dynamic distortion is its:",o:["Speed of response","Fidelity","Repeatability","Precision"],a:1,e:"Fidelity is the degree to which the output faithfully follows a changing input."},
+{id:"U1-16",u:1,co:1,d:2,q:"Dynamic error is the difference between:",o:["The true value of a changing quantity and the value the instrument indicates","Two readings taken by two operators at the same time on the same meter","The reading before and after the instrument has been calibrated","The upper and lower range limits printed on the instrument's scale"],a:0,e:"Dynamic error is the difference between the true, time-varying value and the indicated value, assuming no static error."},
+{id:"U1-17",u:1,co:1,d:2,q:"A pointer that swings past the final value and oscillates before settling indicates a system that is:",o:["Over-damped","Critically damped","Under-damped","Free of any damping torque"],a:2,e:"Overshoot followed by decaying oscillation is the signature of an under-damped second-order response. Practical meters use ζ ≈ 0.6–0.8."},
+{id:"U1-18",u:1,co:1,d:1,q:"Measuring an unknown resistance with a Wheatstone bridge, by adjusting it until the detector reads zero, is an example of:",o:["A null (comparison) method", "A deflection (direct) method", "A direct substitution method", "An interpolation (scale) method"],a:0,e:"In a null method the unknown is balanced against a known quantity until a detector shows zero; the detector only needs to be sensitive, not accurate."},
+{id:"U1-19",u:1,co:1,d:1,q:"In a generalized measurement system, the element that first senses the physical quantity is the:",o:["Primary sensing element", "Variable manipulation element", "Data transmission element", "Data presentation element"],a:0,e:"Order: primary sensing element → variable conversion → variable manipulation → data transmission → data presentation."},
+{id:"U1-20",u:1,co:1,d:2,x:1,q:"A vernier caliper has 50 vernier divisions equal to 49 main-scale divisions of 1 mm. Its least count is:",o:["0.1 mm","0.05 mm","0.02 mm","0.01 mm"],a:2,e:"LC = 1 MSD − 1 VSD = 1 − 49/50 = 1/50 = 0.02 mm."},
+{id:"U1-21",u:1,co:1,d:2,x:1,q:"Main-scale reading 12 mm, the 7th vernier division coincides, least count 0.02 mm. The reading is:",o:["12.07 mm","12.14 mm","12.70 mm","19.00 mm"],a:1,e:"Reading = MSR + VSC × LC = 12 + 7 × 0.02 = 12.14 mm."},
+{id:"U1-22",u:1,co:1,d:3,x:1,q:"A caliper has a positive zero error of +0.04 mm. The observed reading is 25.36 mm. The corrected reading is:",o:["25.40 mm","25.36 mm","25.32 mm","25.28 mm"],a:2,e:"Corrected reading = observed − zero error = 25.36 − (+0.04) = 25.32 mm."},
+{id:"U1-23",u:1,co:1,d:2,q:"In the fall-of-potential earth test the current spike is 40 m from the electrode. By the 62 % rule the potential spike goes at:",o:["20.0 m","24.8 m","31.0 m","40.0 m"],a:1,e:"The potential spike is placed at 62 % of the current-spike distance: 0.62 × 40 = 24.8 m."},
+{id:"U1-24",u:1,co:1,d:2,q:"An earth resistance tester uses an AC (or reversing DC) test current mainly to:",o:["Avoid electrolytic polarisation and stray DC currents in the soil","Increase the reading so that it is easier to see on the display","Measure the capacitance of the buried earth conductor as well","Reduce battery consumption during long series of readings"],a:0,e:"DC would polarise the electrodes and be upset by stray soil currents; an AC or reversing current avoids both."},
+{id:"U1-25",u:1,co:1,d:1,q:"An insulation resistance tester (megger) measures insulation by:",o:["Applying a high DC voltage and measuring the small leakage current","Applying a low AC voltage of a few volts at mains frequency","Injecting a high-frequency current pulse into the conductor","Measuring the temperature rise of the insulation under load"],a:0,e:"It applies a high DC test voltage (typically 250 V–5 kV) and computes insulation resistance from the leakage current, giving MΩ–GΩ readings."},
+{id:"U1-26",u:1,co:1,d:3,q:"Insulation resistance is 200 MΩ after 1 min and 500 MΩ after 10 min. The polarisation index and its meaning are:",o:["0.4 — the insulation is wet","2.5 — the insulation is healthy","2.5 — the insulation has failed","300 — the test is invalid"],a:1,e:"PI = R(10 min)/R(1 min) = 500/200 = 2.5. A PI of about 2 or more generally indicates dry, healthy insulation."},
+/* ---------- UNIT I : safety (CO4) ---------- */
+{id:"U1-27",u:1,co:4,d:1,q:"A hazard is best defined as:",o:["The likelihood that harm will occur","Anything with the potential to cause harm","An accident that has already occurred","A rule written to prevent accidents"],a:1,e:"A hazard is a potential source of harm; risk combines how likely the harm is with how severe it would be."},
+{id:"U1-28",u:1,co:4,d:2,q:"On a 5 × 5 risk matrix a hazard has likelihood 4 and severity 5. Its risk score and band are:",o:["9 — medium","20 — very high","16 — high","45 — off the scale"],a:1,e:"Risk = likelihood × severity = 4 × 5 = 20. Bands used here: 1–4 low, 5–9 medium, 10–16 high, 20–25 very high — immediate action is needed."},
+{id:"U1-29",u:1,co:4,d:1,q:"In the hierarchy of controls, the MOST effective measure is:",o:["Personal protective equipment","Administrative controls","Elimination of the hazard","Warning signs and labels"],a:2,e:"Order of effectiveness: elimination → substitution → engineering controls → administrative controls → PPE (the last line of defence)."},
+{id:"U1-30",u:1,co:4,d:1,q:"ISO 45001 is the international standard for:",o:["Quality management systems (QMS)", "Occupational health and safety management", "Environmental management systems (EMS)", "Electrical installation and wiring rules"],a:1,e:"ISO 45001 specifies requirements for an occupational health and safety (OH&S) management system. Quality is ISO 9001; environment is ISO 14001."},
+{id:"U1-31",u:1,co:4,d:2,q:"GHS refers to:",o:["Globally Harmonized System of classification and labelling of chemicals","General Hazard Survey carried out before a factory is commissioned","Ground Handling Standard for storing compressed gas cylinders","Grid Harmonic Standard for limiting distortion on supply networks"],a:0,e:"GHS is the UN system for classifying chemicals and communicating hazards through labels, pictograms and safety data sheets."},
+{id:"U1-32",u:1,co:4,d:2,q:"REACH is a European Union regulation that deals with:",o:["Electrical product safety","Chemical substances","Machinery guarding","Road vehicle safety"],a:1,e:"REACH (EC 1907/2006) covers the Registration, Evaluation, Authorisation and restriction of CHemicals."},
+{id:"U1-33",u:1,co:4,d:2,q:"Measurement categories CAT II–IV for multimeters and probes are defined in:",o:["IEC 60617","IEC 61010 (part 2-030)","IEC 61131","IEC 60034"],a:1,e:"IEC 61010-1 sets general safety requirements for measuring and laboratory equipment; measurement categories are now specified in IEC 61010-2-030."},
+{id:"U1-34",u:1,co:4,d:2,q:"A multimeter used on a building's distribution board should carry at least:",o:["CAT I","CAT II","CAT III","No rating"],a:2,e:"CAT II covers plug-in loads, CAT III the distribution board and fixed installation, CAT IV the origin of supply (service entrance)."},
+{id:"U1-35",u:1,co:4,d:2,q:"UL, often seen on electrical products, is:",o:["A US safety certification organisation that tests and lists products","An Indian law that limits the use of lead in electronic products","An international unit of electrical leakage current","A European directive on machinery noise levels"],a:0,e:"UL (Underwriters Laboratories) tests products against safety standards; the UL mark shows a product has been certified. IEC standards play the same role internationally."},
+{id:"U1-36",u:1,co:4,d:2,q:"Which of these is a standard-setting body for machinery and pressure equipment design?",o:["ASME","GHS","REACH","OHSAS"],a:0,e:"ASME (American Society of Mechanical Engineers) publishes codes such as the Boiler and Pressure Vessel Code; ISO and ANSI also publish machinery safety standards."},
+{id:"U1-37",u:1,co:4,d:2,q:"In a Lockout–Tagout (LOTO) procedure, which step proves that the equipment is really at zero energy?",o:["Notifying all the affected workers", "Applying the personal lock and tag", "Releasing or blocking stored energy", "Verifying by try-out and voltage test"],a:3,e:"After isolation, lock and tag, and release of stored energy, the try-out / test-for-absence-of-voltage step proves that no energy remains."},
+{id:"U1-38",u:1,co:4,d:1,q:"Which of these is personal protective equipment (PPE)?",o:["A fixed machine guard","An electrical interlock","Insulated gloves and goggles","A safety training session"],a:2,e:"PPE is worn by the person: gloves, goggles, helmets, safety shoes, arc-rated clothing, ear protection. Guards and interlocks are engineering controls; training is administrative."},
+/* ---------- UNIT II : analog instruments (CO2) ---------- */
+{id:"U2-01",u:2,co:2,d:1,q:"A PMMC instrument connected directly to 50 Hz AC will:",o:["Read the RMS value of the supply", "Read the peak value of the supply", "Read almost zero (pointer trembles)", "Read the average of one half-cycle"],a:2,e:"Torque ∝ i reverses every half-cycle, so the average torque is zero and the moving system just vibrates about zero."},
+{id:"U2-02",u:2,co:2,d:1,q:"The scale of a spring-controlled PMMC instrument is uniform because:",o:["Td ∝ I and Tc ∝ θ, so θ ∝ I","Td ∝ I² and Tc ∝ θ, so θ ∝ I²","Tc ∝ sin θ under gravity control","Damping torque is proportional to I"],a:0,e:"Td = NBAI and Tc = kθ; at equilibrium θ = (NBA/k)·I — a linear scale."},
+{id:"U2-03",u:2,co:2,d:1,q:"Damping torque in a PMMC instrument is usually provided by:",o:["Air-friction vanes", "Eddy currents in its former", "Oil in a sealed dashpot", "Gravity control weights"],a:1,e:"The coil is wound on an aluminium former; its motion in the magnet's field induces eddy currents that oppose the motion."},
+{id:"U2-04",u:2,co:2,d:2,q:"Moving-iron instruments can be used on both AC and DC because:",o:["Their torque is proportional to I²","They use a permanent magnet","They contain a bridge rectifier","Their scale is perfectly uniform"],a:0,e:"Torque ∝ I² has the same sign for both current directions, so the meter reads RMS on AC as well as on DC; the scale is non-uniform."},
+{id:"U2-05",u:2,co:2,d:2,q:"Which instrument has a non-uniform scale, crowded at the low end?",o:["PMMC voltmeter","Moving-iron ammeter","Digital multimeter","D'Arsonval galvanometer"],a:1,e:"Deflection of an MI instrument follows I², so the divisions are crowded near zero."},
+{id:"U2-06",u:2,co:2,d:2,q:"A 1 mA, 100 Ω movement is to be used as a 0–1 A ammeter. The shunt resistance is about:",o:["0.1 Ω","1 Ω","10 Ω","999 Ω"],a:0,e:"Rsh = Im·Rm/(I − Im) = (0.001 × 100)/0.999 = 0.1001 Ω."},
+{id:"U2-07",u:2,co:2,d:2,q:"A 50 µA, 1 kΩ movement is to be used as a 0–50 V voltmeter. The multiplier resistance is:",o:["1 MΩ","999 kΩ","1.001 MΩ","49 kΩ"],a:1,e:"Total R = V/Im = 50 V / 50 µA = 1 MΩ; Rs = 1 MΩ − 1 kΩ = 999 kΩ."},
+{id:"U2-08",u:2,co:2,d:1,q:"A voltmeter has a sensitivity of 20 kΩ/V. On its 10 V range its input resistance is:",o:["2 kΩ","20 kΩ","200 kΩ","2 MΩ"],a:2,e:"R = S × range = 20 kΩ/V × 10 V = 200 kΩ."},
+{id:"U2-09",u:2,co:2,d:3,x:2,q:"A 10 V source feeds two 100 kΩ resistors in series. A 100 kΩ voltmeter across the lower resistor reads:",o:["5.00 V","3.33 V","6.67 V","10.0 V"],a:1,e:"100 kΩ ∥ 100 kΩ = 50 kΩ; V = 10 × 50/(100 + 50) = 3.33 V instead of 5 V — a −33 % loading error."},
+{id:"U2-10",u:2,co:2,d:1,q:"In a wattmeter, the current coil and the pressure (voltage) coil are connected:",o:["Both in series with the load","Current coil in series, pressure coil across the load","Both in parallel with the load","Current coil across, pressure coil in series with the load"],a:1,e:"The current coil carries the load current; the pressure coil senses the load voltage."},
+{id:"U2-11",u:2,co:2,d:2,q:"In the two-wattmeter method for a three-phase, three-wire load, total power is:",o:["W1 − W2","W1 + W2","√3 (W1 + W2)","(W1 + W2)/2"],a:1,e:"P = W1 + W2 (algebraic sum) for balanced or unbalanced three-wire loads; one reading may be negative when PF < 0.5."},
+{id:"U2-12",u:2,co:2,d:1,q:"The major specifications of a measuring instrument include:",o:["Range, accuracy, resolution, input impedance and safety rating","Colour, weight, brand name and the length of the test leads","Battery type, warranty period, carry case and display colour","Manufacturer, country of origin and date of purchase"],a:0,e:"The specifications that decide whether an instrument suits a job are range, accuracy, resolution, sensitivity/input impedance, bandwidth and the CAT safety rating."},
+/* ---------- UNIT II : digital instruments (CO2) ---------- */
+{id:"U2-13",u:2,co:2,d:1,q:"The correct order of blocks in a generalized digital measurement system is:",o:["Input → transducer → signal conditioning → processing → display","Input → signal conditioning → display → transducer → processing","Transducer → display → processing → input → signal conditioning","Processing → transducer → input → signal conditioning → display"],a:0,e:"The physical input is converted by the transducer, conditioned (amplified, filtered), digitised and processed, then displayed or stored."},
+{id:"U2-14",u:2,co:2,d:2,x:2,q:"A 3½-digit DMM has a maximum display count of:",o:["999","1999","3999","19999"],a:1,e:"The ½ digit can only be 0 or 1, so a 3½-digit display counts up to 1999."},
+{id:"U2-15",u:2,co:2,d:3,x:2,q:"A 3½-digit DMM on its 200 V range (0.1 V resolution) has accuracy ±(0.5 % of reading + 2 digits). For a reading of 100.0 V the uncertainty is:",o:["±0.5 V","±0.7 V","±2.5 V","±1.0 V"],a:1,e:"0.5 % of 100.0 V = 0.5 V; 2 digits × 0.1 V = 0.2 V; total ±0.7 V."},
+{id:"U2-16",u:2,co:2,d:2,q:"A 4½-digit DMM on its 2 V range has a resolution of:",o:["1 mV","0.1 mV","10 µV","1 µV"],a:1,e:"19 999 counts span 2 V, so one count = 0.1 mV."},
+{id:"U2-17",u:2,co:2,d:2,x:2,q:"A True-RMS meter, rather than an average-responding one, is needed when measuring:",o:["A pure 50 Hz sine wave from the mains","The distorted current drawn by an SMPS or a VFD","A steady DC voltage from a battery","A low-frequency sine from a signal generator"],a:1,e:"Average-responding meters are calibrated for sine waves (form factor 1.11). Only a True-RMS meter reads distorted waveforms correctly."},
+{id:"U2-18",u:2,co:2,d:3,q:"An average-responding meter, calibrated for sine waves, measures a symmetrical 10 V-peak square wave. It reads about:",o:["10.0 V","11.1 V","7.07 V","6.37 V"],a:1,e:"For a square wave, average = RMS = 10 V. The meter multiplies the average by the sine form factor 1.11 and displays 11.1 V — 11 % high."},
+{id:"U2-19",u:2,co:2,d:1,q:"The crest factor of a pure sine wave is:",o:["1.000","1.111","1.414","2.000"],a:2,e:"Crest factor = peak/RMS = √2 ≈ 1.414 for a sine wave. The form factor (RMS/average) is 1.111."},
+{id:"U2-20",u:2,co:2,d:2,x:4,q:"To avoid aliasing, a DSO sampling a 1 MHz sine wave must sample faster than:",o:["0.5 MS/s","1 MS/s","2 MS/s","1 GS/s"],a:2,e:"Nyquist: fs > 2 fmax = 2 MS/s. In practice 5–10× oversampling is used for a good display."},
+{id:"U2-21",u:2,co:2,d:2,x:4,q:"An oscilloscope has a bandwidth of 100 MHz. Its own rise time is about:",o:["0.35 ns","3.5 ns","35 ns","10 ns"],a:1,e:"tr ≈ 0.35/BW = 0.35/100 MHz = 3.5 ns."},
+{id:"U2-22",u:2,co:2,d:3,x:4,q:"A 4 ns edge is viewed on a scope whose own rise time is 3 ns. The displayed rise time is about:",o:["4 ns","5 ns","7 ns","1 ns"],a:1,e:"t(displayed) ≈ √(4² + 3²) = 5 ns. Use a scope 3–5 times faster than the edge being measured."},
+{id:"U2-23",u:2,co:2,d:2,x:4,q:"A ×10 probe shows the scope's calibration square wave with rounded corners. The correct action is to:",o:["Adjust the probe's compensation trimmer","Change the timebase to a faster setting","Switch the probe to the ×1 position","Raise the trigger level above the signal"],a:0,e:"Rounded (under-compensated) or overshooting (over-compensated) edges mean the probe trimmer must be adjusted for a flat-topped square wave."},
+{id:"U2-24",u:2,co:2,d:3,x:7,q:"A supply has V1 = 230 V, V3 = 23 V and V5 = 11.5 V, other harmonics negligible. Its voltage THD is about:",o:["5.0 %","10.0 %","11.2 %","15.0 %"],a:2,e:"THD = √(23² + 11.5²)/230 = √(529 + 132.25)/230 = 25.7/230 ≈ 11.2 %."},
+{id:"U2-25",u:2,co:2,d:2,x:6,q:"A power quality analyzer shows P = 8 kW and S = 10 kVA. The power factor and reactive power are:",o:["0.8 and 6 kVAR","0.6 and 8 kVAR","0.8 and 2 kVAR","1.25 and 6 kVAR"],a:0,e:"PF = P/S = 0.8; Q = √(S² − P²) = √(100 − 64) = 6 kVAR."},
+{id:"U2-26",u:2,co:2,d:2,x:6,q:"In DC circuits, power is measured as:",o:["P = V × I","P = V × I × cos φ","P = √3 V I","P = V² × I"],a:0,e:"In DC there is no phase angle, so P = VI. In AC, P = VI cos φ, where cos φ is the power factor (for sinusoidal waveforms)."},
+{id:"U2-27",u:2,co:2,d:2,x:7,q:"Which loads are the main source of current harmonics in a building?",o:["Non-linear loads such as SMPS, LED drivers and VFDs","Resistive heaters and incandescent lamps","Ideal capacitors used for power-factor correction","Transformers running well below rated flux"],a:0,e:"Non-linear loads draw non-sinusoidal current, producing odd harmonics (3rd, 5th, 7th …) that a PQA shows as a spectrum and THD."},
+{id:"U2-28",u:2,co:2,d:2,x:3,q:"An LCR meter measures an inductor at 1 kHz: XL = 62.8 Ω, series R = 6.28 Ω. The quality factor Q is:",o:["0.1","10","62.8","394"],a:1,e:"Q = XL/R = 62.8/6.28 = 10. The dissipation factor D = 1/Q = 0.1."},
+{id:"U2-29",u:2,co:2,d:2,x:3,q:"An LCR meter lets you choose the test frequency because:",o:["Component impedance, ESR and Q depend on frequency", "The display becomes easier to read at high frequency", "The battery lasts much longer at low test frequency", "Resistors can be measured only at exactly 1 kHz"],a:0,e:"Capacitors and inductors have frequency-dependent impedance and losses, so they are measured at the frequency at which they will be used."},
+{id:"U2-30",u:2,co:2,d:2,x:3,q:"An electrolytic capacitor shows a high ESR on the LCR meter. This indicates:",o:["An aged capacitor with higher internal losses", "A capacitor with unusually high capacitance", "A capacitor in perfect, as-new condition", "An inductor that was connected by mistake"],a:0,e:"ESR (equivalent series resistance) rises as an electrolytic capacitor ages and its electrolyte dries out; high ESR causes heating and ripple."},
+{id:"U2-31",u:2,co:2,d:2,x:4,q:"Most modern function generators produce waveforms by:",o:["Direct digital synthesis: a phase accumulator, table and DAC","Switching a vacuum-tube oscillator between fixed frequencies","Rotating a small alternator at a controlled speed","Balancing a Wheatstone bridge with a variable capacitor"],a:0,e:"DDS steps through a stored waveform table at a rate set by a phase accumulator, converts with a DAC and filters — giving very fine frequency resolution."},
+{id:"U2-32",u:2,co:2,d:2,x:8,q:"An energy meter's constant is 3200 imp/kWh. A 1 kW load runs for 6 minutes. The expected number of pulses is:",o:["320","533","3200","32"],a:0,e:"Energy = 1 kW × 0.1 h = 0.1 kWh; pulses = 0.1 × 3200 = 320."},
+{id:"U2-33",u:2,co:2,d:3,x:8,q:"For a true energy of 0.100 kWh an energy meter registers 0.102 kWh. Its percentage error is:",o:["+2.0 %","−2.0 %","+0.2 %","−1.96 %"],a:0,e:"% error = (registered − true)/true × 100 = (0.102 − 0.100)/0.100 × 100 = +2.0 % (the meter runs fast)."},
+{id:"U2-34",u:2,co:2,d:2,x:8,q:"'Creeping' in an induction-type energy meter means:",o:["The disc rotates slowly even when no load current flows","The disc slows down as the load current increases","The meter registers less energy at low power factor","The display flickers when the supply frequency changes"],a:0,e:"Creep is slow rotation with only the voltage coil energised (no load), caused by over-compensation for friction; it is prevented by holes in the disc or a small iron tag."},
+/* ---------- UNIT II : HV / HF probes (CO3) ---------- */
+{id:"U2-35",u:2,co:3,d:2,x:5,q:"Why is an HV differential probe used on the switch node of an inverter instead of a normal probe?",o:["A normal probe's ground lead would short the floating node to earth","A normal probe cannot display waveforms faster than 1 kHz","A differential probe also measures the load current","A normal probe always reads the RMS value instead of the peak"],a:0,e:"A standard probe's ground clip is tied to mains earth through the scope. A differential probe measures V₊ − V₋ with both inputs floating and is rated for high voltage."},
+{id:"U2-36",u:2,co:3,d:2,x:5,q:"To measure DC current with a clamp-on probe, the probe must use:",o:["A current transformer","A Hall-effect sensor","A Rogowski coil","A search coil"],a:1,e:"CTs, Rogowski coils and search coils respond only to changing current; a Hall element senses the magnetic field of DC as well as AC."},
+{id:"U2-37",u:2,co:3,d:2,q:"The output voltage of a Rogowski coil is proportional to:",o:["The current i","The rate of change di/dt","The square of the current","The DC component of i"],a:1,e:"v = M·di/dt; an integrator recovers i. With no iron core it never saturates, so it suits large or fast AC currents."},
+{id:"U2-38",u:2,co:3,d:2,q:"The secondary of a current transformer must never be open-circuited while the primary carries current because:",o:["A dangerously high voltage appears across it", "The ammeter reading simply drops to zero", "The primary current is interrupted at once", "The transformation ratio doubles briefly"],a:0,e:"With no secondary ampere-turns to oppose the primary, the flux rises to saturation and induces a very high secondary voltage — a shock and insulation hazard."},
+/* ---------- UNIT III (CO3) ---------- */
+{id:"U3-01",u:3,co:3,d:1,q:"Common-mode rejection ratio (CMRR) is defined as:",o:["A_cm / A_d","A_d / A_cm","A_d × A_cm","A_d − A_cm"],a:1,e:"CMRR = differential gain / common-mode gain; in dB, 20 log₁₀(A_d/A_cm)."},
+{id:"U3-02",u:3,co:3,d:3,q:"An amplifier has a CMRR of 100 dB. A common-mode voltage of 2 V causes an input-referred error of:",o:["2 mV","200 µV","20 µV","2 µV"],a:2,e:"100 dB = 10⁵. Error = Vcm/CMRR = 2/10⁵ = 20 µV."},
+{id:"U3-03",u:3,co:3,d:2,q:"An AD620 in-amp has G = 1 + 49.4 kΩ/RG. For a gain of about 100, RG should be about:",o:["49.4 Ω","499 Ω","4.99 kΩ","49.4 kΩ"],a:1,e:"RG = 49.4 kΩ/(G − 1) = 49.4 kΩ/99 ≈ 499 Ω."},
+{id:"U3-04",u:3,co:3,d:1,q:"The main advantage of a three op-amp instrumentation amplifier is:",o:["High, balanced input impedance and high CMRR", "Very low input impedance that draws signal current", "A fixed unity gain that the user cannot change", "It operates without any power-supply connection"],a:0,e:"Buffered inputs give very high input impedance; a single resistor RG sets the gain without upsetting the resistor matching that gives high CMRR."},
+{id:"U3-05",u:3,co:3,d:1,q:"Galvanic isolation in a measurement system is used to:",o:["Break the conductive path for safety and to stop ground loops", "Increase the gain of the amplifier by a factor of ten", "Reduce the bandwidth so that all noise is filtered out", "Convert a voltage signal directly into a current signal"],a:0,e:"Isolation passes the signal optically, magnetically or capacitively across a barrier rated for high voltage, and also breaks ground loops."},
+{id:"U3-06",u:3,co:3,d:1,q:"In an optocoupler, the signal crosses the isolation barrier as:",o:["Current in a wire","Light","A magnetic field","Sound waves"],a:1,e:"An LED converts the input to light; a phototransistor or photodiode on the far side converts it back."},
+{id:"U3-07",u:3,co:3,d:2,q:"Which current-sensing method gives isolation AND measures DC?",o:["Shunt resistor","Current transformer","Hall-effect sensor","Rogowski coil"],a:2,e:"A shunt is not isolated; a CT and a Rogowski coil cannot sense DC. A Hall sensor senses DC and AC with galvanic isolation."},
+{id:"U3-08",u:3,co:3,d:1,q:"A typical signal-conditioning chain, in order, is:",o:["Sensor → amplify → filter → (isolate) → ADC","ADC → filter → amplify → sensor → display","Filter → sensor → ADC → amplify → display","Sensor → ADC → amplify → filter → isolate"],a:0,e:"The sensor's small signal is buffered/amplified, filtered (including anti-aliasing), isolated if needed, and then digitised."},
+{id:"U3-09",u:3,co:3,d:2,q:"An anti-aliasing filter is placed:",o:["Before the ADC, removing components above fs/2", "After the display, smoothing the shown numbers", "Inside the sensor, reducing its temperature drift", "After the microcontroller, protecting its outputs"],a:0,e:"Frequencies above fs/2 would fold back into the band as aliases, so they must be removed before sampling."},
+{id:"U3-10",u:3,co:3,d:2,q:"A 12-bit ADC has a 0–5 V input range. One LSB is about:",o:["1.22 mV","4.88 mV","0.31 mV","12.0 mV"],a:0,e:"LSB = 5 V / 2¹² = 5/4096 ≈ 1.22 mV."},
+{id:"U3-11",u:3,co:3,d:2,q:"A 4–20 mA transmitter covers 0–100 °C. A reading of 12 mA corresponds to:",o:["25 °C","50 °C","60 °C","75 °C"],a:1,e:"(12 − 4)/(20 − 4) = 50 % of span → 50 °C. The 4 mA 'live zero' lets a broken wire (0 mA) be detected."},
+{id:"U3-12",u:3,co:3,d:1,q:"The gauge factor of a strain gauge is:",o:["(ΔR/R) ÷ ε","ε ÷ (ΔR/R)","R × ε","ΔR × ε"],a:0,e:"GF = (ΔR/R)/ε; for metal-foil gauges GF ≈ 2."},
+{id:"U3-13",u:3,co:3,d:2,q:"A 120 Ω gauge with GF = 2 is strained to 500 µε. Its change in resistance is:",o:["0.012 Ω","0.12 Ω","1.2 Ω","12 Ω"],a:1,e:"ΔR = GF·ε·R = 2 × 500×10⁻⁶ × 120 = 0.12 Ω — tiny, hence the need for a bridge and an amplifier."},
+{id:"U3-14",u:3,co:3,d:3,q:"A quarter bridge with 5 V excitation, GF = 2 and ε = 500 µε gives an output of about:",o:["0.5 mV","1.25 mV","2.5 mV","5 mV"],a:1,e:"Vo ≈ Vex·GF·ε/4 = 5 × 2 × 500×10⁻⁶ / 4 = 1.25 mV."},
+{id:"U3-15",u:3,co:3,d:2,q:"A 'dummy' gauge in an adjacent arm of the bridge is used for:",o:["Doubling the sensitivity","Temperature compensation","Measuring torque","Calibrating the ADC"],a:1,e:"The unstrained dummy sees the same temperature, so its resistance change cancels the active gauge's thermal change."},
+{id:"U3-16",u:3,co:3,d:2,x:10,q:"In an LVDT, the direction of core movement from null is found from:",o:["The magnitude of the output","The phase of the output","The frequency of the output","The DC offset of the output"],a:1,e:"The magnitude of (V₁ − V₂) gives the distance from null; its phase relative to the excitation (0° or 180°) gives the direction."},
+{id:"U3-17",u:3,co:3,d:1,x:10,q:"At the null position of an ideal LVDT, the differential output is:",o:["Maximum","Zero","Equal to the excitation","Twice the excitation"],a:1,e:"At null the core couples equally to both secondaries, and their series-opposing voltages cancel."},
+{id:"U3-18",u:3,co:3,d:1,q:"A linear potentiometric displacement sensor gives an output proportional to:",o:["The wiper position along the track", "The speed at which the wiper moves", "The temperature of the resistive track", "The square of the wiper displacement"],a:0,e:"With the track excited by Vs, Vout = Vs·x/L — proportional to wiper position (as long as the load resistance is high)."},
+{id:"U3-19",u:3,co:3,d:2,q:"An incremental optical encoder with 1000 lines per revolution gives 2000 pulses in 0.1 s. The shaft speed is:",o:["1200 rpm","200 rpm","2000 rpm","20 rpm"],a:0,e:"2000 pulses = 2 revolutions in 0.1 s = 20 rev/s = 1200 rpm."},
+{id:"U3-20",u:3,co:3,d:1,q:"A DC tachogenerator gives an output voltage proportional to:",o:["Angular position","Angular velocity","Angular acceleration","Shaft torque"],a:1,e:"Generated EMF ∝ speed, so a tachogenerator is a simple speed transducer."},
+{id:"U3-21",u:3,co:3,d:2,q:"Linear velocity can be measured with a moving-magnet velocity transducer because:",o:["The EMF induced in the coil is proportional to velocity", "The coil resistance changes in proportion to velocity", "The magnet's temperature rises in proportion to velocity", "The coil-to-magnet capacitance depends on velocity"],a:0,e:"By Faraday's law, e = B·l·v for a magnet moving through a coil, so the output voltage is proportional to linear velocity."},
+{id:"U3-22",u:3,co:3,d:2,x:10,q:"A piezoelectric accelerometer cannot measure a constant (static) acceleration because:",o:["The charge it generates leaks away, so it responds only to changing force","The crystal becomes demagnetised when the acceleration is constant","It needs an AC excitation voltage that is absent at constant acceleration","Its output saturates as soon as any constant force is applied"],a:0,e:"Piezo crystals generate charge only when the force changes; the charge leaks through finite resistance, so they are used for dynamic measurements."},
+{id:"U3-23",u:3,co:3,d:2,x:10,q:"The output of a piezoelectric sensor is usually read with a:",o:["Wheatstone bridge","Charge amplifier","Voltage divider","Current transformer"],a:1,e:"A charge amplifier converts the sensor's charge into a voltage that does not depend on the cable capacitance."},
+{id:"U3-24",u:3,co:3,d:1,q:"Force is commonly measured in industry with:",o:["A thermocouple junction", "A strain-gauge load cell", "A Pirani vacuum gauge", "A Rogowski current coil"],a:1,e:"A load cell is an elastic element with strain gauges in a full bridge; its output is proportional to the applied force."},
+{id:"U3-25",u:3,co:3,d:2,q:"Torque on a rotating shaft is measured with strain gauges mounted:",o:["Along the shaft axis","At ±45° to the axis","Across the diameter","On the bearing housing"],a:1,e:"Torsion produces the maximum principal strains at ±45° to the axis, so gauges are bonded at those angles in a full bridge."},
+{id:"U3-26",u:3,co:3,d:1,x:9,q:"A thermocouple works on the:",o:["Seebeck effect","Hall effect","Piezoelectric effect","Photoelectric effect"],a:0,e:"An EMF is produced when the two junctions of dissimilar metals are at different temperatures (Seebeck effect)."},
+{id:"U3-27",u:3,co:3,d:2,x:9,q:"Cold-junction compensation is needed in a thermocouple circuit because:",o:["The EMF depends on T(hot) − T(cold junction)", "The thermocouple resistance varies strongly with temperature", "The thermocouple needs an excitation current to work", "The EMF is too large and must be reduced before display"],a:0,e:"The EMF reflects T_hot − T_cold. The cold-junction temperature is measured (for example with a thermistor) and its equivalent EMF added back."},
+{id:"U3-28",u:3,co:3,d:2,x:9,q:"A Pt100 RTD (α = 0.00385 /°C) at 100 °C has a resistance of about:",o:["100 Ω","138.5 Ω","385 Ω","0.385 Ω"],a:1,e:"R = R₀(1 + αT) = 100 × (1 + 0.00385 × 100) = 138.5 Ω."},
+{id:"U3-29",u:3,co:3,d:1,x:9,q:"As temperature rises, the resistance of an NTC thermistor:",o:["Increases linearly","Decreases non-linearly","Stays constant","Increases exponentially"],a:1,e:"NTC = negative temperature coefficient: resistance falls steeply and non-linearly, giving high sensitivity over a narrow range."},
+{id:"U3-30",u:3,co:3,d:2,x:9,q:"Which sensor would you choose to measure 1000 °C in a furnace?",o:["NTC thermistor", "LM35 IC sensor", "Type K thermocouple", "Silicon diode sensor"],a:2,e:"Type K thermocouples cover roughly −200 to +1250 °C. Thermistors and IC sensors are limited to about 150 °C; Pt100 RTDs are specified up to 850 °C (IEC 60751)."},
+{id:"U3-31",u:3,co:3,d:1,q:"A Bourdon tube measures pressure because:",o:["Pressure tends to straighten the curved tube", "Pressure changes the colour of a liquid inside", "Pressure generates an electric charge in the wall", "A heated wire inside cools faster at high pressure"],a:0,e:"Internal pressure tends to straighten the C-shaped tube; the tip movement drives a pointer through a linkage."},
+{id:"U3-32",u:3,co:3,d:2,q:"A Pirani gauge measures vacuum by sensing changes in:",o:["Intensity of light passing through it", "Thermal conductivity of the gas", "Strength of a magnetic field", "Electric charge on a metal plate"],a:1,e:"At lower pressure fewer molecules carry heat away, so the heated wire's temperature and resistance rise."},
+{id:"U3-33",u:3,co:3,d:2,q:"For very high vacuum (below about 10⁻³ Pa), the gauge normally used is:",o:["An ionisation gauge","A Bourdon tube","A U-tube manometer","A diaphragm gauge"],a:0,e:"Ionisation gauges measure the ion current from ionised gas molecules, which is proportional to gas density at very low pressures."},
+{id:"U3-34",u:3,co:3,d:2,q:"For an orifice-plate flowmeter, flow rate Q is related to the pressure drop Δp by:",o:["Q ∝ Δp","Q ∝ √Δp","Q ∝ Δp²","Q ∝ 1/Δp"],a:1,e:"From Bernoulli, Δp ∝ Q², so Q ∝ √Δp — a square-root extractor gives a linear reading."},
+{id:"U3-35",u:3,co:3,d:2,q:"An electromagnetic flowmeter works only if the liquid is:",o:["Optically transparent", "Electrically conductive", "Strictly non-magnetic", "Colder than 50 °C"],a:1,e:"By Faraday's law the moving conductive liquid induces an EMF ∝ velocity; non-conducting liquids such as oils give no signal."},
+{id:"U3-36",u:3,co:3,d:2,q:"A transit-time ultrasonic flowmeter measures flow from:",o:["Transit time of sound pulses with and against the flow", "Doppler shift of laser light from particles in the liquid", "Pressure drop across a narrow throat in the pipe", "Speed of a small turbine rotor placed in the stream"],a:0,e:"Sound travels faster downstream than upstream; the time difference is proportional to the flow velocity. It is non-intrusive and has no pressure loss."},
+{id:"U3-37",u:3,co:3,d:2,q:"A turbine flowmeter's pulse frequency is proportional to:",o:["Pressure","Volumetric flow rate","Liquid temperature","Liquid density"],a:1,e:"Rotor speed — and so the pulse rate from the magnetic pick-up — is proportional to volumetric flow rate."},
+{id:"U3-38",u:3,co:3,d:2,q:"A non-contact method of measuring the liquid level in a tank is:",o:["A float and pulley", "Radar time-of-flight", "A graduated dipstick", "A sight-glass tube"],a:1,e:"An ultrasonic or radar sensor above the liquid measures the echo time: distance = v·t/2, from which the level follows."}
+];
+
+/* ===================== FLASHCARDS ===================== */
+const CARDS = [
+  [1, "Span", "Upper range limit − lower range limit"],
+  [1, "Sensitivity", "S = Δoutput / Δinput"],
+  [1, "Static error", "E = A_measured − A_true;  relative error = E / A_true"],
+  [1, "Limiting error at a reading", "% error at reading = ±(% of FS) × (full scale ÷ reading)"],
+  [1, "Vernier least count", "LC = 1 MSD − 1 VSD = MSD / n"],
+  [1, "Vernier reading", "Reading = MSR + VSC × LC − zero error"],
+  [1, "62 % rule", "Potential electrode at 0.62 × distance of current electrode"],
+  [1, "Polarisation index", "PI = R(10 min) / R(1 min);  ≥ 2 is healthy"],
+  [1, "Risk score", "Risk = Likelihood × Severity"],
+  [1, "Hierarchy of controls", "Elimination → Substitution → Engineering → Administrative → PPE"],
+  [1, "LOTO steps", "Prepare → Notify → Shut down → Isolate → Lock & tag → Release stored energy → Verify"],
+  [2, "PMMC deflection", "θ = (N B A / k) · I  — uniform scale, DC only"],
+  [2, "MI torque", "T_d = ½ I² dL/dθ  — AC and DC, non-uniform scale"],
+  [2, "Shunt", "R_sh = I_m R_m / (I − I_m)"],
+  [2, "Multiplier", "R_s = V / I_m − R_m"],
+  [2, "Voltmeter sensitivity", "S = 1 / I_fs  (Ω/V);  R_V = S × range"],
+  [2, "DMM accuracy", "±(% of reading + n digits)"],
+  [2, "Scope rise time", "t_r ≈ 0.35 / BW;  t_displayed = √(t_sig² + t_scope²)"],
+  [2, "Nyquist", "f_s > 2 f_max"],
+  [2, "THD", "THD = √(V₂² + V₃² + …) / V₁"],
+  [2, "Power triangle", "S² = P² + Q²;  PF = P / S"],
+  [2, "Q and D", "Q = X / R;  D = 1 / Q"],
+  [2, "Energy meter error", "% error = (E_registered − E_true)/E_true × 100;  E_reg = pulses / meter constant"],
+  [2, "Rogowski", "v = M di/dt  → integrate to get i"],
+  [3, "CMRR", "CMRR = A_d / A_cm;  dB = 20 log₁₀(A_d/A_cm);  error = V_cm / CMRR"],
+  [3, "In-amp gain (AD620)", "G = 1 + 49.4 kΩ / R_G"],
+  [3, "ADC LSB", "LSB = V_FS / 2ⁿ"],
+  [3, "4–20 mA", "Value = (I − 4)/16 × span + lower limit"],
+  [3, "Gauge factor", "GF = (ΔR/R) / ε"],
+  [3, "Quarter bridge", "V_o ≈ V_ex · GF · ε / 4"],
+  [3, "RTD", "R_T = R₀ (1 + α T);  Pt100: α = 0.00385 /°C"],
+  [3, "Cold-junction compensation", "E(T_hot, 0 °C) = E_measured + E(T_cold, 0 °C)"],
+  [3, "Thermistor (β model)", "R = R₀ exp[β (1/T − 1/T₀)], T and T₀ in kelvin"],
+  [3, "Orifice flow", "Q = C_d A √(2 Δp / ρ)  → Q ∝ √Δp"],
+  [3, "EM flowmeter", "e = B · D · v"]
+];
+
+/* ===================== WATCH & LEARN (external resources) =====================
+   [title, url, source, kind]  kind: video | animation | interactive | article */
+const YT = (q) => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
+const VIDEOS = [
+ { u: 1, t: "Accuracy, precision, resolution and sensitivity", items: [
+   ["What's the difference between accuracy and precision?", "https://www.ted.com/talks/matt_anticole_what_s_the_difference_between_accuracy_and_precision", "TED-Ed", "video"],
+   ["Accuracy, precision and resolution explained", "https://control.com/technical-articles/what-is-the-difference-between-accuracy-precision-and-resolution/", "Control.com", "article"],
+   ["TechTip: Accuracy, precision, resolution and sensitivity", "https://www.mccdaq.com/TechTips/TechTip-1.aspx", "Measurement Computing", "article"],
+   ["More videos: static characteristics of instruments", YT("static characteristics of measuring instruments accuracy precision hysteresis dead zone"), "YouTube search", "video"]] },
+ { u: 1, t: "Dynamic characteristics", items: [
+   ["More videos: dynamic characteristics, speed of response, fidelity", YT("dynamic characteristics of instruments speed of response fidelity dynamic error"), "YouTube search", "video"],
+   ["Step response of second-order systems (animated)", YT("second order system step response damping ratio overshoot animation"), "YouTube search", "animation"]] },
+ { u: 1, t: "Vernier caliper", items: [
+   ["How to use the vernier caliper — interactive practice", "https://science.clemson.edu/physics/labs/labs/cupol/vernier/index.html", "Clemson University (CUPOL)", "interactive"],
+   ["How to read a vernier caliper", "https://math.libretexts.org/Courses/Imperial_Valley_College/Integrated_Math_for_Technical_Fields/05%3A_Measurements/5.05%3A_How_to_Read_a_Vernier_(Caliper)", "LibreTexts", "article"],
+   ["More videos: reading a vernier caliper (metric)", YT("how to read vernier caliper metric least count zero error"), "YouTube search", "video"]] },
+ { u: 1, t: "Earth resistance (fall-of-potential, 62 % rule)", items: [
+   ["Fall-of-potential measurement", "https://www.fluke.com/en/learn/blog/grounding/earth-ground-fall-potential", "Fluke", "article"],
+   ["An introduction to the fall-of-potential method", "https://eepower.com/technical-articles/an-introduction-to-the-fall-of-potential-method/", "EEPower", "article"],
+   ["Earth resistance measurement and the 62 % rule", "https://www.metrel.si/en/solutions/power-distribution/earth-resistance-measurement-and-62-rule/", "Metrel", "article"],
+   ["More videos: earth resistance tester demonstration", YT("earth resistance tester fall of potential 3 pole test demonstration"), "YouTube search", "video"]] },
+ { u: 1, t: "Insulation resistance (megger)", items: [
+   ["How insulation resistance is measured", "https://www.megger.com/en/blog/Oct-2024/IRTblog2", "Megger", "article"],
+   ["How do you 'megger' a motor?", "https://control.com/technical-articles/how-do-you-megger-a-motor-understanding-motor-insulation-resistance/", "Control.com", "article"],
+   ["The top 5 how-to videos on insulation resistance testing", "https://www.ecmweb.com/test-measurement/article/21141246/the-top-5-how-to-videos-on-insulation-resistance-testing", "EC&M", "video"]] },
+ { u: 1, t: "Hazards, risk and the hierarchy of controls", items: [
+   ["Hierarchy of Controls", "https://www.cdc.gov/niosh/topics/hierarchy/", "NIOSH / CDC", "article"],
+   ["Managing chemical hazards using the hierarchy of controls (video)", "https://safeworkaustralia.gov.au/resources-and-publications/video-and-audio/managing-chemical-hazards-using-hierarchy-controls", "Safe Work Australia", "video"],
+   ["Controlling risks", "https://www.worksafebc.com/en/health-safety/create-manage/managing-risk/controlling-risks", "WorkSafeBC", "article"],
+   ["More videos: ISO 45001, PPE and industrial hazards", YT("ISO 45001 explained occupational health and safety hazards PPE"), "YouTube search", "video"]] },
+ { u: 1, t: "Lockout–Tagout (LOTO)", items: [
+   ["Lockout/Tagout interactive training — energy sources", "https://obis.osha.gov/dts/osta/lototraining/tutorial/app-energy.html", "OSHA", "interactive"],
+   ["LOTO safety training video", "https://www.safetyandhealthmagazine.com/articles/9157-loto-safety-training-video", "Safety+Health (NSC)", "video"],
+   ["More videos: lockout tagout procedure animation", YT("lockout tagout procedure steps animation"), "YouTube search", "animation"]] },
+ { u: 2, t: "PMMC instruments", items: [
+   ["Permanent magnet moving coil (PMMC): animation and explanation", "https://www.youtube.com/watch?v=ZtBKC6WSjD0", "YouTube", "animation"],
+   ["Working principle of the PMMC instrument", "https://www.youtube.com/watch?v=d9_y3YzVGE0", "YouTube", "video"]] },
+ { u: 2, t: "Moving-iron instruments", items: [
+   ["Moving-iron instruments (attraction and repulsion types)", "https://www.youtube.com/watch?v=LedEFRrG_II", "YouTube", "video"],
+   ["Working principle of the moving-iron voltmeter — animation", "https://www.youtube.com/watch?v=qpfJwVHuVN8", "YouTube", "animation"]] },
+ { u: 2, t: "Measurement of power (wattmeters)", items: [
+   ["Electrodynamic wattmeter — principle and construction", "https://www.youtube.com/watch?v=yN5un34i4zE", "YouTube", "video"],
+   ["Wattmeters — what's inside and how they work", "https://www.youtube.com/watch?v=SVP3on0oHHs", "YouTube", "video"]] },
+ { u: 2, t: "Digital multimeter and True-RMS", items: [
+   ["What is a True-RMS meter?", "https://www.youtube.com/watch?v=ZFWWjq64euA", "YouTube", "video"],
+   ["True-RMS digital multimeters in action", "https://www.youtube.com/watch?v=IAPqXwIQP2g", "Fluke (YouTube)", "video"]] },
+ { u: 2, t: "Oscilloscope (DSO) and probes", items: [
+   ["Measuring with an oscilloscope 101", "https://www.youtube.com/watch?v=CKw3TXYrlQo", "YouTube", "video"],
+   ["×10 probe compensation on a Tektronix oscilloscope", "https://www.youtube.com/watch?v=an0Dqa1UAd0", "Tektronix (YouTube)", "video"],
+   ["Circuit simulator with a built-in scope (run in the browser)", "https://www.falstad.com/circuit/", "Falstad", "interactive"]] },
+ { u: 2, t: "Function generator", items: [
+   ["Using a function generator and digital oscilloscope", "https://www.youtube.com/watch?v=BvxgcG0qJCY", "YouTube", "video"],
+   ["Function generator sweep capabilities", "https://www.youtube.com/watch?v=4g8jC2tFAkM", "Keysight (YouTube)", "video"]] },
+ { u: 2, t: "LCR meter", items: [
+   ["How to use an LCR meter", "https://www.youtube.com/watch?v=zZiVvgUiRdc", "YouTube", "video"],
+   ["Precision LCR meter measurements", "https://www.youtube.com/watch?v=CpuKA33Cjww", "GW Instek (YouTube)", "video"]] },
+ { u: 2, t: "Power quality analyzer and harmonics", items: [
+   ["Introduction to the Fluke 435 power quality analyzer", "https://www.youtube.com/watch?v=THdkhi4DlME", "Fluke (YouTube)", "video"],
+   ["How to run a harmonics test on a power quality analyzer", "https://www.youtube.com/watch?v=C8xqOFeH4Jc", "Fluke (YouTube)", "video"]] },
+ { u: 2, t: "Energy meter", items: [
+   ["More videos: energy meter working and calibration", YT("energy meter working principle calibration creeping"), "YouTube search", "video"]] },
+ { u: 2, t: "HV differential probes, current probes and Rogowski coils", items: [
+   ["How does an HV differential probe work?", "https://www.youtube.com/watch?v=GOlgaEK2Hsk", "EEVblog (YouTube)", "video"],
+   ["Using a current probe with a DSO", "https://www.youtube.com/watch?v=fFqtpxl1wN4", "Tektronix (YouTube)", "video"],
+   ["What is a Rogowski coil?", "https://www.youtube.com/watch?v=tZsXQDjzeXQ", "AEMC (YouTube)", "video"]] },
+ { u: 3, t: "Differential measurement, CMRR and instrumentation amplifiers", items: [
+   ["Introduction to instrumentation amplifiers", "https://www.ti.com/video/6118886700001", "Texas Instruments", "video"],
+   ["Why CMRR is important in a differential amplifier", "https://videos.univ-grenoble-alpes.fr/video/25022-why-the-cmrr-is-important-in-a-differential-amplifier/", "Université Grenoble Alpes", "video"],
+   ["A practical review of common-mode and instrumentation amplifiers", "https://www.analog.com/en/resources/technical-articles/common-mode-instrumentation-amplifiers.html", "Analog Devices", "article"]] },
+ { u: 3, t: "Isolation and current sensing", items: [
+   ["More videos: isolation amplifier and optocoupler", YT("isolation amplifier working optocoupler galvanic isolation explained"), "YouTube search", "video"],
+   ["More videos: Hall effect current sensor", YT("hall effect current sensor working principle animation"), "YouTube search", "animation"]] },
+ { u: 3, t: "Signal conditioning and 4–20 mA loops", items: [
+   ["Introduction to 4–20 mA current-loop transmitters", "https://www.ti.com/video/6213906041001", "Texas Instruments", "video"],
+   ["What is a 4–20 mA current loop?", "https://www.fluke.com/en-us/learn/blog/calibration/what-is-a-4-20ma-current-loop", "Fluke", "article"],
+   ["Fundamentals and set-up of the 4–20 mA current loop", "https://www.ni.com/en/shop/data-acquisition/fundamentals--system-design--and-setup-for-the-4-to-20-ma-curren.html", "NI", "article"]] },
+ { u: 3, t: "Strain gauges, bridges and load cells", items: [
+   ["Strain gauge animation", "https://instrumentationtools.com/strain-gauge-animation", "Inst Tools", "animation"],
+   ["Wheatstone measuring bridge with strain gauge (video)", "https://www.fh-aachen.de/en/faculties/medical-engineering-and-technomathematics/laboratories-and-institutes/biomechanics-laboratory/videos/wheatstone-measuring-bridge-with-strain-gauge", "FH Aachen", "video"],
+   ["Strain gauges: operating principles, materials and properties", "https://control.com/technical-articles/strain-gauges-basic-operating-principles-materials-and-properties/", "Control.com", "article"]] },
+ { u: 3, t: "LVDT and displacement", items: [
+   ["LVDT working principle animation", "https://instrumentationtools.com/lvdt-working-principle-animation", "Inst Tools", "animation"],
+   ["The LVDT in action (interactive learning object)", "https://www.wisc-online.com/learn/career-clusters/stem/iau7807/the-lvdt-a-linear-voltage-differential-transf", "Wisc-Online", "interactive"],
+   ["LVDT tutorial", "https://te.com/usa-en/industries/sensor-solutions/insights/lvdt-tutorial.html", "TE Connectivity", "article"]] },
+ { u: 3, t: "Velocity, acceleration and piezoelectric sensors", items: [
+   ["How accelerometers work (The Learning Circuit)", "https://community.element14.com/challenges-projects/element14-presents/thelearningcircuit/w/documents/5060/how-accelerometers-work----the-learning-circuit-79", "element14", "video"],
+   ["Introduction to piezoelectric accelerometers", "https://www.allaboutcircuits.com/technical-articles/introduction-to-piezoelectric-accelerometers-piezoelectric-sensor-basics/", "All About Circuits", "article"],
+   ["More videos: optical encoder and tachogenerator", YT("rotary encoder working principle tachogenerator speed measurement"), "YouTube search", "video"]] },
+ { u: 3, t: "Temperature: RTD, thermistor, thermocouple", items: [
+   ["Thermocouples explained", "https://theengineeringmindset.com/thermocouples-explained/", "The Engineering Mindset", "video"],
+   ["Resistance temperature detector (RTD) basics", "https://theengineeringmindset.com/resistance-temperature-detector-basics/", "The Engineering Mindset", "video"],
+   ["Thermocouple 101: what is a thermocouple?", "https://www.analog.com/video_thermocouple101", "Analog Devices", "video"],
+   ["Introduction to RTDs", "https://www.ti.com/video/6330516233112", "Texas Instruments", "video"],
+   ["How thermocouples work", "https://explainthatstuff.com/howthermocoupleswork.html", "Explain that Stuff", "article"]] },
+ { u: 3, t: "Pressure, vacuum, flow and level", items: [
+   ["Electromagnetic flow principle — animation", "https://www.endress.com/en/support-overview/learning-center/flow-principle-animation-emf", "Endress+Hauser", "animation"],
+   ["Principles and features of electromagnetic flow meters", "https://www.keyence.com/ss/products/process/flowknowledge/types/electromagnetic.jsp", "Keyence", "article"],
+   ["More videos: Bourdon tube and diaphragm pressure gauges", YT("bourdon tube pressure gauge working animation"), "YouTube search", "animation"],
+   ["More videos: Pirani and ionisation vacuum gauges", YT("pirani gauge ionization gauge working principle"), "YouTube search", "video"],
+   ["More videos: orifice, turbine and ultrasonic flowmeters", YT("orifice plate turbine ultrasonic flow meter working animation"), "YouTube search", "animation"]] }
+];
+
+/* ===================== CONFIG ===================== */
+const API_URL = "https://script.google.com/macros/s/AKfycbxb9Es87pNz1rKqZr0QAbqg-IUxZgVrWIuglPfc7vDiL2VI6K8KFpY9XCVBN4qdhHJq/exec"; // Apps Script web-app URL (…/exec). Empty = offline (progress kept on this device only).
+
+/* ===================== HELPERS ===================== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const h = (html) => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+let SERVER_DAY = null;
+const localDay = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+const today = () => SERVER_DAY || localDay();
+const rnd = (a, b) => a + Math.random() * (b - a);
+const ri = (a, b) => Math.floor(rnd(a, b + 1));
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+function seeded(seed) { let s = 0; for (const c of seed) s = (s * 31 + c.charCodeAt(0)) >>> 0; return () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296; }
+function seededShuffle(arr, seed) { const r = seeded(seed), a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
+async function sha256(t) { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join(""); }
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2)).replace(/-/g, "").slice(0, 24);
+const SID = uid().slice(0, 10); // this browser session
+function toast(msg) { const box = $("#toasts"); const t = h(`<div class="toast">${msg}</div>`); box.appendChild(t); setTimeout(() => t.remove(), 3600); }
+function xpFloat(n, el) { const r = (el && el.getBoundingClientRect) ? el.getBoundingClientRect() : { left: innerWidth / 2, width: 0, top: 120 }; const f = h(`<div class="xpfloat" aria-hidden="true">+${n} XP</div>`); f.style.left = (r.left + r.width / 2 - 40) + "px"; f.style.top = (r.top + 10) + "px"; document.body.appendChild(f); setTimeout(() => f.remove(), 1100); }
+
+/* ===================== STATE ===================== */
+const blank = () => ({ xp: 0, answered: 0, correct: 0, streak: 0, bestStreak: 0, fast: 0, q: {}, badges: {}, daily: {}, labs: {}, done: {}, cnt: {}, boss: 0, hist: [] });
+let S = blank();
+let ME = store("mq_me") || null; // {usn,name,nick,token,guest,offline}
+let QUEUE = [];
+const key = () => ME ? (ME.usn || "guest") : "guest";
+function load() { S = Object.assign(blank(), store("mq_state_" + key()) || {}); QUEUE = store("mq_queue_" + key()) || []; }
+function save() { store("mq_state_" + key(), S); store("mq_queue_" + key(), QUEUE); scheduleSync(); refreshHUD(); }
+function logEvent(e) { if (ME && !ME.guest && !ME.offline) QUEUE.push(Object.assign({ id: uid(), t: Date.now(), sid: SID }, e)); }
+
+/* merge two progress states field by field (another device may have newer data) */
+function merge(a, b) {
+  if (!a) return b || blank(); if (!b) return a; const m = Object.assign(blank(), a);
+  ["xp", "answered", "correct", "bestStreak", "fast", "boss"].forEach(k => m[k] = Math.max(a[k] || 0, b[k] || 0));
+  ["badges", "daily", "labs", "done"].forEach(k => m[k] = Object.assign({}, b[k] || {}, a[k] || {}));
+  m.cnt = {}; new Set([...Object.keys(a.cnt || {}), ...Object.keys(b.cnt || {})]).forEach(k => m.cnt[k] = Math.max((a.cnt || {})[k] || 0, (b.cnt || {})[k] || 0));
+  m.q = Object.assign({}, b.q || {}); Object.entries(a.q || {}).forEach(([k, v]) => { const w = m.q[k]; m.q[k] = !w ? v : [Math.max(v[0], w[0]), Math.max(v[1], w[1]), (v[3] || 0) >= (w[3] || 0) ? v[2] : w[2], Math.max(v[3] || 0, w[3] || 0)]; });
+  m.hist = [...(a.hist || []), ...(b.hist || [])].sort((x, y) => x[0] - y[0]).slice(-200); m.streak = 0; return m;
+}
+
+/* ===================== API ===================== */
+async function api(body) {
+  if (!API_URL) throw new Error("offline");
+  const r = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) });
+  const j = await r.json(); if (j.day) SERVER_DAY = j.day; return j;
+}
+let syncT = null, inFlight = null;
+function scheduleSync(now) { clearTimeout(syncT); syncT = setTimeout(sync, now ? 300 : 20000); }
+async function sync() {
+  if (!API_URL || !ME || ME.guest || ME.offline) return;
+  if (inFlight) return inFlight;
+  inFlight = (async () => {
+    const batch = QUEUE.slice(0, 150);
+    try {
+      const st = Object.assign({}, S, { hist: S.hist.slice(-40) });
+      const r = await api({ action: "sync", usn: ME.usn, token: ME.token, state: st, events: batch });
+      if (r.ok) { const ack = new Set(r.acked || []); QUEUE = QUEUE.filter(e => !ack.has(e.id)); store("mq_queue_" + key(), QUEUE); if (typeof r.xp === "number") { ME.serverXP = r.xp; store("mq_me", ME); } if (QUEUE.length) scheduleSync(true); }
+      else if (r.relogin) { toast("Your session has expired. Please sign in again."); openLogin(); }
+    } catch (e) { /* keep queued; retry on the next sync */ }
+    finally { inFlight = null; }
+  })();
+  return inFlight;
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") sync(); });
+
+/* ===================== XP, RANKS, BADGES ===================== */
+function rankOf(xp) { let r = RANKS[0], i = 0; RANKS.forEach((x, k) => { if (xp >= x[0]) { r = x; i = k; } }); const nx = RANKS[i + 1]; return { name: r[1], icon: r[2], i, lo: r[0], hi: nx ? nx[0] : r[0], next: nx ? nx[1] : null }; }
+function addXP(n, el) {
+  if (!n) return; const before = rankOf(S.xp).i; S.xp += n; xpFloat(n, el);
+  const after = rankOf(S.xp); if (after.i > before) setTimeout(() => toast(`Promoted to <b>${after.name}</b>.`), 600);
+}
+function award(id) {
+  if (S.badges[id]) return; const b = BADGES.find(x => x[0] === id); if (!b) return;
+  S.badges[id] = today(); S.xp += 25; setTimeout(() => toast(`${b[3]} Badge unlocked: <b>${b[1]}</b> (+25 XP)`), 300);
+  logEvent({ m: "badge", i: id, xp: 25 });
+}
+function mastery(u) { const qs = QB.filter(q => q.u === u); let ok = 0; qs.forEach(q => { const s = S.q[q.id]; if (s && s[2]) ok++; }); return Math.round(100 * ok / qs.length); }
+function checkBadges() {
+  if (S.answered >= 1) award("first"); if (S.correct >= 10) award("ten"); if (S.correct >= 50) award("fifty"); if (S.correct >= 100) award("century");
+  if (S.bestStreak >= 5) award("streak5"); if (S.bestStreak >= 10) award("streak10"); if (S.fast >= 5) award("speed");
+  [1, 2, 3].forEach(u => { if (mastery(u) >= 80) award("u" + u); });
+  const dd = Object.keys(S.daily).length; if (dd >= 3) award("daily3"); if (dd >= 7) award("daily7");
+  if ((S.cnt.vernier || 0) >= 5) award("vernier"); if ((S.cnt.designer || 0) >= 3) award("designer");
+  if ((S.cnt.scope || 0) >= 3) award("scope"); if ((S.cnt.sensor || 0) >= 5) award("sensor");
+  if (LABS.every(l => S.labs[l.id])) award("explorer");
+}
+function bump(k, n = 1) { S.cnt[k] = (S.cnt[k] || 0) + n; }
+/* award lab XP; once=true → only the first completion ever earns XP */
+function labWin(id, xp, el, detail, once) {
+  if (once) { if (S.done[id]) { checkBadges(); save(); return false; } S.done[id] = today(); }
+  addXP(xp, el); logEvent({ m: "lab", i: id, u: (LABS.find(l => l.id === id) || {}).u, c: true, xp, d: detail || "" }); checkBadges(); save(); return true;
+}
+
+/* ===================== HUD ===================== */
+function refreshHUD() {
+  const r = rankOf(S.xp);
+  $("#hudXP").textContent = S.xp; $("#hudStreak").textContent = S.streak; $("#hudRank").textContent = r.icon + " " + r.name;
+  const a = $("#hudAvatar"); a.textContent = ME && !ME.guest ? (ME.nick || ME.name || "?")[0].toUpperCase() : "?";
+  a.title = ME ? (ME.guest ? "Guest — sign in to appear on the leaderboard" : ME.name + " · " + ME.usn) : "Sign in";
+}
+
+/* ===================== ROUTER ===================== */
+const VIEWS = {};
+function route() {
+  const hsh = location.hash.slice(1) || "home"; const [v, arg] = hsh.split("/");
+  if (v !== "lab") $("#labBody").innerHTML = "";   // stops lab animations and timers
+  $$("section.view").forEach(s => s.classList.toggle("on", s.id === "v-" + v));
+  $$("nav a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + v));
+  if (VIEWS[v]) VIEWS[v](arg); window.scrollTo(0, 0);
+  const hd = $("section.view.on h1"); if (hd) { hd.setAttribute("tabindex", "-1"); }
+}
+window.addEventListener("hashchange", route);
+
+/* ===================== LOGIN ===================== */
+let lastFocus = null;
+function openLogin(tab = "in") {
+  const m = $("#login"); lastFocus = document.activeElement; m.classList.add("on"); setTab(tab); $("#lgErr").textContent = "";
+  $("#lgNote").textContent = API_URL ? "" : "The class leaderboard is not connected yet — progress is saved on this device for now.";
+  setTimeout(() => $("#lgUsn").focus(), 50);
+}
+function closeLogin() { $("#login").classList.remove("on"); if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+function setTab(t) { $$("#login .tabs button").forEach(b => { b.classList.toggle("on", b.dataset.t === t); b.setAttribute("aria-selected", b.dataset.t === t); }); $$("#login .reg").forEach(e => e.style.display = t === "reg" ? "" : "none"); $("#lgGo").textContent = t === "reg" ? "Create my account" : "Sign in"; $("#login").dataset.t = t; }
+document.addEventListener("keydown", e => {
+  const m = $("#login"); if (!m.classList.contains("on")) return;
+  if (e.key === "Escape" && ME) { closeLogin(); return; }
+  if (e.key === "Tab") { const f = $$("#login button, #login input").filter(x => x.offsetParent); const i = f.indexOf(document.activeElement); if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); } else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); } }
+});
+async function doLogin() {
+  const t = $("#login").dataset.t; const usn = $("#lgUsn").value.trim().toUpperCase(); const pin = $("#lgPin").value.trim();
+  const err = (m) => $("#lgErr").textContent = m;
+  if (!/^[A-Z0-9]{8,12}$/.test(usn)) return err("Enter your USN, for example 1RV25EC125.");
+  if (!/^\d{4}$/.test(pin)) return err("The PIN must be 4 digits.");
+  const name = $("#lgName").value.trim(), nick = $("#lgNick").value.trim();
+  if (t === "reg" && name.length < 3) return err("Enter your full name.");
+  if (t === "reg" && nick.length < 3) return err("Choose a nickname of 3–20 characters for the leaderboard.");
+  const pinHash = await sha256(usn + ":" + pin + ":measurequest");
+  $("#lgGo").disabled = true;
+  try {
+    if (!API_URL) { ME = { usn, name: name || usn, nick: nick || usn, offline: true }; store("mq_me", ME); load(); finishLogin(); return; }
+    const r = await api({ action: t === "reg" ? "register" : "login", usn, pinHash, name, nick });
+    if (!r.ok) return err(r.error || "Could not sign in.");
+    ME = { usn, name: r.name, nick: r.nick, token: r.token, serverXP: r.xp }; store("mq_me", ME);
+    load(); S = merge(S, r.state); finishLogin();
+  } catch (e) { err("Network problem — check the connection and try again."); }
+  finally { $("#lgGo").disabled = false; }
+}
+function finishLogin() { closeLogin(); save(); scheduleSync(true); toast(`Welcome, <b>${esc(ME.nick || ME.name)}</b>.`); route(); }
+function guest() { ME = { usn: "guest", name: "Guest", nick: "Guest", guest: true }; store("mq_me", ME); load(); closeLogin(); refreshHUD(); route(); }
+async function logout() { await sync(); ME = null; store("mq_me", null); S = blank(); QUEUE = []; refreshHUD(); openLogin(); }
+
+/* ===================== VIEWS ===================== */
+const FACTS = [
+  "The kilogram has been defined through the Planck constant since 20 May 2019 — the metal cylinder in Paris is retired.",
+  "India's national measurement standards are maintained by CSIR–National Physical Laboratory (NPL), New Delhi.",
+  "A 3½-digit meter counts to 1999; a 6½-digit bench DMM counts to 1 999 999.",
+  "Rogowski coils have no iron core, so they never saturate — even with lightning currents of 100 kA.",
+  "Many electrical accidents at work happen during maintenance — the reason Lockout–Tagout exists.",
+  "A strain of 500 µε changes a 120 Ω gauge by only 0.12 Ω — about 0.1 %.",
+  "A smartphone contains a MEMS accelerometer smaller than a grain of rice.",
+  "An oscilloscope should be 3–5 times faster than the rise time being measured."
+];
+VIEWS.home = () => {
+  const r = rankOf(S.xp), pct = r.hi > r.lo ? (S.xp - r.lo) / (r.hi - r.lo) : 1;
+  drawMeter($("#homeMeter"), pct, r);
+  $("#hmXP").textContent = S.xp; $("#hmStreak").textContent = S.bestStreak; $("#hmBadges").textContent = Object.keys(S.badges).length; $("#hmAcc").textContent = S.answered ? Math.round(100 * S.correct / S.answered) + "%" : "–";
+  $("#hmRank").textContent = r.icon + " " + r.name; $("#hmNext").textContent = r.next ? `${r.hi - S.xp} XP to ${r.next}` : "Top rank reached";
+  $("#hmHello").textContent = ME && !ME.guest ? `Welcome back, ${ME.nick || ME.name}.` : "Welcome, measurement engineer.";
+  const done = S.daily[today()];
+  $("#missionTxt").innerHTML = done !== undefined ? `Today's mission is complete — score ${done}/5. A new one opens tomorrow.` : "Five questions, the same for the whole class today. Finishing them earns a <b>+50 XP bonus</b> once per day.";
+  $("#missionBtn").textContent = done !== undefined ? "Practise more" : "Start today's mission";
+  $("#homeUnits").innerHTML = COURSE.units.map(u => unitCard(u)).join("");
+  $("#fact").textContent = FACTS[new Date().getDate() % FACTS.length];
+  $("#homeLabs").innerHTML = LABS.filter((l, i) => i % 3 === 0).slice(0, 6).map(labTile).join("");
+  miniBoard();
+};
+function unitCard(u) {
+  const m = mastery(u.n);
+  return `<a class="card ucard" href="#unit/${u.n}"><div class="band" style="background:${u.color}"></div>
+    <div class="row" style="justify-content:space-between;flex-wrap:nowrap"><div><div class="kicker" style="color:${u.color}">Unit ${["I", "II", "III"][u.n - 1]} · ${u.hrs}</div><h3>${u.title}</h3></div>
+    <div class="ring" style="--p:${m};--c:${u.color}" role="img" aria-label="Mastery ${m} percent"><b>${m}%</b></div></div><p class="muted small">${u.blurb}</p></a>`;
+}
+VIEWS.course = () => {
+  const c = COURSE;
+  $("#coCos").innerHTML = c.cos.map(x => `<tr><th scope="row">${x[0]}</th><td>${x[1]}</td><td class="small muted">${QB.filter(q => "CO" + q.co === x[0]).length} questions</td></tr>`).join("");
+  $("#coBooks").innerHTML = c.books.map(b => `<li>${b}</li>`).join("");
+  $("#coSyl").innerHTML = c.units.map(u => `<div class="card" style="border-top:4px solid ${u.color}"><div class="kicker" style="color:${u.color}">Unit ${["I", "II", "III"][u.n - 1]} · ${u.hrs}</div><h3>${u.title}</h3><p class="small">${u.topics.map(t => t[0]).join(" · ")}</p><a class="btn sm ghost" href="#unit/${u.n}">Open unit</a></div>`).join("");
+  $("#coLabs").innerHTML = c.labs.map((l, i) => `<tr><td><b>${i + 1}</b></td><td>${l[0]}<div class="small muted">${l[2]}</div></td><td><button class="btn sm teal" onclick="startArena('exp',${i + 1})">Pre-lab check</button></td></tr>`).join("");
+};
+VIEWS.unit = (n) => {
+  n = Number(n) || 1; const u = COURSE.units[n - 1];
+  $("#unHead").innerHTML = `<div class="kicker" style="color:${u.color}">Unit ${["I", "II", "III"][n - 1]} · ${u.hrs}</div><h1>${u.title}</h1><p class="muted">${u.blurb}</p>
+   <div class="row"><div class="ring" style="--p:${mastery(n)};--c:${u.color}" role="img" aria-label="Mastery ${mastery(n)} percent"><b>${mastery(n)}%</b></div><span class="muted">Unit mastery — the share of this unit's questions whose latest attempt was correct.</span>
+   <button class="btn" onclick="startArena('unit',${n})">Unit drill (10)</button></div>`;
+  $("#unTopics").innerHTML = u.topics.map((t, i) => `<details class="topic" ${i === 0 ? "open" : ""}><summary>${i + 1}. ${t[0]}</summary><p>${t[1]}</p></details>`).join("");
+  $("#unLabs").innerHTML = LABS.filter(l => l.u === n).map(labTile).join("");
+  $("#unCards").innerHTML = CARDS.filter(c => c[0] === n).map(cardHTML).join("");
+  $("#unWatch").innerHTML = watchBlock(VIDEOS.filter(g => g.u === n));
+};
+function labTile(l) {
+  const c = COURSE.units[l.u - 1].color, seen = S.labs[l.id];
+  return `<a class="card labtile" style="--c:${c}" href="#lab/${l.id}"><span class="ico" aria-hidden="true">${l.icon}</span><span><b>${l.name}</b> ${S.done[l.id] ? '<span class="pill small">completed</span>' : seen ? '<span class="pill small">opened</span>' : '<span class="pill small" style="color:var(--brick)">new</span>'}<span class="small muted" style="display:block">${l.sub}</span></span></a>`;
+}
+VIEWS.labs = () => {
+  $("#labsAll").innerHTML = [1, 2, 3].map(u => `<h2 style="margin-top:22px">Unit ${["I", "II", "III"][u - 1]} labs</h2><div class="grid g3">${LABS.filter(l => l.u === u).map(labTile).join("")}</div>`).join("");
+};
+VIEWS.lab = (id) => {
+  const l = LABS.find(x => x.id === id) || LABS[0];
+  if (!S.labs[l.id]) { S.labs[l.id] = 1; addXP(5); logEvent({ m: "open", i: l.id, u: l.u, xp: 5 }); checkBadges(); save(); }
+  $("#labHead").innerHTML = `<a href="#labs" class="small">← All labs</a><div class="kicker" style="color:${COURSE.units[l.u - 1].color}">Unit ${["I", "II", "III"][l.u - 1]} · Interactive lab${l.exp ? " · linked to Experiment " + l.exp : ""}</div><h1>${l.name}</h1><p class="muted">${l.sub}</p>`;
+  const box = $("#labBody"); box.innerHTML = ""; l.run(box);
+};
+function cardHTML(c) { return `<button class="flip" onclick="this.classList.toggle('on')" aria-label="${esc(c[1])}: tap to show formula"><span class="in"><span class="f">${c[1]}</span><span class="b">${c[2]}</span></span></button>`; }
+VIEWS.cards = () => { const f = $("#cardFilter").value; $("#cardsAll").innerHTML = CARDS.filter(c => f === "all" || String(c[0]) === f).map(cardHTML).join(""); };
+VIEWS.me = () => {
+  if (!ME) { openLogin(); }
+  const r = rankOf(S.xp);
+  $("#meHead").innerHTML = `<div class="row"><div class="avatar" style="width:64px;height:64px;font-size:28px">${ME && !ME.guest ? esc((ME.nick || ME.name)[0]) : "?"}</div><div><h1 style="margin:0">${ME ? esc(ME.name) : "Not signed in"}</h1><div class="muted">${ME && !ME.guest ? esc(ME.usn) + " · Section C" + (typeof ME.serverXP === "number" ? ` · leaderboard XP ${ME.serverXP}` : "") : "Guest mode — progress stays on this device and does not appear on the leaderboard."}</div></div>
+    <div style="margin-left:auto" class="row">${ME && !ME.guest ? '<button class="btn ghost sm" onclick="logout()">Sign out</button>' : '<button class="btn sm" onclick="openLogin()">Sign in</button>'}</div></div>
+    <div class="grid g4" style="margin-top:14px"><div class="card center"><div class="muted small">Rank</div><h3>${r.icon} ${r.name}</h3></div><div class="card center"><div class="muted small">XP</div><h3>${S.xp}</h3></div><div class="card center"><div class="muted small">Accuracy</div><h3>${S.answered ? Math.round(100 * S.correct / S.answered) : 0}%</h3></div><div class="card center"><div class="muted small">Best streak</div><h3>${S.bestStreak}</h3></div></div>`;
+  $("#meUnits").innerHTML = COURSE.units.map(u => `<div><div class="row" style="justify-content:space-between"><b>Unit ${["I", "II", "III"][u.n - 1]}</b><span>${mastery(u.n)}%</span></div><div class="progress"><i style="width:${mastery(u.n)}%"></i></div></div>`).join("");
+  $("#meBadges").innerHTML = BADGES.map(b => `<div class="badge ${S.badges[b[0]] ? "got" : ""}"><div class="e" aria-hidden="true">${b[3]}</div><b class="small">${b[1]}</b><div class="small muted">${b[2]}</div><span class="sr">${S.badges[b[0]] ? "earned" : "not yet earned"}</span></div>`).join("");
+  const weak = QB.filter(q => S.q[q.id] && !S.q[q.id][2]).slice(0, 8);
+  $("#meWeak").innerHTML = weak.length ? weak.map(q => `<li>${esc(q.q)} <span class="pill small">Unit ${q.u}</span></li>`).join("") + `<button class="btn sm" style="margin-top:8px" onclick="startArena('review')">Review these now</button>` : "<p class='muted'>No weak spots yet.</p>";
+};
+
+/* ===================== LEADERBOARD ===================== */
+let BOARD = null;
+async function getBoard() {
+  if (!API_URL || !ME || ME.guest || ME.offline) return null;
+  try { const r = await api({ action: "board", usn: ME.usn, token: ME.token }); if (r.ok) BOARD = r; return r; } catch (e) { return null; }
+}
+VIEWS.board = async () => {
+  const el = $("#boardBody");
+  if (!API_URL) { el.innerHTML = `<div class="card center"><h3>The class leaderboard opens soon</h3><p class="muted">XP and badges are being saved on this device. Once the leaderboard is connected, sign in with the USN and the progress will appear here.</p></div>`; return; }
+  if (!ME || ME.guest) { el.innerHTML = `<div class="card center"><h3>Sign in to see the Section C leaderboard</h3><button class="btn" onclick="openLogin()">Sign in</button></div>`; return; }
+  el.innerHTML = `<p class="muted center">Loading leaderboard…</p>`;
+  const b = await getBoard(); if (!b || !b.ok) { el.innerHTML = `<p class="muted center">${b && b.error ? esc(b.error) : "Leaderboard unavailable right now."}</p>`; return; }
+  const mode = $("#boardMode").value; const k = mode === "week" ? "week" : "xp";
+  const rows = b.rows.slice().sort((a, c) => c[k] - a[k]); const top = rows.slice(0, 3);
+  const pod = (r, i) => r ? `<div class="pod p${i + 1}"><div class="medal">${i + 1}</div><b>${esc(r.nick)}</b><div class="small">…${esc(r.id)}</div><div style="font-size:22px;font-weight:700">${r[k]} XP</div></div>` : "<div></div>";
+  el.innerHTML = `<div class="podium">${pod(top[1], 1)}${pod(top[0], 0)}${pod(top[2], 2)}</div>
+   <div class="card"><table class="lb"><caption class="sr">Leaderboard</caption><tr><th scope="col">#</th><th scope="col">Player</th><th scope="col">${mode === "week" ? "XP this week" : "Total XP"}</th><th scope="col">Badges</th><th scope="col">Best streak</th></tr>
+   ${rows.map((r, i) => `<tr class="${r.me ? "me" : ""}"><td>${i + 1}</td><td>${esc(r.nick)} <span class="muted small">…${esc(r.id)}${r.me ? " (you)" : ""}</span></td><td>${r[k]}</td><td>${r.badges}</td><td>${r.streak}</td></tr>`).join("")}</table>
+   <p class="small muted">Updated ${new Date(b.at).toLocaleTimeString()}. Leaderboard XP is checked by the server (with a daily cap), so it can differ slightly from the XP shown on a device. Only nicknames and the last three USN digits are shown.</p></div>`;
+};
+async function miniBoard() {
+  const el = $("#miniBoard");
+  if (!API_URL) { el.innerHTML = `<p class="muted small">The Section C leaderboard opens soon. XP earned now will count.</p>`; return; }
+  if (!ME || ME.guest) { el.innerHTML = `<p class="muted small">Sign in to see this week's leaders.</p>`; return; }
+  const b = BOARD || await getBoard(); if (!b || !b.ok) { el.innerHTML = "<p class='muted small'>Leaderboard unavailable.</p>"; return; }
+  const rows = b.rows.slice().sort((a, c) => c.week - a.week).slice(0, 5);
+  el.innerHTML = rows.length ? `<table class="lb">${rows.map((r, i) => `<tr class="${r.me ? "me" : ""}"><td>${i + 1}</td><td>${esc(r.nick)}</td><td><b>${r.week}</b> XP</td></tr>`).join("")}</table>` : "<p class='muted small'>No scores yet this week.</p>";
+}
+
+/* ===================== METER (home) ===================== */
+function drawMeter(svg, pct, r) {
+  pct = Math.max(0, Math.min(1, pct)); const cx = 160, cy = 150, R = 120;
+  let ticks = ""; for (let i = 0; i <= 20; i++) { const a = Math.PI * (1 - i / 20), big = i % 5 === 0; const x1 = cx + Math.cos(a) * R, y1 = cy - Math.sin(a) * R, x2 = cx + Math.cos(a) * (R - (big ? 16 : 8)), y2 = cy - Math.sin(a) * (R - (big ? 16 : 8)); ticks += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#222" stroke-width="${big ? 2.4 : 1.2}"/>`; if (big) ticks += `<text x="${cx + Math.cos(a) * (R - 30)}" y="${cy - Math.sin(a) * (R - 30) + 5}" fill="#333" font-size="13" text-anchor="middle">${i * 5}</text>`; }
+  const arc = (p) => { const a = Math.PI * (1 - p); return [cx + Math.cos(a) * (R + 8), cy - Math.sin(a) * (R + 8)]; };
+  const [ex, ey] = arc(pct);
+  svg.setAttribute("aria-label", `Progress to next rank: ${Math.round(pct * 100)} percent`);
+  svg.innerHTML = `<path d="M ${cx - R - 8} ${cy} A ${R + 8} ${R + 8} 0 0 1 ${cx + R + 8} ${cy}" stroke="#d9d2c2" stroke-width="7" fill="none"/>
+   <path d="M ${cx - R - 8} ${cy} A ${R + 8} ${R + 8} 0 0 1 ${ex} ${ey}" stroke="#2E8B8B" stroke-width="7" fill="none"/>
+   ${ticks}<text x="${cx}" y="${cy - 40}" fill="#555" font-size="13" text-anchor="middle">% to next rank</text>
+   <g id="needle" style="transform-origin:${cx}px ${cy}px;transition:transform 1.4s cubic-bezier(.3,1.4,.5,1)"><line x1="${cx}" y1="${cy}" x2="${cx - R + 14}" y2="${cy}" stroke="#B5473A" stroke-width="3" stroke-linecap="round"/></g>
+   <circle cx="${cx}" cy="${cy}" r="8" fill="#1F4E79"/>`;
+  const n = svg.querySelector("#needle"); n.style.transform = "rotate(0deg)"; requestAnimationFrame(() => setTimeout(() => n.style.transform = `rotate(${pct * 180}deg)`, 60));
+}
+
+/* ===================== WATCH & LEARN ===================== */
+const KIND = { video: "▶ Video", animation: "◐ Animation", interactive: "☰ Interactive", article: "¶ Article" };
+const ytId = (u) => { const m = /youtube\.com\/watch\?v=([\w-]{11})/.exec(u); return m ? m[1] : null; };
+function resKey(u) { let s = 0; for (const c of u) s = (s * 33 + c.charCodeAt(0)) >>> 0; return "v" + s.toString(36); }
+function resHTML(it) {
+  const [title, url, src, kind] = it, id = ytId(url), k = resKey(url), seen = S.done[k];
+  return `<li class="res"><span class="pill small">${KIND[kind] || kind}</span> <b>${esc(title)}</b> <span class="muted small">— ${esc(src)}</span>${seen ? ' <span class="pill small">viewed</span>' : ""}
+    <span class="row" style="margin-top:4px">${id ? `<button class="btn sm" data-yt="${id}" data-url="${esc(url)}" data-title="${esc(title)}">Play here</button>` : ""}<a class="btn sm ghost" href="${esc(url)}" target="_blank" rel="noopener" data-res="${esc(url)}">Open${id ? " on YouTube" : ""} ↗<span class="sr"> (opens in a new tab)</span></a></span></li>`;
+}
+function markWatched(url) {
+  const k = resKey(url); if (S.done[k]) return; S.done[k] = today(); bump("watch"); addXP(3); logEvent({ m: "open", i: k, xp: 3, d: url.slice(0, 78) });
+  if ((S.cnt.watch || 0) >= 10) award("curious"); save();
+}
+function playVideo(id, title, url) {
+  markWatched(url); const m = $("#vmodal");
+  $("#vtitle").textContent = title;
+  $("#vframe").innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen style="width:100%;aspect-ratio:16/9;border:0;border-radius:10px"></iframe>
+    <p class="small muted">If the video does not play here, <a href="${url}" target="_blank" rel="noopener">open it on YouTube</a>.</p>`;
+  m.classList.add("on"); $("#vclose").focus();
+}
+function closeVideo() { $("#vframe").innerHTML = ""; $("#vmodal").classList.remove("on"); }
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("#vmodal") && $("#vmodal").classList.contains("on")) closeVideo(); });
+function watchBlock(list) {
+  return list.map(g => `<div class="card"><div class="kicker" style="color:${COURSE.units[g.u - 1].color}">Unit ${["I", "II", "III"][g.u - 1]}</div><h3>${g.t}</h3><ul class="reslist">${g.items.map(resHTML).join("")}</ul></div>`).join("");
+}
+VIEWS.watch = () => {
+  const u = $("#wUnit").value, q = $("#wSearch").value.trim().toLowerCase();
+  const list = VIDEOS.filter(g => (u === "all" || String(g.u) === u)).map(g => ({ ...g, items: g.items.filter(it => !q || (g.t + " " + it[0] + " " + it[2]).toLowerCase().includes(q)) })).filter(g => g.items.length);
+  const n = VIDEOS.reduce((a, g) => a + g.items.length, 0), seen = VIDEOS.reduce((a, g) => a + g.items.filter(it => S.done[resKey(it[1])]).length, 0);
+  $("#wCount").textContent = `${seen} of ${n} resources viewed · +3 XP for each new one`;
+  $("#watchAll").innerHTML = list.length ? watchBlock(list) : "<p class='muted'>No resources match the search.</p>";
+};
+
+document.addEventListener("click", e => {
+  const p = e.target.closest("[data-yt]"); if (p) { playVideo(p.dataset.yt, p.dataset.title, p.dataset.url); return; }
+  const a = e.target.closest("[data-res]"); if (a) markWatched(a.dataset.res);
+});
+
+/* ===================== ARENA ===================== */
+let RUN = null;
+const MODE_NAME = { quick: "Quick Five", unit: "Unit Drill", boss: "Boss Round", daily: "Daily Mission", exp: "Pre-lab Check", review: "Weak-spot Review" };
+function weightOf(q) { const s = S.q[q.id]; if (!s) return 3; if (!s[2]) return 4 + s[1]; return 1 / (1 + s[0]); }
+function weightedPick(pool, n) {
+  const p = pool.slice(), out = [];
+  while (out.length < n && p.length) { const tot = p.reduce((a, q) => a + weightOf(q), 0); let r = Math.random() * tot, k = 0; for (; k < p.length; k++) { r -= weightOf(p[k]); if (r <= 0) break; } out.push(p.splice(Math.min(k, p.length - 1), 1)[0]); }
+  return out;
+}
+function startArena(mode, arg) {
+  let pool = QB, n = 5, list;
+  if (mode === "unit") { pool = QB.filter(q => q.u === Number(arg)); n = 10; }
+  if (mode === "boss") { pool = QB.filter(q => q.d >= 2); n = 10; }
+  if (mode === "exp") { const e = Number(arg); pool = QB.filter(q => q.x === e); if (pool.length < 3) { const u = COURSE.labs[e - 1][1]; pool = pool.concat(QB.filter(q => q.u === u && q.x !== e)); } n = Math.min(5, pool.length); }
+  if (mode === "review") { pool = QB.filter(q => S.q[q.id] && !S.q[q.id][2]); if (!pool.length) pool = QB; n = Math.min(8, pool.length); }
+  if (mode === "daily") { list = seededShuffle(QB, today() + "|best").slice(0, 5); }
+  list = list || weightedPick(pool, n);
+  RUN = { mode, arg, list, i: 0, score: 0, xp: 0, wrong: [], t0: 0, timer: null, hid: 0, hidAt: 0, limit: mode === "boss" ? 25 : 0 };
+  location.hash = "#arena"; setTimeout(renderQ, 30);
+}
+function shuffleOpts(q) { const idx = q.o.map((_, i) => i); for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; } return idx; }
+function renderQ() {
+  const box = $("#arenaPlay"); $("#arenaModes").style.display = "none"; box.style.display = "";
+  if (!RUN) return;
+  if (RUN.i >= RUN.list.length) return endRun();
+  const q = RUN.list[RUN.i]; RUN.ord = shuffleOpts(q); RUN.answered = false;
+  const u = COURSE.units[q.u - 1];
+  box.innerHTML = `<div class="card qcard"><div class="qhead"><div><span class="pill">${MODE_NAME[RUN.mode]}</span> <span class="pill" style="color:${u.color}">Unit ${["I", "II", "III"][q.u - 1]}</span> <span class="pill">${"★".repeat(q.d)}</span></div>
+   <div class="row"><span class="combo" id="combo">${S.streak >= 2 ? "🔥 ×" + S.streak : ""}</span><b>Q ${RUN.i + 1}/${RUN.list.length}</b></div></div>
+   <div class="timer"><i id="tbar"></i></div><div class="qtext">${esc(q.q)}</div>
+   <div class="opts" role="group" aria-label="Answer options">${RUN.ord.map((k, j) => `<button class="opt" data-k="${k}"><span class="k">${"ABCD"[j]}</span>${esc(q.o[k])}</button>`).join("")}</div>
+   <div id="qafter" aria-live="polite"></div><div class="small muted" style="margin-top:10px">Keys 1–4 or A–D also work.</div></div>`;
+  $$(".opt", box).forEach(b => b.onclick = () => answer(Number(b.dataset.k), b));
+  RUN.t0 = performance.now(); RUN.hid = 0; RUN.hidAt = document.hidden ? performance.now() : 0; clearInterval(RUN.timer);
+  const bar = $("#tbar");
+  RUN.timer = setInterval(() => {
+    const s = (performance.now() - RUN.t0) / 1000;
+    if (RUN.limit) { bar.style.width = Math.max(0, 100 - 100 * s / RUN.limit) + "%"; bar.style.background = s > RUN.limit * .7 ? "var(--brick)" : "var(--teal)"; if (s >= RUN.limit && !RUN.answered) answer(-1, null); }
+    else { bar.style.width = Math.max(4, 100 - 100 * s / 60) + "%"; }
+  }, 100);
+}
+function answer(k, btn) {
+  if (RUN.answered) return; RUN.answered = true; clearInterval(RUN.timer);
+  const q = RUN.list[RUN.i], tnow = performance.now(); if (RUN.hidAt) { RUN.hid += tnow - RUN.hidAt; RUN.hidAt = 0; } const ms = Math.round(tnow - RUN.t0), hid = Math.round(RUN.hid), ok = k === q.a, to = k === -1;
+  $$(".opt").forEach(b => { b.disabled = true; const kk = Number(b.dataset.k); if (kk === q.a) b.classList.add("right"); else if (kk === k) b.classList.add("wrong"); });
+  const s = S.q[q.id] || [0, 0, 0, 0]; const before = s[0]; if (ok) s[0]++; else s[1]++; s[2] = ok ? 1 : 0; s[3] = Date.now(); S.q[q.id] = s;
+  S.answered++; let xp = 0;
+  if (ok) {
+    S.correct++; S.streak++; S.bestStreak = Math.max(S.bestStreak, S.streak); RUN.score++;
+    const active = ms - hid; xp = [0, 10, 15, 20][q.d] + (active < 10000 ? 5 : 0) + 2 * Math.min(S.streak - 1, 5);
+    if (RUN.mode === "boss") xp += 5; xp = Math.max(2, Math.round(xp / (1 + before))); if (active < 8000 && before === 0) S.fast++;
+    addXP(xp, btn); RUN.xp += xp;
+  } else { S.streak = 0; RUN.wrong.push(q); }
+  logEvent({ m: RUN.mode, i: q.id, u: q.u, co: "CO" + q.co, c: ok, ms, hid, to, xp });
+  S.hist.push([Date.now(), q.id, ok ? 1 : 0, ms]); if (S.hist.length > 200) S.hist = S.hist.slice(-200);
+  checkBadges(); save();
+  const msg = ok ? pick(["Correct.", "Well reasoned.", "Precise and accurate.", "Correct — zero error."]) : (to ? "Time is up." : pick(["Not quite.", "Not quite — check the reasoning below."]));
+  $("#qafter").innerHTML = `<div class="explain"><b style="color:${ok ? "var(--green)" : "var(--brick)"}">${msg}</b> ${ok ? `+${xp} XP${before ? " (repeat question — reduced XP)" : ""}` : ""}<div style="margin-top:6px">${esc(q.e)}</div><div class="small muted" style="margin-top:4px">Answered in ${(ms / 1000).toFixed(1)} s</div></div>
+    <div class="row" style="margin-top:12px;justify-content:flex-end"><button class="btn" id="nextQ">${RUN.i + 1 < RUN.list.length ? "Next question →" : "See results"}</button></div>`;
+  $("#combo").textContent = S.streak >= 2 ? "🔥 ×" + S.streak : "";
+  $("#nextQ").onclick = () => { RUN.i++; renderQ(); }; $("#nextQ").focus();
+}
+document.addEventListener("keydown", e => {
+  if (!RUN || !location.hash.startsWith("#arena") || $("#login").classList.contains("on") || e.ctrlKey || e.metaKey || e.altKey || /INPUT|SELECT|TEXTAREA/.test((document.activeElement || {}).tagName || "")) return;
+  const map = { "1": 0, "2": 1, "3": 2, "4": 3, a: 0, b: 1, c: 2, d: 3 }; const j = map[e.key.toLowerCase()];
+  if (j !== undefined && !RUN.answered) { const b = $$(".opt")[j]; if (b) b.click(); }
+  else if (e.key === "Enter" && RUN.answered) { const n = $("#nextQ"); if (n) n.click(); }
+});
+function endRun() {
+  clearInterval(RUN.timer); const n = RUN.list.length, sc = RUN.score; let extra = "";
+  if (RUN.mode === "daily" && S.daily[today()] === undefined) { S.daily[today()] = sc; addXP(50); RUN.xp += 50; extra = "<p><b>Daily Mission complete: +50 bonus XP.</b></p>"; logEvent({ m: "dailybonus", i: today(), c: true, xp: 50, d: sc + "/5" }); }
+  if (RUN.mode === "boss") { S.boss = Math.max(S.boss || 0, sc); if (sc >= 8) award("boss"); }
+  checkBadges(); save(); scheduleSync(true);
+  const stars = sc / n >= .9 ? "★★★" : sc / n >= .6 ? "★★" : sc / n >= .3 ? "★" : "";
+  $("#arenaPlay").innerHTML = `<div class="card qcard center"><div class="kicker">${MODE_NAME[RUN.mode]} complete</div><h1>${sc} / ${n} <span aria-label="${stars.length} stars">${stars}</span></h1><p class="muted">+${RUN.xp} XP earned · best streak ${S.bestStreak}</p>${extra}
+   ${RUN.wrong.length ? `<div style="text-align:left"><h3>Review</h3>${RUN.wrong.map(q => `<div class="explain"><b>${esc(q.q)}</b><br>✔ ${esc(q.o[q.a])}<div class="small">${esc(q.e)}</div></div>`).join("")}</div>` : "<p>Perfect run — no mistakes.</p>"}
+   <div class="row" style="justify-content:center;margin-top:14px"><button class="btn" onclick="startArena('${RUN.mode}','${RUN.arg ?? ""}')">Play again</button><button class="btn ghost" onclick="RUN=null;location.hash='#arena';VIEWS.arena()">All modes</button><a class="btn gold" href="#board">Leaderboard</a></div></div>`;
+}
+VIEWS.arena = () => {
+  if (RUN && $("#arenaPlay").innerHTML) { $("#arenaModes").style.display = "none"; $("#arenaPlay").style.display = ""; return; }
+  if (RUN && RUN.i < RUN.list.length) { renderQ(); return; }
+  $("#arenaModes").style.display = ""; $("#arenaPlay").style.display = "none"; $("#arenaPlay").innerHTML = "";
+};
+
+document.addEventListener("visibilitychange", () => { if (!RUN || RUN.answered) return; if (document.hidden) RUN.hidAt = performance.now(); else if (RUN.hidAt) { RUN.hid += performance.now() - RUN.hidAt; RUN.hidAt = 0; } });
+
+/* ===================== LAB HELPERS ===================== */
+function canvas(box, W, H) {
+  const c = document.createElement("canvas"), d = window.devicePixelRatio || 1;
+  c.width = W * d; c.height = H * d; c.style.aspectRatio = W + "/" + H; c.style.borderRadius = "12px"; c.style.background = "#08110d";
+  const x = c.getContext("2d"); x.scale(d, d); box.appendChild(c); c.W = W; c.H = H; c.x = x; return c;
+}
+function grid(c, nx = 10, ny = 8, col = "#1c3a2b") {
+  const x = c.x, W = c.W, H = c.H; x.fillStyle = "#08110d"; x.fillRect(0, 0, W, H); x.strokeStyle = col; x.lineWidth = 1;
+  for (let i = 0; i <= nx; i++) { x.beginPath(); x.moveTo(i * W / nx, 0); x.lineTo(i * W / nx, H); x.stroke(); }
+  for (let j = 0; j <= ny; j++) { x.beginPath(); x.moveTo(0, j * H / ny); x.lineTo(W, j * H / ny); x.stroke(); }
+  x.strokeStyle = "#2e5a43"; x.beginPath(); x.moveTo(W / 2, 0); x.lineTo(W / 2, H); x.moveTo(0, H / 2); x.lineTo(W, H / 2); x.stroke();
+}
+function plotXY(c, pts, opt) {
+  const x = c.x, W = c.W, H = c.H, p = 44; const { x0, x1, y0, y1, col = "#7CFFB2", xl = "", yl = "", clear = true } = opt;
+  if (clear) { x.fillStyle = "#08110d"; x.fillRect(0, 0, W, H); x.strokeStyle = "#1c3a2b"; x.lineWidth = 1; x.font = "12px Times New Roman"; x.fillStyle = "#8fb3a2";
+    for (let i = 0; i <= 5; i++) { const gx = p + i * (W - p - 12) / 5, gy = 10 + i * (H - p - 10) / 5; x.beginPath(); x.moveTo(gx, 10); x.lineTo(gx, H - p); x.stroke(); x.beginPath(); x.moveTo(p, gy); x.lineTo(W - 12, gy); x.stroke();
+      const nf = (v) => Math.abs(v) < 1e-9 * Math.max(1, Math.abs(x1 - x0), Math.abs(y1 - y0)) ? 0 : +v.toPrecision(3); x.fillText(nf(x0 + i * (x1 - x0) / 5), gx - 8, H - p + 16); x.fillText(nf(y1 - i * (y1 - y0) / 5), 2, gy + 4); }
+    x.fillText(xl, W / 2 - 30, H - 8); x.save(); x.translate(12, H / 2 + 30); x.rotate(-Math.PI / 2); x.fillText(yl, 0, 0); x.restore(); }
+  x.strokeStyle = col; x.lineWidth = 2.2; x.shadowColor = col; x.shadowBlur = 6; x.beginPath();
+  pts.forEach((q, i) => { const X = p + (q[0] - x0) / (x1 - x0) * (W - p - 12), Y = 10 + (y1 - q[1]) / (y1 - y0) * (H - p - 10); i ? x.lineTo(X, Y) : x.moveTo(X, Y); }); x.stroke(); x.shadowBlur = 0;
+}
+function fb(el, ok, msg) { el.className = "feedback " + (ok ? "ok" : "no"); el.setAttribute("role", "status"); el.innerHTML = msg; }
+function near(a, b, tol) { return Math.abs(a - b) <= Math.abs(b) * tol + 1e-9; }
+const L1 = (html) => h(`<div class="labbox">${html}</div>`);
+
+/* ===================== LABS ===================== */
+const LABS = [
+/* ---------- UNIT I ---------- */
+{ id: "vernier", exp: 1, u: 1, icon: "📏", name: "Vernier Challenge", sub: "Read the caliper like a pro — find the coinciding line and earn XP.", run(box) {
+  const ui = L1(`<div class="row" style="justify-content:space-between"><b>Read this vernier caliper</b><span>Level: <select id="vl" style="width:auto"><option value="10">LC 0.1 mm (10 div)</option><option value="20">LC 0.05 mm (20 div)</option><option value="50">LC 0.02 mm (50 div)</option></select></span></div>
+    <svg id="vsvg" class="full" viewBox="0 0 680 200" style="background:#e9e4d6;border-radius:10px;margin-top:10px"></svg>
+    <div class="row" style="margin-top:10px"><label style="margin:0">Your reading (mm)</label><input id="vin" type="number" step="0.01" style="max-width:160px"><button class="btn gold sm" id="vchk">Check</button><button class="btn sm ghost" style="color:#cfe;border-color:#cfe" id="vnew">New caliper</button><button class="btn sm ghost" style="color:#cfe;border-color:#cfe" id="vhint">Hint</button></div>
+    <div id="vfb"></div><p class="small" style="color:#9fb3c0">Reading = main-scale reading (MSR, the last mm line before the vernier zero) + coinciding vernier division × least count.</p>`);
+  box.appendChild(ui); let R, n, LC, solved = false;
+  function draw() {
+    n = Number($("#vl", ui).value); LC = 1 / n; solved = false; const k = ri(0, n - 1); R = ri(4, 60) + k * LC; R = Math.round(R * 1000) / 1000;
+    const px = n === 50 ? 12 : 24, s0 = Math.floor(R) - 2, X = (mm) => 20 + (mm - s0) * px; let g = "";
+    g += `<rect x="0" y="20" width="680" height="62" fill="#d8d0bb"/>`;
+    for (let m = s0; m <= s0 + 30; m++) { const x = X(m); if (x > 670) break; const L = m % 10 === 0 ? 30 : m % 5 === 0 ? 22 : 14; g += `<line x1="${x}" y1="82" x2="${x}" y2="${82 - L}" stroke="#222" stroke-width="1.4"/>`; if (m % 10 === 0) g += `<text x="${x}" y="40" font-size="14" text-anchor="middle" fill="#222">${m / 10}</text>`; }
+    g += `<text x="660" y="36" font-size="12" text-anchor="end" fill="#333">cm</text>`;
+    const vlen = (n - 1); g += `<rect x="${X(R) - 14}" y="84" width="${vlen * px + 28}" height="70" fill="#c9c1aa" rx="4"/>`;
+    for (let j = 0; j <= n; j++) { const x = X(R + j * (n - 1) / n); const big = n === 10 ? true : n === 20 ? j % 2 === 0 : j % 5 === 0; g += `<line x1="${x}" y1="84" x2="${x}" y2="${84 + (big ? 22 : 13)}" stroke="#111" stroke-width="1.2"/>`;
+      const lab = n === 10 ? j : n === 20 ? (j % 2 === 0 ? j / 2 : "") : (j % 5 === 0 ? j / 5 : ""); if (lab !== "") g += `<text x="${x}" y="122" font-size="12" text-anchor="middle" fill="#111">${lab}</text>`; }
+    g += `<text x="${X(R)}" y="146" font-size="12" text-anchor="middle" fill="#7a2">0 of vernier</text>`;
+    $("#vsvg", ui).innerHTML = g; $("#vin", ui).value = ""; $("#vfb", ui).innerHTML = ""; $("#vsvg", ui).dataset.k = k;
+  }
+  $("#vl", ui).onchange = draw; $("#vnew", ui).onclick = draw;
+  $("#vhint", ui).onclick = () => fb($("#vfb", ui), false, `MSR = ${Math.floor(R)} mm. Now look along the vernier for the one line that lines up exactly with a main-scale line. Vernier labels show tenths of a millimetre.`);
+  $("#vchk", ui).onclick = () => { if (solved) return; const v = Number($("#vin", ui).value); if (Math.abs(v - R) < LC / 2 - 1e-9) { solved = true; fb($("#vfb", ui), true, `Correct: ${R.toFixed(n === 10 ? 1 : 2)} mm = ${Math.floor(R)} + ${$("#vsvg", ui).dataset.k} × ${LC} mm. +20 XP`); bump("vernier"); labWin("vernier", 20, $("#vchk", ui), R + ""); setTimeout(draw, 1500); } else fb($("#vfb", ui), false, "Not yet — check the main-scale reading first, then the coinciding line."); };
+  draw();
+} },
+{ id: "target", u: 1, icon: "🎯", name: "Accuracy vs Precision", sub: "Six readings on the target — accurate, precise, both or neither?", run(box) {
+  const ui = L1(`<div class="cols"><div><svg id="tsvg" class="full" viewBox="0 0 300 300"></svg></div><div><b>Classify this instrument</b><p class="small" style="color:#9fb3c0">Each dot is one reading of the same true value (the bull's-eye).</p>
+    <div class="grid" style="gap:8px">${["Accurate and precise", "Precise, not accurate", "Accurate, not precise", "Neither accurate nor precise"].map((t, i) => `<button class="btn sm teal" data-c="${i}">${t}</button>`).join("")}</div><div id="tfb"></div><p class="readout" id="tsc">Score 0 / 0</p></div></div>`);
+  box.appendChild(ui); let cls, sc = 0, tot = 0, done = false;
+  function draw() { done = false; cls = ri(0, 3); const bias = cls === 0 || cls === 2 ? 0 : 70, spr = cls === 0 || cls === 1 ? 10 : 55; const ang = rnd(0, 6.28); let g = "";
+    [130, 100, 70, 40, 14].forEach((r, i) => g += `<circle cx="150" cy="150" r="${r}" fill="${i % 2 ? "#f4efe2" : "#B5473A"}" stroke="#222"/>`);
+    for (let i = 0; i < 6; i++) { let x, y; do { x = 150 + bias * Math.cos(ang) + rnd(-spr, spr); y = 150 + bias * Math.sin(ang) + rnd(-spr, spr); } while (Math.hypot(x - 150, y - 150) > 138); g += `<circle cx="${x}" cy="${y}" r="7" fill="#1F4E79" stroke="#fff" stroke-width="2"/>`; }
+    $("#tsvg", ui).innerHTML = g; }
+  $$("button[data-c]", ui).forEach(b => b.onclick = () => { if (done) return; done = true; tot++; const ok = Number(b.dataset.c) === cls; if (ok) { sc++; labWin("target", 8, b); }
+    fb($("#tfb", ui), ok, ok ? "Correct! +8 XP" : "Not quite. Precision = how tightly the dots cluster; accuracy = how close their centre is to the bull's-eye."); $("#tsc", ui).textContent = `Score ${sc} / ${tot}`; setTimeout(draw, 900); });
+  draw();
+} },
+{ id: "dynamic", u: 1, icon: "📉", name: "Dynamic Response Tuner", sub: "Tune the damping of an instrument and watch overshoot and settling time change.", run(box) {
+  const ui = L1(`<div class="cols"><div id="dcv"></div><div><label>Damping ratio ζ = <b id="dz">0.30</b></label><input type="range" id="dzs" min="0.05" max="1.6" step="0.01" value="0.3">
+    <label>Natural frequency fₙ = <b id="dw">1.0</b> Hz</label><input type="range" id="dws" min="0.5" max="3" step="0.1" value="1">
+    <p>Overshoot: <span class="readout" id="dos">–</span></p><p>Settling time (2 %): <span class="readout" id="dts">–</span></p><p>Rise time (10–90 %): <span class="readout" id="dtr">–</span></p>
+    <div class="feedback" style="background:#0b141a;color:#cfe"><b>Challenge:</b> a good indicating instrument is slightly under-damped. Tune ζ so the overshoot is between 2 % and 10 %. </div><div id="dfb"></div></div></div>`);
+  box.appendChild(ui); const c = canvas($("#dcv", ui), 520, 320); let won = false;
+  function run() { const z = +$("#dzs", ui).value, f = +$("#dws", ui).value, w = 2 * Math.PI * f; $("#dz", ui).textContent = z.toFixed(2); $("#dw", ui).textContent = f.toFixed(1);
+    let y = 0, v = 0, dt = 0.001, T = 4, pts = [], mx = 0, ts = 0, t10 = null, t90 = null;
+    for (let t = 0; t <= T; t += dt) { const a = w * w * (1 - y) - 2 * z * w * v; v += a * dt; y += v * dt; if (y > mx) mx = y; if (Math.abs(y - 1) > 0.02) ts = t; if (t10 === null && y >= .1) t10 = t; if (t90 === null && y >= .9) t90 = t; if (Math.round(t / dt) % 10 === 0) pts.push([t, y]); }
+    plotXY(c, [[0, 1], [T, 1]], { x0: 0, x1: T, y0: 0, y1: 2, col: "#C8962E", xl: "time (s)", yl: "pointer / final" }); plotXY(c, pts, { x0: 0, x1: T, y0: 0, y1: 2, clear: false });
+    const os = Math.max(0, (mx - 1) * 100); $("#dos", ui).textContent = os.toFixed(1) + " %"; $("#dts", ui).textContent = ts >= T - .01 ? "> 4 s" : ts.toFixed(2) + " s"; $("#dtr", ui).textContent = t90 !== null ? (t90 - t10).toFixed(2) + " s" : "> 4 s";
+    if (os >= 2 && os <= 10) { fb($("#dfb", ui), true, `ζ = ${z.toFixed(2)} gives ${os.toFixed(1)} % overshoot and fast settling — the sweet spot (ζ ≈ 0.6–0.8) used for indicating instruments.${won ? "" : " +30 XP"}`); if (!won) { won = true; labWin("dynamic", 30, $("#dfb", ui), "z=" + z, true); } }
+    else $("#dfb", ui).innerHTML = ""; }
+  $("#dzs", ui).oninput = run; $("#dws", ui).oninput = run; run();
+} },
+{ id: "hazard", u: 1, icon: "⚠️", name: "Hazard Hunt", sub: "Spot every hazard in the workshop before the shift starts.", run(box) {
+  const HZ = [
+    { x: 70, y: 210, r: 34, t: "Oil spill on the walkway", c: "Slip hazard. Control: clean up at once, fix the leak, use drip trays (engineering) and a housekeeping routine (administrative)." },
+    { x: 238, y: 118, r: 34, t: "Grinder without its guard", c: "Entanglement and flying fragments. Control: refit the guard and interlock (engineering) — never run without it." },
+    { x: 330, y: 92, r: 30, t: "Operator without eye protection", c: "Eye injury from sparks and chips. Control: safety goggles/face shield (PPE) — the last line of defence after the guard." },
+    { x: 455, y: 228, r: 34, t: "Overloaded extension board", c: "Overheating and fire. Control: fixed sockets with proper rating and protection (engineering); remove daisy-chains." },
+    { x: 520, y: 150, r: 30, t: "Damaged, exposed cable", c: "Electric shock. Control: isolate, replace the cable, inspect and test portable equipment regularly." },
+    { x: 610, y: 120, r: 36, t: "Fire exit blocked by boxes", c: "Escape route obstructed. Control: keep exits clear; signage and regular inspections (administrative)." },
+    { x: 150, y: 110, r: 30, t: "Gas cylinder not chained", c: "Falling cylinder can break the valve and become a projectile. Control: secure upright with a chain or stand." }];
+  const ui = L1(`<div class="row" style="justify-content:space-between"><b>Find all ${HZ.length} hazards — tap on them.</b><span class="readout" id="hzc">0 / ${HZ.length}</span><span class="readout warn" id="hzt">0 s</span></div>
+    <svg id="hzs" class="full" viewBox="0 0 680 300" style="background:#dfe6ea;border-radius:12px;margin-top:8px"></svg><div id="hzl" style="margin-top:8px"></div>`);
+  box.appendChild(ui); const t0 = Date.now(); let found = 0; const tick = setInterval(() => { if (!document.body.contains(ui)) return clearInterval(tick); $("#hzt", ui).textContent = Math.round((Date.now() - t0) / 1000) + " s"; }, 500);
+  let g = `<rect x="0" y="190" width="680" height="110" fill="#b9c2c8"/><rect x="0" y="0" width="680" height="190" fill="#e8edf0"/>
+   <ellipse cx="70" cy="215" rx="48" ry="12" fill="#3b3326" opacity=".75"/>
+   <rect x="190" y="150" width="120" height="12" fill="#7a5b3a"/><rect x="200" y="162" width="8" height="40" fill="#5b4430"/><rect x="292" y="162" width="8" height="40" fill="#5b4430"/>
+   <rect x="215" y="118" width="46" height="32" rx="6" fill="#476b85"/><circle cx="238" cy="118" r="20" fill="#9aa8b2" stroke="#333"/><path d="M 255 110 l 18 -10 M 258 118 l 20 0 M 255 126 l 18 10" stroke="#ff9f1c" stroke-width="2"/>
+   <circle cx="330" cy="85" r="15" fill="#e2b48f"/><rect x="318" y="100" width="24" height="52" rx="6" fill="#1F4E79"/><rect x="321" y="80" width="18" height="4" fill="#e2b48f"/>
+   <rect x="140" y="80" width="22" height="100" rx="10" fill="#2e8b57"/><rect x="146" y="70" width="10" height="12" fill="#555"/>
+   <rect x="420" y="222" width="70" height="14" rx="3" fill="#f2f2f2" stroke="#444"/>${[0, 1, 2, 3, 4].map(i => `<rect x="${425 + i * 13}" y="214" width="8" height="10" fill="#222"/>`).join("")}<path d="M 430 214 q -20 -40 -60 -30 M 444 214 q 0 -50 30 -60 M 458 214 q 20 -30 50 -20" stroke="#222" stroke-width="2" fill="none"/>
+   <path d="M 470 150 C 500 140, 520 160, 560 150" stroke="#222" stroke-width="4" fill="none"/><path d="M 515 145 l 5 -8 l 3 10 l 5 -7" stroke="#d00" stroke-width="2" fill="none"/>
+   <rect x="585" y="60" width="60" height="130" fill="#7aa36b" stroke="#333"/><text x="615" y="52" text-anchor="middle" font-size="12" fill="#2e7d32" font-family="Times New Roman">EXIT</text>
+   <rect x="580" y="120" width="40" height="40" fill="#b08a5a" stroke="#6b4f2c"/><rect x="605" y="140" width="45" height="50" fill="#c49a64" stroke="#6b4f2c"/>`;
+  HZ.forEach((z, i) => g += `<circle class="hazard" data-i="${i}" cx="${z.x}" cy="${z.y}" r="${z.r}" fill="transparent" stroke="transparent" stroke-width="4"/>`);
+  $("#hzs", ui).innerHTML = g;
+  $$(".hazard", ui).forEach(c => c.onclick = () => { if (c.classList.contains("found")) return; const z = HZ[c.dataset.i]; c.classList.add("found"); c.setAttribute("stroke", "#B5473A"); c.setAttribute("stroke-dasharray", "6 4"); found++;
+    $("#hzc", ui).textContent = `${found} / ${HZ.length}`; $("#hzl", ui).prepend(h(`<div class="feedback ok" style="color:#cfe;background:#0b141a"><b>⚠️ ${z.t}.</b> ${z.c}</div>`)); if (!S.done.hazard) { addXP(5, c); logEvent({ m: "hazard", i: "hz" + c.dataset.i, u: 1, c: true, xp: 5 }); }
+    if (found === HZ.length) { clearInterval(tick); const s = Math.round((Date.now() - t0) / 1000); award("hazard"); labWin("hazard", 40, $("#hzc", ui), s + "s", true); $("#hzl", ui).prepend(h(`<div class="feedback ok">All hazards found in ${s} s! +40 XP. Remember the hierarchy: eliminate → substitute → engineer → administer → PPE.</div>`)); } else save(); });
+} },
+{ id: "loto", u: 1, icon: "🔒", name: "Lockout–Tagout Sequence", sub: "Put the seven LOTO steps in the right order before servicing a machine.", run(box) {
+  const STEPS = ["Prepare: identify every energy source of the machine", "Notify all affected workers", "Shut down the machine by the normal stop procedure", "Isolate every energy source (breaker, valve, disconnect)", "Apply your personal lock and tag to each isolation point", "Release or block stored energy (capacitors, springs, pressure)", "Verify: try to start and test for absence of voltage"];
+  let order = STEPS.map((_, i) => i).sort(() => Math.random() - .5);
+  const ui = L1(`<b>Arrange the steps from first (top) to last.</b><ul class="sortlist" id="ls" style="margin-top:10px"></ul><button class="btn gold sm" id="lchk">Check order</button><div id="lfb"></div>`);
+  box.appendChild(ui);
+  function render() { $("#ls", ui).innerHTML = order.map((k, i) => `<li><b>${i + 1}</b><span>${STEPS[k]}</span><button data-i="${i}" data-d="-1" aria-label="Move up">▲</button><button data-i="${i}" data-d="1" aria-label="Move down">▼</button></li>`).join("");
+    $$("#ls button", ui).forEach(b => b.onclick = () => { const i = +b.dataset.i, j = i + +b.dataset.d; if (j < 0 || j >= order.length) return; [order[i], order[j]] = [order[j], order[i]]; render(); }); }
+  $("#lchk", ui).onclick = () => { const ok = order.filter((k, i) => k === i).length; if (ok === STEPS.length) { fb($("#lfb", ui), true, "Perfect sequence! +30 XP. The verification step is what makes LOTO safe — never skip the try-out."); award("loto"); labWin("loto", 30, $("#lchk", ui), "", true); } else fb($("#lfb", ui), false, `${ok} of 7 steps are in the right place. Think: you must know the energy sources before you notify, and you verify only after stored energy is released.`); };
+  render();
+} },
+{ id: "risk", u: 1, icon: "🧮", name: "Risk Matrix", sub: "Rate likelihood and severity for real workplace scenarios.", run(box) {
+  const SC = [["A technician measures 415 V at a distribution board with a CAT II meter.", 3, 5], ["Students walk past a bench where a soldering iron is left on its stand.", 3, 2], ["A forklift reverses in a busy store without a reversing alarm.", 4, 5], ["An office chair has a slightly loose armrest.", 2, 1], ["Isopropyl alcohol is stored near an open flame in the lab.", 3, 4], ["A ladder with a cracked rung is used to change a tube light.", 4, 4]];
+  const band = (s) => s <= 4 ? "Low" : s <= 9 ? "Medium" : s <= 16 ? "High" : "Very high";
+  const ui = L1(`<p id="rsc" style="font-size:19px"></p><div class="grid g2"><div><label>Likelihood (1 rare – 5 almost certain)</label><input type="range" id="rl" min="1" max="5" value="3"><b id="rlv">3</b></div><div><label>Severity (1 minor – 5 fatal)</label><input type="range" id="rs" min="1" max="5" value="3"><b id="rsv">3</b></div></div>
+    <p>Risk score: <span class="readout" id="rsco">9</span> <span class="readout warn" id="rban">Medium</span></p><button class="btn gold sm" id="rchk">Compare with the expert rating</button> <button class="btn sm teal" id="rnext">Next scenario</button><div id="rfb"></div>`);
+  box.appendChild(ui); let k = ri(0, SC.length - 1); const tried = {};
+  const upd = () => { const L = +$("#rl", ui).value, S2 = +$("#rs", ui).value; $("#rlv", ui).textContent = L; $("#rsv", ui).textContent = S2; $("#rsco", ui).textContent = L * S2; $("#rban", ui).textContent = band(L * S2); };
+  const show = () => { $("#rsc", ui).textContent = SC[k][0]; $("#rfb", ui).innerHTML = ""; };
+  $("#rl", ui).oninput = upd; $("#rs", ui).oninput = upd;
+  $("#rnext", ui).onclick = () => { k = (k + 1) % SC.length; show(); };
+  $("#rchk", ui).onclick = () => { const e = SC[k][1] * SC[k][2], m = (+$("#rl", ui).value) * (+$("#rs", ui).value); const ok = band(e) === band(m);
+    fb($("#rfb", ui), ok, `Expert rating: L = ${SC[k][1]}, S = ${SC[k][2]} → ${e} (${band(e)}). ${ok ? "Same band — well judged! +10 XP" : "Different band — discuss why with your team."}`); if (ok && !tried[k] && !(S.done["risk" + k])) { S.done["risk" + k] = 1; labWin("risk", 10, $("#rchk", ui), "s" + k); } tried[k] = 1; };
+  show(); upd();
+} },
+{ id: "earth", u: 1, icon: "🌍", name: "Earth Test — 62 % Rule", sub: "Move the potential spike and find where the earth tester reads the true resistance.", run(box) {
+  const D = 40, rho = 100, a = 0.5, Rt = rho / (2 * Math.PI * a);
+  const Rx = (x) => rho / (2 * Math.PI) * (1 / a - 1 / D - 1 / x + 1 / (D - x));
+  const ui = L1(`<div class="cols"><div id="ecv"></div><div><p class="small" style="color:#9fb3c0">Earth electrode E at 0 m, current spike C at ${D} m. Slide the potential spike P and record readings to trace the curve.</p>
+    <label>P distance from E: <b id="ex">10.0</b> m</label><input type="range" id="exs" min="1" max="39" step="0.2" value="10"><p>Tester reads: <span class="readout" id="er">–</span></p>
+    <button class="btn sm teal" id="erec">Record point</button> <button class="btn sm gold" id="eans">This is the true earth resistance</button><div id="efb"></div></div></div>`);
+  box.appendChild(ui); const c = canvas($("#ecv", ui), 520, 320); const pts = [];
+  function draw() { const x = +$("#exs", ui).value; $("#ex", ui).textContent = x.toFixed(1); $("#er", ui).textContent = Rx(x).toFixed(2) + " Ω";
+    plotXY(c, pts.length ? pts.slice().sort((p, q) => p[0] - q[0]) : [[0, 0]], { x0: 0, x1: 40, y0: 0, y1: 60, xl: "distance of P from E (m)", yl: "reading (Ω)" });
+    const X = 44 + x / 40 * (c.W - 56); c.x.strokeStyle = "#FFD166"; c.x.setLineDash([4, 4]); c.x.beginPath(); c.x.moveTo(X, 10); c.x.lineTo(X, c.H - 44); c.x.stroke(); c.x.setLineDash([]);
+    pts.forEach(p => { c.x.fillStyle = "#7CFFB2"; c.x.beginPath(); c.x.arc(44 + p[0] / 40 * (c.W - 56), 10 + (60 - p[1]) / 60 * (c.H - 54), 4, 0, 7); c.x.fill(); }); }
+  $("#exs", ui).oninput = draw; $("#erec", ui).onclick = () => { const x = +$("#exs", ui).value; pts.push([x, Math.min(60, Rx(x))]); draw(); };
+  $("#eans", ui).onclick = () => { const x = +$("#exs", ui).value, ok = Math.abs(x / D - 0.618) < 0.04;
+    fb($("#efb", ui), ok, ok ? `Yes — at ${x.toFixed(1)} m (≈ 62 % of ${D} m) the reading ${Rx(x).toFixed(2)} Ω equals the true resistance ${Rt.toFixed(2)} Ω, on the flat part of the curve. +30 XP` : `Not there. Record several points: the true value lies on the flat plateau of the curve, at about 62 % of the E–C distance.`); if (ok) labWin("earth", 30, $("#eans", ui), x.toFixed(1), true); };
+  draw();
+} },
+/* ---------- UNIT II ---------- */
+{ id: "needle", u: 2, icon: "🧭", name: "Inside the Needle", sub: "Drive a PMMC and a moving-iron meter with DC and with 50 Hz AC — and watch the pointer.", run(box) {
+  const ui = L1(`<div class="cols"><div><svg id="nsvg" class="full" viewBox="0 0 360 230"></svg></div><div>
+    <label>Instrument</label><select id="nt"><option value="pmmc">PMMC (moving coil)</option><option value="mi">Moving iron</option></select>
+    <label>Supply</label><select id="ns"><option value="dc">DC</option><option value="ac">AC 50 Hz (RMS set below)</option></select>
+    <label>Current = <b id="niv">6.0</b> mA</label><input type="range" id="ni" min="0" max="10" step="0.1" value="6">
+    <label>Damping ζ = <b id="nzv">0.7</b></label><input type="range" id="nz" min="0.05" max="1.5" step="0.05" value="0.7">
+    <button class="btn gold sm" id="non">Switch on</button> <button class="btn sm teal" id="noff">Switch off</button>
+    <p>Pointer reads: <span class="readout" id="nr">0.0 mA</span></p><div id="nfb"></div></div></div>`);
+  box.appendChild(ui); let th = 0, vel = 0, on = false, t = 0, raf = 0; const seen = {};
+  function scale() { const mi = $("#nt", ui).value === "mi"; let g = `<rect x="0" y="0" width="360" height="230" rx="16" fill="#f3efe3"/><text x="180" y="210" text-anchor="middle" font-size="16" fill="#333" font-family="Times New Roman">mA  ${mi ? "MI (≈)" : "PMMC (=)"}</text>`;
+    for (let i = 0; i <= 10; i++) { const f = mi ? (i / 10) ** 2 : i / 10, a = Math.PI * (0.85 - 0.7 * f); const x1 = 180 + Math.cos(a) * 150, y1 = 190 - Math.sin(a) * 150, x2 = 180 + Math.cos(a) * 132, y2 = 190 - Math.sin(a) * 132;
+      g += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#222" stroke-width="2"/><text x="${180 + Math.cos(a) * 118}" y="${190 - Math.sin(a) * 118 + 5}" font-size="13" text-anchor="middle" fill="#222">${i}</text>`; }
+    g += `<line id="np" x1="180" y1="190" x2="180" y2="45" stroke="#B5473A" stroke-width="3" stroke-linecap="round"/><circle cx="180" cy="190" r="10" fill="#1F4E79"/>`; $("#nsvg", ui).innerHTML = g; }
+  function step() { const mi = $("#nt", ui).value === "mi", ac = $("#ns", ui).value === "ac", I = +$("#ni", ui).value / 10, z = +$("#nz", ui).value, w = 2 * Math.PI * 1.2;
+    for (let k = 0; k < 40; k++) { const dt = 0.0004; t += dt; let i = on ? (ac ? I * Math.SQRT2 * Math.sin(2 * Math.PI * 50 * t) : I) : 0; const T = mi ? i * i : i; const acc = w * w * (T - th) - 2 * z * w * vel; vel += acc * dt; th += vel * dt; }
+    const f = Math.max(-0.05, Math.min(1.05, th)); const a = Math.PI * (0.85 - 0.7 * f); const p = $("#np", ui); if (p) { p.setAttribute("x2", 180 + Math.cos(a) * 145); p.setAttribute("y2", 190 - Math.sin(a) * 145); }
+    const rd = mi ? Math.sqrt(Math.max(0, th)) * 10 : th * 10; $("#nr", ui).textContent = (Math.abs(rd) < 0.05 ? 0 : rd).toFixed(1) + " mA";
+    if (document.body.contains(ui)) raf = requestAnimationFrame(step); }
+  const note = () => { const mi = $("#nt", ui).value === "mi", ac = $("#ns", ui).value === "ac"; seen[$("#nt", ui).value + $("#ns", ui).value] = 1;
+    fb($("#nfb", ui), true, !mi && ac ? "PMMC on AC: torque ∝ i reverses 100 times a second, the average is zero — the pointer just trembles at zero. That is why PMMC meters need a rectifier for AC." : mi && ac ? "Moving iron on AC: torque ∝ i² is always positive, so it reads the RMS value. Notice the cramped scale at the low end (square law)." : mi ? "Moving iron on DC also works — torque ∝ I² — but the scale is non-uniform." : "PMMC on DC: θ ∝ I, a perfectly uniform scale. Try changing ζ to see under- and over-damping.");
+    const n = Object.keys(seen).length; if (n === 4 && !seen.won) { seen.won = 1; labWin("needle", 30, $("#nfb", ui), "all4", true); $("#nfb", ui).innerHTML += "<br>All four combinations explored: +30 XP"; } else if (n < 4) $("#nfb", ui).innerHTML += `<br><span style="color:#9fb3c0">Try all four instrument/supply combinations for +30 XP (${n}/4).</span>`; };
+  $("#nt", ui).onchange = () => { scale(); }; $("#ni", ui).oninput = () => $("#niv", ui).textContent = (+$("#ni", ui).value).toFixed(1); $("#nz", ui).oninput = () => $("#nzv", ui).textContent = (+$("#nz", ui).value).toFixed(2);
+  $("#non", ui).onclick = () => { on = true; note(); }; $("#noff", ui).onclick = () => on = false;
+  scale(); step();
+} },
+{ id: "range", u: 2, icon: "🛠️", name: "Range Extension Designer", sub: "Design the shunt or multiplier that turns a tiny movement into a real meter.", run(box) {
+  const ui = L1(`<p id="rgq" style="font-size:19px"></p><div class="row"><label style="margin:0">Your answer (Ω)</label><input id="rgin" type="number" step="any" style="max-width:200px"><button class="btn gold sm" id="rgc">Check</button><button class="btn sm teal" id="rgn">New design task</button></div><div id="rgfb"></div>
+    <p class="small" style="color:#9fb3c0">Ammeter: R<sub>sh</sub> = I<sub>m</sub>R<sub>m</sub>/(I − I<sub>m</sub>). Voltmeter: R<sub>s</sub> = V/I<sub>m</sub> − R<sub>m</sub>. Answers within 1 % are accepted.</p>`);
+  box.appendChild(ui); let ans, solved = false;
+  function task() { solved = false; const Im = pick([50e-6, 100e-6, 1e-3]), Rm = pick([100, 200, 500, 1000, 2000]); const amm = Math.random() < .5;
+    const lab = Im < 1e-3 ? Im * 1e6 + " µA" : "1 mA";
+    if (amm) { const I = pick([0.1, 0.5, 1, 5, 10]); ans = Im * Rm / (I - Im); $("#rgq", ui).innerHTML = `A movement with I<sub>m</sub> = ${lab} and R<sub>m</sub> = ${Rm} Ω must read <b>0–${I} A</b>. Find the shunt resistance.`; }
+    else { const V = pick([1, 10, 50, 100, 250].filter(v => v > 2 * Im * Rm)); ans = V / Im - Rm; $("#rgq", ui).innerHTML = `A movement with I<sub>m</sub> = ${lab} and R<sub>m</sub> = ${Rm} Ω must read <b>0–${V} V</b>. Find the multiplier resistance.`; }
+    $("#rgin", ui).value = ""; $("#rgfb", ui).innerHTML = ""; }
+  $("#rgn", ui).onclick = task;
+  $("#rgc", ui).onclick = () => { if (solved) return; const v = +$("#rgin", ui).value; if (near(v, ans, 0.01)) { solved = true; fb($("#rgfb", ui), true, `Correct: ${ans < 1 ? ans.toPrecision(4) : ans.toFixed(ans < 100 ? 3 : 0)} Ω. +20 XP`); bump("designer"); labWin("range", 20, $("#rgc", ui)); setTimeout(task, 1600); } else fb($("#rgfb", ui), false, "Not within 1 %. Check the formula and units (µA → A)."); };
+  task();
+} },
+{ id: "loading", exp: 2, u: 2, icon: "🔌", name: "The Loading Trap", sub: "See how a voltmeter disturbs the circuit it measures.", run(box) {
+  const M = [["Analog 1 kΩ/V (10 V range)", 1e4], ["Analog 20 kΩ/V (10 V range)", 2e5], ["DMM, 10 MΩ input", 1e7]];
+  const ui = L1(`<div class="cols"><div><svg class="full" viewBox="0 0 360 220" style="background:#0b141a;border-radius:12px"><text x="20" y="30" fill="#9fb3c0" font-size="14">20 V</text><line x1="40" y1="40" x2="40" y2="190" stroke="#cfe" stroke-width="2"/><line x1="40" y1="40" x2="200" y2="40" stroke="#cfe" stroke-width="2"/><rect x="185" y="55" width="30" height="45" fill="none" stroke="#7CFFB2" stroke-width="2"/><text x="225" y="83" fill="#7CFFB2" font-size="14">R1</text><line x1="200" y1="40" x2="200" y2="55" stroke="#cfe" stroke-width="2"/><line x1="200" y1="100" x2="200" y2="125" stroke="#cfe" stroke-width="2"/><rect x="185" y="125" width="30" height="45" fill="none" stroke="#7CFFB2" stroke-width="2"/><text x="225" y="153" fill="#7CFFB2" font-size="14">R2</text><line x1="200" y1="170" x2="200" y2="190" stroke="#cfe" stroke-width="2"/><line x1="40" y1="190" x2="200" y2="190" stroke="#cfe" stroke-width="2"/><circle cx="300" cy="148" r="26" fill="none" stroke="#FFD166" stroke-width="2"/><text x="300" y="154" fill="#FFD166" font-size="18" text-anchor="middle">V</text><line x1="200" y1="112" x2="300" y2="112" stroke="#FFD166"/><line x1="300" y1="112" x2="300" y2="122" stroke="#FFD166"/><line x1="200" y1="182" x2="300" y2="182" stroke="#FFD166"/><line x1="300" y1="174" x2="300" y2="182" stroke="#FFD166"/></svg></div>
+    <div><label>R1 = R2 = <b id="lrv">10 kΩ</b></label><input type="range" id="lr" min="2" max="6.3" step="0.1" value="4"><label>Voltmeter</label><select id="lm">${M.map((m, i) => `<option value="${i}">${m[0]}</option>`).join("")}</select>
+    <p>True voltage across R2: <span class="readout">10.00 V</span></p><p>Meter reads: <span class="readout" id="lrd">–</span> <span class="readout warn" id="ler"></span></p>
+    <hr style="border-color:#2c4350"><b>Predict first:</b> <span id="lq"></span><div class="row"><input id="lin" type="number" step="any" placeholder="reading in V" style="max-width:150px"><button class="btn gold sm" id="lc">Check</button><button class="btn sm teal" id="ln">New</button></div><div id="lfb"></div></div></div>`);
+  box.appendChild(ui); let qa, solved = false;
+  const rd = (R, Rv) => { const p = R * Rv / (R + Rv); return 20 * p / (R + p); };
+  const nice = (R) => R >= 1e6 ? (R / 1e6).toPrecision(3) + " MΩ" : R >= 1e3 ? (R / 1e3).toPrecision(3) + " kΩ" : R.toFixed(0) + " Ω";
+  function upd() { const R = 10 ** (+$("#lr", ui).value), Rv = M[+$("#lm", ui).value][1], v = rd(R, Rv); $("#lrv", ui).textContent = nice(R); $("#lrd", ui).textContent = v.toFixed(3) + " V"; $("#ler", ui).textContent = "error " + ((v - 10) / 10 * 100).toFixed(2) + " %"; }
+  function q() { solved = false; const R = pick([1e3, 1e4, 1e5, 1e6]), m = ri(0, 2); qa = rd(R, M[m][1]); $("#lq", ui).innerHTML = `R1 = R2 = ${nice(R)}, meter: ${M[m][0]}. What does it read?`; $("#lin", ui).value = ""; $("#lfb", ui).innerHTML = ""; }
+  $("#lr", ui).oninput = upd; $("#lm", ui).onchange = upd; $("#ln", ui).onclick = q;
+  $("#lc", ui).onclick = () => { if (solved) return; const v = +$("#lin", ui).value; if (near(v, qa, 0.02)) { solved = true; fb($("#lfb", ui), true, `Correct — ${qa.toFixed(3)} V. +15 XP`); labWin("loading", 15, $("#lc", ui)); setTimeout(q, 1500); } else fb($("#lfb", ui), false, "Hint: the meter resistance (S × range) appears in parallel with R2."); };
+  upd(); q();
+} },
+{ id: "scope", exp: 4, u: 2, icon: "📺", name: "Virtual DSO + Function Generator", sub: "Set V/div, s/div and trigger — then take the measurement challenge.", run(box) {
+  const VD = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5], TD = [1e-6, 2e-6, 5e-6, 1e-5, 2e-5, 5e-5, 1e-4, 2e-4, 5e-4, 1e-3, 2e-3, 5e-3, 1e-2];
+  const tdl = (t) => t >= 1e-3 ? t * 1e3 + " ms" : t >= 1e-6 ? +(t * 1e6).toPrecision(3) + " µs" : t + " s";
+  const ui = L1(`<div class="cols"><div id="scv"></div><div>
+    <div class="row" style="justify-content:space-between"><b>Function generator</b><span class="pill small" id="fgmode" style="color:#cfe;background:#0b141a">Free play</span></div>
+    <div id="fgp"><label>Waveform</label><select id="fw"><option>sine</option><option>square</option><option>triangle</option></select>
+    <label>Frequency (Hz)</label><input type="number" id="ff" value="1000" min="1" max="1000000"><label>Amplitude (V peak-to-peak)</label><input type="number" id="fa" value="4" step="0.1" min="0.01" max="20"><label>DC offset (V)</label><input type="number" id="fo" value="0" step="0.1"></div>
+    <b style="display:block;margin-top:10px">Oscilloscope</b><div class="grid g2" style="gap:8px"><div><label>V/div</label><select id="sv">${VD.map(v => `<option ${v === 1 ? "selected" : ""} value="${v}">${v} V</option>`).join("")}</select></div>
+    <div><label>Time/div</label><select id="st">${TD.map(t => `<option ${t === 2e-4 ? "selected" : ""} value="${t}">${tdl(t)}</option>`).join("")}</select></div>
+    <div><label>Coupling</label><select id="sc"><option>DC</option><option>AC</option></select></div><div><label>Trigger level (V)</label><input type="number" id="sl" value="0" step="0.1"></div></div>
+    <p class="small" id="smeas" style="color:#9fb3c0"></p>
+    <div class="row"><button class="btn gold sm" id="chal">Measurement challenge</button><button class="btn sm teal" id="free">Free play</button></div>
+    <div id="chbox" style="display:none"><p>Read the screen: find V<sub>pp</sub> and the frequency.</p><div class="row"><input id="cv" type="number" step="any" placeholder="Vpp (V)" style="max-width:120px"><input id="cf" type="number" step="any" placeholder="f (Hz)" style="max-width:140px"><button class="btn gold sm" id="cchk">Check</button></div><div id="cfb"></div></div></div></div>`);
+  box.appendChild(ui); const c = canvas($("#scv", ui), 500, 400); let hidden = null, raf = 0, solved = false;
+  const g = (id) => $(id, ui);
+  function sig() { if (hidden) return hidden; return { w: g("#fw").value, f: Math.max(1, +g("#ff").value), a: +g("#fa").value, o: +g("#fo").value }; }
+  function val(s, ph) { const p = ((ph % 1) + 1) % 1; let y = s.w === "sine" ? Math.sin(2 * Math.PI * p) : s.w === "square" ? (p < .5 ? 1 : -1) : (p < .5 ? 4 * p - 1 : 3 - 4 * p); return s.o + s.a / 2 * y; }
+  function draw() {
+    if (!document.body.contains(ui)) return; const s = sig(), vd = +g("#sv").value, td = +g("#st").value, ac = g("#sc").value === "AC", L = +g("#sl").value;
+    grid(c); const off = ac ? s.o : 0, lv = L; const lo = s.o - s.a / 2 - off, hi = s.o + s.a / 2 - off;
+    let ph0; if (lv > lo && lv < hi) { // find rising crossing
+      let best = 0; for (let k = 0; k < 400; k++) { const p = k / 400; if (val(s, p) - off <= lv && val(s, p + 1 / 400) - off > lv) { best = p; break; } } ph0 = best; } else ph0 = Math.random();
+    c.x.strokeStyle = "#7CFFB2"; c.x.lineWidth = 2; c.x.shadowColor = "#7CFFB2"; c.x.shadowBlur = 8; c.x.beginPath();
+    const T = 10 * td, N = 1000; for (let i = 0; i <= N; i++) { const t = i / N * T - T / 2, y = val(s, ph0 + s.f * t) - off; const X = i / N * c.W, Y = c.H / 2 - y / vd * (c.H / 8); i ? c.x.lineTo(X, Math.max(-5, Math.min(c.H + 5, Y))) : c.x.moveTo(X, Y); } c.x.stroke(); c.x.shadowBlur = 0;
+    c.x.fillStyle = "#FFD166"; const ty = c.H / 2 - lv / vd * (c.H / 8); c.x.beginPath(); c.x.moveTo(c.W - 10, ty); c.x.lineTo(c.W, ty - 6); c.x.lineTo(c.W, ty + 6); c.x.fill();
+    c.x.fillStyle = "#cfe"; c.x.font = "14px Times New Roman"; c.x.fillText(`CH1 ${vd} V/div  ${ac ? "AC" : "DC"}   ${tdl(td)}/div   Trig ↑ ${lv} V`, 8, 18);
+    if (!(lv > lo && lv < hi)) { c.x.fillStyle = "#FF6B5B"; c.x.fillText("Untriggered — trigger level outside the signal", 8, c.H - 10); }
+    g("#smeas").textContent = hidden ? "Measurements hidden during the challenge." : `Measure: Vpp = ${s.a.toFixed(2)} V · f = ${s.f} Hz · period = ${tdl(1 / s.f)} · shown: ${(10 * td * s.f).toFixed(2)} cycles`;
+    setTimeout(() => { raf = requestAnimationFrame(draw); }, 120);
+  }
+  g("#chal").onclick = () => { const f = pick([50, 100, 250, 500, 1000, 2000, 5000, 10000, 20000, 50000]), a = pick([0.2, 0.5, 1, 2, 3, 4, 6, 8, 10]); hidden = { w: pick(["sine", "square", "triangle"]), f, a, o: 0 }; solved = false;
+    g("#fgp").style.display = "none"; g("#chbox").style.display = ""; g("#fgmode").textContent = "Challenge"; g("#cv").value = ""; g("#cf").value = ""; g("#cfb").innerHTML = ""; };
+  g("#free").onclick = () => { hidden = null; g("#fgp").style.display = ""; g("#chbox").style.display = "none"; g("#fgmode").textContent = "Free play"; };
+  g("#cchk").onclick = () => { if (!hidden || solved) return; const v = +g("#cv").value, f = +g("#cf").value, ok = near(v, hidden.a, 0.06) && near(f, hidden.f, 0.06);
+    if (ok) { solved = true; fb(g("#cfb"), true, `Correct: ${hidden.a} Vpp, ${hidden.f} Hz ${hidden.w}. +30 XP`); bump("scope"); labWin("scope", 30, g("#cchk"), hidden.f + "Hz"); setTimeout(() => g("#chal").click(), 1500); }
+    else fb(g("#cfb"), false, "Adjust V/div and time/div so at least one full cycle fills the screen, then count divisions: Vpp = divisions × V/div; f = 1/(divisions × time/div)."); };
+  draw();
+} },
+{ id: "pqa", exp: 7, u: 2, icon: "〰️", name: "Harmonics & THD Studio", sub: "Add harmonics to the mains and see the waveform, spectrum and THD — like a power quality analyzer.", run(box) {
+  const HS = [3, 5, 7, 9, 11];
+  const ui = L1(`<div class="cols"><div><div id="pw"></div><div id="ps" style="margin-top:10px"></div></div><div>${HS.map(n => `<label>${n}${n===3?"rd":"th"} harmonic: <b id="hv${n}">0</b> % of V₁</label><input type="range" id="h${n}" min="0" max="40" value="${n === 3 ? 12 : n === 5 ? 8 : 0}">`).join("")}
+    <p>THD = <span class="readout" id="thd">–</span></p><button class="btn sm teal" id="pq">THD challenge</button><div id="pqbox"></div></div></div>`);
+  box.appendChild(ui); const cw = canvas($("#pw", ui), 520, 230), cs = canvas($("#ps", ui), 520, 160); let qa;
+  function upd() { const amp = {}; HS.forEach(n => { amp[n] = +$("#h" + n, ui).value / 100; $("#hv" + n, ui).textContent = Math.round(amp[n] * 100); });
+    const thd = Math.sqrt(HS.reduce((s, n) => s + amp[n] ** 2, 0)) * 100; $("#thd", ui).textContent = thd.toFixed(1) + " %";
+    const pts = []; for (let i = 0; i <= 400; i++) { const t = i / 400 * 2; let y = Math.sin(2 * Math.PI * t); HS.forEach(n => y += amp[n] * Math.sin(2 * Math.PI * n * t)); pts.push([t * 20, y * 325]); }
+    plotXY(cw, pts, { x0: 0, x1: 40, y0: -650, y1: 650, xl: "time (ms)", yl: "V" });
+    const x = cs.x; x.fillStyle = "#08110d"; x.fillRect(0, 0, cs.W, cs.H); [1, ...HS].forEach((n, i) => { const a = n === 1 ? 1 : amp[n]; const bw = 40, X = 30 + i * 78, Hh = a * (cs.H - 40); x.fillStyle = n === 1 ? "#C8962E" : "#7CFFB2"; x.fillRect(X, cs.H - 22 - Hh, bw, Hh); x.fillStyle = "#cfe"; x.font = "13px Times New Roman"; x.fillText("h" + n, X + 10, cs.H - 6); x.fillText(Math.round(a * 100) + "%", X + 6, cs.H - 26 - Hh); }); }
+  HS.forEach(n => $("#h" + n, ui).oninput = upd);
+  $("#pq", ui).onclick = () => { const V1 = 230, v3 = ri(5, 30), v5 = ri(2, 20), v7 = ri(0, 10); qa = Math.sqrt(v3 * v3 + v5 * v5 + v7 * v7) / V1 * 100;
+    $("#pqbox", ui).innerHTML = `<p>A PQA shows V₁ = 230 V, V₃ = ${v3} V, V₅ = ${v5} V, V₇ = ${v7} V. Find THD (%).</p><div class="row"><input id="pqi" type="number" step="any" style="max-width:120px"><button class="btn gold sm" id="pqc">Check</button></div><div id="pqf"></div>`;
+    let pdone = false; $("#pqc", ui).onclick = () => { if (pdone) return; const v = +$("#pqi", ui).value; if (Math.abs(v - qa) <= 0.3) { pdone = true; fb($("#pqf", ui), true, `Correct: ${qa.toFixed(2)} %. +20 XP`); labWin("pqa", 20, $("#pqc", ui)); } else fb($("#pqf", ui), false, "THD = √(V₃² + V₅² + V₇²) / V₁ × 100."); }; };
+  upd();
+} },
+{ id: "probe", exp: 5, u: 2, icon: "🧲", name: "Pick the Right Probe", sub: "Real measurement jobs — choose the instrument that does it safely and correctly.", run(box) {
+  const T = ["HV differential probe", "Hall-effect clamp-on probe", "Rogowski coil", "Passive ×10 probe", "Current transformer clamp", "Power quality analyzer"];
+  const Q = [["Switch-node voltage of a 400 V inverter, with an earthed oscilloscope.", 0, "Both points float far above earth; a differential probe measures V₊ − V₋ safely."],
+    ["DC current from an EV battery pack (about 150 A).", 1, "Only a Hall-effect sensor responds to DC current without breaking the circuit."],
+    ["5 kA AC current in a thick busbar, with a flexible loop that fits around it.", 2, "A Rogowski coil is air-cored (never saturates), flexible and light — ideal for very large AC currents."],
+    ["A 1 MHz clock signal on a 3.3 V microcontroller board.", 3, "A compensated passive ×10 probe has high input impedance and enough bandwidth for ground-referenced logic signals."],
+    ["Load current of a 230 V, 50 Hz motor, for a quick check with a meter.", 4, "A CT clamp is simple and accurate for AC at mains frequency."],
+    ["Week-long logging of harmonics, power factor and sags on a factory feeder.", 5, "A PQA records V, I, P, PF, THD and events over time."],
+    ["Gate-to-source voltage of the high-side MOSFET in a half-bridge.", 0, "The source of the high-side switch moves with the switch node — it is floating, so use a differential probe."],
+    ["Fast switching current pulse (10 A, 100 ns) in an SMPS, including its DC part.", 1, "A high-bandwidth Hall-effect current probe senses DC and fast edges together."]];
+  const ui = L1(`<p id="pq" style="font-size:19px"></p><div class="grid g2" style="gap:8px" id="popts"></div><div id="pfb"></div><p class="readout" id="psc"></p>`); box.appendChild(ui);
+  let k = 0, sc = 0, order = Q.map((_, i) => i).sort(() => Math.random() - .5);
+  function show() { if (k >= order.length) { $("#pq", ui).textContent = `Done! ${sc} / ${Q.length} correct.`; $("#popts", ui).innerHTML = `<button class="btn sm teal" id="prs">Play again</button>`; $("#prs", ui).onclick = () => { k = 0; sc = 0; order.sort(() => Math.random() - .5); show(); }; return; }
+    const q = Q[order[k]]; $("#pq", ui).textContent = `${k + 1}. ${q[0]}`; $("#popts", ui).innerHTML = T.map((t, i) => `<button class="btn sm teal" data-i="${i}">${t}</button>`).join("");
+    $$("#popts button", ui).forEach(b => b.onclick = () => { if ($("#popts", ui).dataset.done === String(k)) return; $("#popts", ui).dataset.done = String(k); const ok = +b.dataset.i === q[1]; if (ok) { sc++; labWin("probe", 10, b); } fb($("#pfb", ui), ok, (ok ? "Correct! +10 XP — " : `Better choice: <b>${T[q[1]]}</b>. `) + q[2]); $("#psc", ui).textContent = `Score ${sc}`; k++; setTimeout(show, 1800); }); }
+  show();
+} },
+/* ---------- UNIT III ---------- */
+{ id: "bridge", u: 3, icon: "⚖️", name: "Strain Gauge Bridge", sub: "Strain a beam and follow the signal: ΔR → bridge voltage → amplifier → ADC code.", run(box) {
+  const ui = L1(`<div class="cols"><div><svg id="bsvg" class="full" viewBox="0 0 400 170" style="background:#0b141a;border-radius:12px"></svg>
+    <table class="plain small" style="color:#dfe8ee;margin-top:8px"><tr><td>ΔR (per active gauge)</td><td class="readout" id="bdr"></td></tr><tr><td>Bridge output V<sub>o</sub></td><td class="readout" id="bvo"></td></tr><tr><td>After in-amp</td><td class="readout" id="bva"></td></tr><tr><td>12-bit ADC code (0–5 V, mid-scale = 0)</td><td class="readout" id="bad"></td></tr></table></div>
+    <div><label>Strain ε = <b id="bev">500</b> µε</label><input type="range" id="be" min="-1000" max="1000" step="10" value="500">
+    <label>Configuration</label><select id="bc"><option value="1">Quarter bridge (1 active)</option><option value="2">Half bridge (2 active, ±)</option><option value="4">Full bridge (4 active)</option></select>
+    <label>Excitation</label><select id="bx"><option value="5">5 V</option><option value="10">10 V</option></select><label>Gauge: 120 Ω, GF = 2.0 · In-amp gain</label><select id="bg"><option>100</option><option>500</option><option>1000</option></select>
+    <hr style="border-color:#2c4350"><b>Challenge:</b> <span id="bq"></span><div class="row"><input id="bin" type="number" step="any" placeholder="Vo in mV" style="max-width:140px"><button class="btn gold sm" id="bck">Check</button><button class="btn sm teal" id="bnw">New</button></div><div id="bfb"></div></div></div>`);
+  box.appendChild(ui); let qa, solved = false;
+  const vo = (e, n, Vx) => { const x = 2 * e * 1e-6; return n === 1 ? Vx * x / (4 + 2 * x) : n === 2 ? Vx * x / 2 : Vx * x; };
+  function upd() { const e = +$("#be", ui).value, n = +$("#bc", ui).value, Vx = +$("#bx", ui).value, G = +$("#bg", ui).value; $("#bev", ui).textContent = e;
+    const v = vo(e, n, Vx), va = Math.max(-2.5, Math.min(2.5, v * G)); $("#bdr", ui).textContent = (120 * 2 * e * 1e-6 * 1000).toFixed(1) + " mΩ"; $("#bvo", ui).textContent = (v * 1000).toFixed(3) + " mV"; $("#bva", ui).textContent = va.toFixed(3) + " V" + (Math.abs(v * G) > 2.5 ? " (clipped!)" : ""); $("#bad", ui).textContent = Math.max(0, Math.min(4095, Math.round(2048 + va / 5 * 4096)));
+    const bend = e / 1000 * 18; $("#bsvg", ui).innerHTML = `<path d="M 30 70 Q 200 ${70 + bend} 370 70 L 370 90 Q 200 ${90 + bend} 30 90 Z" fill="#476b85" stroke="#9fb3c0"/><rect x="20" y="40" width="14" height="80" fill="#888"/>
+      <rect x="170" y="${62 + bend / 2}" width="60" height="9" fill="#C8962E"/><text x="200" y="${55 + bend / 2}" fill="#FFD166" font-size="13" text-anchor="middle">gauge</text><path d="M 370 ${80 + bend * 0} l 0 ${e > 0 ? 40 : -40}" stroke="#FF6B5B" stroke-width="3" marker-end=""/><text x="200" y="150" fill="#cfe" font-size="13" text-anchor="middle">${e >= 0 ? "tension (top)" : "compression (top)"}: ${e} µε</text>`; }
+  function q() { solved = false; const e = pick([200, 300, 400, 500, 600, 800, 1000]), n = pick([1, 2, 4]), Vx = pick([5, 10]); qa = vo(e, n, Vx) * 1000; $("#bq", ui).textContent = `${["", "Quarter", "Half", "", "Full"][n]} bridge, ${Vx} V excitation, GF 2, ε = ${e} µε. Find Vo (mV).`; $("#bin", ui).value = ""; $("#bfb", ui).innerHTML = ""; }
+  ["#be", "#bc", "#bx", "#bg"].forEach(s => $(s, ui).oninput = upd); $("#bnw", ui).onclick = q;
+  $("#bck", ui).onclick = () => { if (solved) return; const v = +$("#bin", ui).value; if (near(v, qa, 0.03)) { solved = true; fb($("#bfb", ui), true, `Correct: ${qa.toFixed(3)} mV. +20 XP`); labWin("bridge", 20, $("#bck", ui)); setTimeout(q, 1500); } else fb($("#bfb", ui), false, "Quarter ≈ Vex·GF·ε/4, half = Vex·GF·ε/2, full = Vex·GF·ε."); };
+  upd(); q();
+} },
+{ id: "temp", exp: 9, u: 3, icon: "🌡️", name: "Sensor Detective", sub: "An unlabelled calibration curve (units hidden) appears. Use its shape and numbers to identify the sensor.", run(box) {
+  const NK = [0, 4.096, 8.138, 12.209, 16.397, 20.644, 24.905, 29.129, 33.275, 37.326, 41.276]; // NIST ITS-90 type K, mV at 0,100…1000 °C
+  const tk = (T) => { const i = Math.min(9, Math.floor(T / 100)), f = (T - 100 * i) / 100; return NK[i] + f * (NK[i + 1] - NK[i]); };
+  const S5 = [["Pt100 RTD", (T) => 100 * (1 + 0.00385 * T)], ["NTC thermistor (10 kΩ, β = 3950)", (T) => 10000 * Math.exp(3950 * (1 / (T + 273.15) - 1 / 298.15))], ["Type K thermocouple", tk], ["LM35 IC sensor", (T) => 10 * T], ["PTC thermistor (switching)", (T) => 100 + 50000 / (1 + Math.exp(-(T - 90) / 4))]];
+  const WHY = ["Starts at 100 (Ω) at 0 °C and rises linearly by about 0.385 Ω/°C.", "Starts at about 34 kΩ at 0 °C and falls steeply and non-linearly — very high sensitivity at low temperature.", "Starts at 0 and rises by only about 0.04 per °C (mV) — a tiny output, but the range extends beyond 1000 °C.", "Starts at 0 and rises exactly 10 per °C (mV/°C) — linear, up to about 150 °C.", "Almost flat, then a sharp rise at the switching (Curie) temperature — used for protection, not measurement."];
+  const ui = L1(`<div class="cols"><div id="tcv"></div><div><b>Which sensor is this?</b><div class="grid" style="gap:8px;margin-top:8px">${S5.map((s, i) => `<button class="btn sm teal" data-i="${i}">${s[0]}</button>`).join("")}</div><div id="tfb2"></div><p class="readout" id="tsc2">Score 0</p></div></div>`);
+  box.appendChild(ui); const c = canvas($("#tcv", ui), 520, 320); let cur, sc = 0;
+  let answered = false;
+  function show() { answered = false; cur = ri(0, S5.length - 1); const s = S5[cur]; const pts = []; for (let i = 0; i <= 200; i++) { const T = 150 * i / 200; pts.push([T, s[1](T)]); }
+    const ys = pts.map(p => p[1]); let y0 = Math.min(...ys), y1 = Math.max(...ys); const pad = (y1 - y0) * .1 || 1; plotXY(c, pts, { x0: 0, x1: 150, y0: Math.max(0, y0 - pad), y1: y1 + pad, xl: "temperature (°C)", yl: "output (units hidden)" }); }
+  $$("button[data-i]", ui).forEach(b => b.onclick = () => { if (answered) return; answered = true; const ok = +b.dataset.i === cur; if (ok) { sc++; bump("sensor"); labWin("temp", 10, b); } fb($("#tfb2", ui), ok, (ok ? "Correct! +10 XP — " : `It was the <b>${S5[cur][0]}</b>. `) + WHY[cur]); $("#tsc2", ui).textContent = "Score " + sc; setTimeout(show, 1700); });
+  show();
+} },
+{ id: "lvdt", exp: 10, u: 3, icon: "🧲", name: "LVDT Explorer", sub: "Move the core and watch the two secondaries — magnitude tells distance, phase tells direction.", run(box) {
+  const ui = L1(`<div class="cols"><div><svg id="lsvg" class="full" viewBox="0 0 420 130" style="background:#0b141a;border-radius:12px"></svg><div id="lcv" style="margin-top:8px"></div></div>
+    <div><label>Core position x = <b id="lxv">0.0</b> mm</label><input type="range" id="lx" min="-10" max="10" step="0.1" value="3"><p>Sensitivity: 50 mV/mm (output RMS)</p>
+    <p>Output: <span class="readout" id="lo"></span> <span class="readout warn" id="lph"></span></p><hr style="border-color:#2c4350"><b>Challenge:</b> <span id="lq2"></span><div class="row"><input id="lin2" type="number" step="any" placeholder="x in mm (signed)" style="max-width:170px"><button class="btn gold sm" id="lck">Check</button><button class="btn sm teal" id="lnw">New</button></div><div id="lfb2"></div></div></div>`);
+  box.appendChild(ui); const c = canvas($("#lcv", ui), 520, 220); let qa, solved = false;
+  function upd() { const x = +$("#lx", ui).value; $("#lxv", ui).textContent = x.toFixed(1); const v = 0.05 * Math.abs(x); $("#lo", ui).textContent = (v * 1000).toFixed(0) + " mV"; $("#lph", ui).textContent = Math.abs(x) < 0.05 ? "null" : x > 0 ? "in phase (0°)" : "anti-phase (180°)";
+    const X = 210 + x * 9; $("#lsvg", ui).innerHTML = `<rect x="150" y="30" width="120" height="70" fill="none" stroke="#C8962E" stroke-width="2"/><text x="210" y="22" fill="#C8962E" font-size="12" text-anchor="middle">primary</text><rect x="70" y="30" width="78" height="70" fill="none" stroke="#7CFFB2" stroke-width="2"/><text x="109" y="22" fill="#7CFFB2" font-size="12" text-anchor="middle">S1</text><rect x="272" y="30" width="78" height="70" fill="none" stroke="#7CFFB2" stroke-width="2"/><text x="311" y="22" fill="#7CFFB2" font-size="12" text-anchor="middle">S2</text>
+      <rect x="${X - 60}" y="56" width="120" height="18" rx="4" fill="#9aa8b2"/><line x1="${X + 60}" y1="65" x2="${X + 100}" y2="65" stroke="#9aa8b2" stroke-width="4"/><text x="210" y="120" fill="#cfe" font-size="13" text-anchor="middle">core</text>`;
+    const pts1 = [], pts2 = []; for (let i = 0; i <= 300; i++) { const t = i / 300 * 2; pts1.push([t, Math.sin(2 * Math.PI * t)]); pts2.push([t, (x / 10) * Math.sin(2 * Math.PI * t)]); }
+    plotXY(c, pts1, { x0: 0, x1: 2, y0: -1.2, y1: 1.2, col: "#C8962E", xl: "cycles", yl: "normalised" }); plotXY(c, pts2, { x0: 0, x1: 2, y0: -1.2, y1: 1.2, clear: false }); }
+  function q() { solved = false; const x = pick([-1, 1]) * pick([1, 2, 2.5, 4, 5, 6, 8]); qa = x; $("#lq2", ui).textContent = `Output is ${Math.round(0.05 * Math.abs(x) * 1000)} mV, ${x > 0 ? "in phase" : "180° out of phase"} with the excitation. Where is the core?`; $("#lin2", ui).value = ""; $("#lfb2", ui).innerHTML = ""; }
+  $("#lx", ui).oninput = upd; $("#lnw", ui).onclick = q;
+  $("#lck", ui).onclick = () => { if (solved) return; const v = +$("#lin2", ui).value; if (Math.abs(v - qa) <= 0.2) { solved = true; fb($("#lfb2", ui), true, `Correct: ${qa > 0 ? "+" : ""}${qa} mm. +15 XP`); labWin("lvdt", 15, $("#lck", ui)); setTimeout(q, 1500); } else fb($("#lfb2", ui), false, "Distance = output ÷ sensitivity; the phase gives the sign (in phase = +, anti-phase = −)."); };
+  upd(); q();
+} },
+{ id: "cmrr", u: 3, icon: "🎚️", name: "CMRR & In-Amp Lab", sub: "A tiny bridge signal riding on a big common-mode voltage — how much error sneaks in?", run(box) {
+  const ui = L1(`<div class="grid g2"><div><label>Differential signal V<sub>d</sub> = <b id="cdv">5</b> mV</label><input type="range" id="cd" min="1" max="50" value="5"><label>Common-mode voltage V<sub>cm</sub> = <b id="ccv">2.0</b> V</label><input type="range" id="cc" min="0" max="10" step="0.1" value="2">
+    <label>CMRR = <b id="crv">80</b> dB</label><input type="range" id="cr" min="40" max="130" value="80"><label>Gain resistor R<sub>G</sub> (AD620: G = 1 + 49.4 kΩ/R<sub>G</sub>)</label><select id="cg"><option value="49400">49.4 kΩ (G = 2)</option><option value="5490">5.49 kΩ (G ≈ 10)</option><option value="499" selected>499 Ω (G ≈ 100)</option><option value="49.9">49.9 Ω (G ≈ 991)</option></select></div>
+    <div><p>Gain G = <span class="readout" id="cG"></span></p><p>Ideal output = <span class="readout" id="ci"></span></p><p>Common-mode error (input-referred) = <span class="readout warn" id="ce"></span></p><p>Error relative to signal = <span class="readout warn" id="cp"></span></p>
+    <hr style="border-color:#2c4350"><b>Challenge:</b> <span id="cq"></span><div class="row"><input id="cin" type="number" step="any" placeholder="error in µV" style="max-width:150px"><button class="btn gold sm" id="cck">Check</button><button class="btn sm teal" id="cnw">New</button></div><div id="cfb2"></div></div></div>`);
+  box.appendChild(ui); let qa, solved = false;
+  function upd() { const vd = +$("#cd", ui).value, vc = +$("#cc", ui).value, db = +$("#cr", ui).value, G = 1 + 49400 / +$("#cg", ui).value; $("#cdv", ui).textContent = vd; $("#ccv", ui).textContent = vc.toFixed(1); $("#crv", ui).textContent = db;
+    const e = vc / 10 ** (db / 20); $("#cG", ui).textContent = G.toFixed(1); const vi = G * vd / 1000; $("#ci", ui).textContent = Math.abs(vi) > 13 ? "13.0 V (saturated — reduce the gain)" : vi.toFixed(3) + " V"; $("#ce", ui).textContent = e >= 1e-3 ? (e * 1000).toFixed(2) + " mV" : (e * 1e6).toFixed(1) + " µV"; $("#cp", ui).textContent = (e / (vd / 1000) * 100).toFixed(3) + " %"; }
+  function q() { solved = false; const db = pick([60, 80, 90, 100, 120]), vc = pick([1, 2, 2.5, 5, 10]); qa = vc / 10 ** (db / 20) * 1e6; $("#cq", ui).textContent = `CMRR = ${db} dB and V_cm = ${vc} V. Input-referred error in µV?`; $("#cin", ui).value = ""; $("#cfb2", ui).innerHTML = ""; }
+  ["#cd", "#cc", "#cr", "#cg"].forEach(s => $(s, ui).oninput = upd); $("#cnw", ui).onclick = q;
+  $("#cck", ui).onclick = () => { if (solved) return; const v = +$("#cin", ui).value; if (near(v, qa, 0.03)) { solved = true; fb($("#cfb2", ui), true, `Correct: ${qa.toPrecision(3)} µV. +15 XP`); labWin("cmrr", 15, $("#cck", ui)); setTimeout(q, 1500); } else fb($("#cfb2", ui), false, "Error = V_cm / 10^(dB/20). Convert to µV."); };
+  upd(); q();
+} },
+{ id: "loop", u: 3, icon: "🔁", name: "4–20 mA Loop", sub: "The industrial standard signal — and why it starts at 4 mA, not zero.", run(box) {
+  const ui = L1(`<div class="cols"><div><svg id="lpsvg" class="full" viewBox="0 0 420 200" style="background:#0b141a;border-radius:12px"></svg></div><div>
+    <p>Transmitter: pressure, range <b>0–10 bar</b>.</p><label>Process pressure = <b id="lpv">5.0</b> bar</label><input type="range" id="lp" min="0" max="10" step="0.1" value="5">
+    <p>Loop current: <span class="readout" id="lpi"></span></p><button class="btn sm brick" id="lpb">Cut the wire</button> <button class="btn sm teal" id="lpf">Repair</button>
+    <hr style="border-color:#2c4350"><b>Challenge:</b> <span id="lpq"></span><div class="row"><input id="lpin" type="number" step="any" placeholder="pressure (bar)" style="max-width:150px"><button class="btn gold sm" id="lpc">Check</button><button class="btn sm teal" id="lpn">New</button></div><div id="lpfb"></div></div></div>`);
+  box.appendChild(ui); let broken = false, qa, solved = false;
+  function upd() { const p = +$("#lp", ui).value; $("#lpv", ui).textContent = p.toFixed(1); const I = broken ? 0 : 4 + 16 * p / 10; $("#lpi", ui).textContent = I.toFixed(2) + " mA" + (broken ? " — FAULT: below 4 mA, wire broken!" : "");
+    $("#lpi", ui).className = "readout" + (broken ? " warn" : "");
+    $("#lpsvg", ui).innerHTML = `<rect x="20" y="70" width="90" height="60" rx="8" fill="#1F4E79"/><text x="65" y="105" fill="#fff" font-size="13" text-anchor="middle">Transmitter</text><rect x="310" y="70" width="90" height="60" rx="8" fill="#2E8B8B"/><text x="355" y="98" fill="#fff" font-size="13" text-anchor="middle">PLC input</text><text x="355" y="116" fill="#fff" font-size="12" text-anchor="middle">250 Ω</text>
+      <path d="M 110 85 L 310 85" stroke="${broken ? "#555" : "#7CFFB2"}" stroke-width="3" stroke-dasharray="${broken ? "0" : "10 8"}"><animate attributeName="stroke-dashoffset" from="36" to="0" dur="${broken ? 0 : 2.4 - 0.1 * (4 + 16 * p / 10)}s" repeatCount="indefinite"/></path>
+      <path d="M 310 115 L 110 115" stroke="#7CFFB2" stroke-width="3" stroke-dasharray="10 8" opacity="${broken ? .2 : 1}"/>${broken ? '<text x="210" y="70" fill="#FF6B5B" font-size="22" text-anchor="middle">✂</text>' : ""}
+      <text x="210" y="160" fill="#cfe" font-size="14" text-anchor="middle">${broken ? "0 mA → alarm (live zero detects the break)" : (4 + 16 * p / 10).toFixed(2) + " mA → " + ((4 + 16 * p / 10) * 0.25).toFixed(2) + " V across 250 Ω"}</text>`; }
+  function q() { solved = false; const I = pick([4, 6, 8, 10, 12, 14, 16, 18, 20, 7.2, 13.6]); qa = (I - 4) / 16 * 10; $("#lpq", ui).textContent = `The PLC reads ${I} mA. What is the pressure?`; $("#lpin", ui).value = ""; $("#lpfb", ui).innerHTML = ""; }
+  $("#lp", ui).oninput = upd; $("#lpb", ui).onclick = () => { broken = true; upd(); }; $("#lpf", ui).onclick = () => { broken = false; upd(); }; $("#lpn", ui).onclick = q;
+  $("#lpc", ui).onclick = () => { if (solved) return; const v = +$("#lpin", ui).value; if (Math.abs(v - qa) <= 0.05) { solved = true; fb($("#lpfb", ui), true, `Correct: ${qa.toFixed(2)} bar. +10 XP`); labWin("loop", 10, $("#lpc", ui)); setTimeout(q, 1500); } else fb($("#lpfb", ui), false, "Value = (I − 4)/16 × span."); };
+  upd(); q();
+} },
+{ id: "power", exp: 6, u: 2, icon: "⚡", name: "Power Triangle", sub: "Set voltage, current and phase angle — read P, Q, S and power factor like a power quality analyzer.", run(box) {
+  const ui = L1(`<div class="cols"><div id="pwc"></div><div><label>V<sub>rms</sub> = <b id="pvv">230</b> V</label><input type="range" id="pv" min="100" max="250" value="230"><label>I<sub>rms</sub> = <b id="piv">10.0</b> A</label><input type="range" id="pi" min="0.5" max="20" step="0.5" value="10"><label>Phase angle φ = <b id="ppv">30</b>° (current lagging)</label><input type="range" id="pp" min="0" max="90" value="30">
+    <p>P = <span class="readout" id="pP"></span> · Q = <span class="readout" id="pQ"></span> · S = <span class="readout" id="pS"></span> · PF = <span class="readout warn" id="pF"></span></p>
+    <hr style="border-color:#2c4350"><b>Challenge:</b> <span id="pq2"></span><div class="row"><input id="pin2" type="number" step="any" placeholder="kW" style="max-width:120px"><input id="pin3" type="number" step="any" placeholder="kVAR" style="max-width:120px"><button class="btn gold sm" id="pck">Check</button><button class="btn sm teal" id="pnw">New</button></div><div id="pfb3"></div></div></div>`);
+  box.appendChild(ui); const c = canvas($("#pwc", ui), 420, 300); let qa, solved = false;
+  function upd() { const V = +$("#pv", ui).value, I = +$("#pi", ui).value, ph = +$("#pp", ui).value * Math.PI / 180; $("#pvv", ui).textContent = V; $("#piv", ui).textContent = I.toFixed(1); $("#ppv", ui).textContent = Math.round(ph * 180 / Math.PI);
+    const S2 = V * I, P2 = S2 * Math.cos(ph), Q2 = S2 * Math.sin(ph); $("#pP", ui).textContent = (P2 / 1000).toFixed(2) + " kW"; $("#pQ", ui).textContent = (Q2 / 1000).toFixed(2) + " kVAR"; $("#pS", ui).textContent = (S2 / 1000).toFixed(2) + " kVA"; $("#pF", ui).textContent = Math.cos(ph).toFixed(3) + " lag";
+    const x = c.x, k = 220 / Math.max(S2, 1); x.fillStyle = "#08110d"; x.fillRect(0, 0, c.W, c.H); x.lineWidth = 3; x.font = "14px Times New Roman";
+    const ox = 40, oy = 250; x.strokeStyle = "#7CFFB2"; x.beginPath(); x.moveTo(ox, oy); x.lineTo(ox + P2 * k, oy); x.stroke(); x.fillStyle = "#7CFFB2"; x.fillText("P", ox + P2 * k / 2, oy + 18);
+    x.strokeStyle = "#FFD166"; x.beginPath(); x.moveTo(ox + P2 * k, oy); x.lineTo(ox + P2 * k, oy - Q2 * k); x.stroke(); x.fillStyle = "#FFD166"; x.fillText("Q", ox + P2 * k + 6, oy - Q2 * k / 2);
+    x.strokeStyle = "#9fd3ff"; x.beginPath(); x.moveTo(ox, oy); x.lineTo(ox + P2 * k, oy - Q2 * k); x.stroke(); x.fillStyle = "#9fd3ff"; x.fillText("S", ox + P2 * k / 2 - 14, oy - Q2 * k / 2 - 6); x.fillStyle = "#cfe"; x.fillText("φ", ox + 30, oy - 6); }
+  function q() { solved = false; const V = 230, I = pick([5, 8, 10, 12, 15]), pf = pick([0.6, 0.7, 0.8, 0.85, 0.9]); const S2 = V * I; qa = [S2 * pf / 1000, S2 * Math.sqrt(1 - pf * pf) / 1000]; $("#pq2", ui).textContent = `230 V, ${I} A, PF ${pf} lagging. Find P (kW) and Q (kVAR).`; $("#pin2", ui).value = ""; $("#pin3", ui).value = ""; $("#pfb3", ui).innerHTML = ""; }
+  ["#pv", "#pi", "#pp"].forEach(id => $(id, ui).oninput = upd); $("#pnw", ui).onclick = q;
+  $("#pck", ui).onclick = () => { if (solved) return; const a = +$("#pin2", ui).value, b = +$("#pin3", ui).value; if (near(a, qa[0], 0.02) && near(b, qa[1], 0.02)) { solved = true; fb($("#pfb3", ui), true, `Correct: P = ${qa[0].toFixed(2)} kW, Q = ${qa[1].toFixed(2)} kVAR. +20 XP`); labWin("power", 20, $("#pck", ui)); setTimeout(q, 1600); } else fb($("#pfb3", ui), false, "S = V·I; P = S·PF; Q = √(S² − P²)."); };
+  upd(); q();
+} },
+{ id: "energy", exp: 8, u: 2, icon: "🔢", name: "Energy Meter Calibration", sub: "Count the meter's LED pulses against a standard load and find its percentage error and correction.", run(box) {
+  const ui = L1(`<div class="cols"><div><svg id="emsvg" class="full" viewBox="0 0 360 220" style="background:#f3efe3;border-radius:14px"></svg></div><div>
+    <p id="emq"></p><button class="btn sm teal" id="emrun">Run the test</button><p>Pulses counted: <span class="readout" id="emp">0</span> · elapsed <span class="readout" id="emt">0.0</span> min</p>
+    <div class="row"><input id="emin" type="number" step="any" placeholder="% error" style="max-width:130px"><button class="btn gold sm" id="emck">Check</button><button class="btn sm teal" id="emnw">New meter</button></div><div id="emfb"></div>
+    <p class="small" style="color:#9fb3c0">True energy = P × t. Registered energy = pulses ÷ meter constant. % error = (registered − true)/true × 100. A positive error means the meter runs fast; the correction is the error with its sign reversed.</p></div></div>`);
+  box.appendChild(ui); let T, solved = false, raf = 0;
+  function setup() { solved = false; const k = pick([1600, 3200, 6400]), Pw = pick([500, 1000, 1500, 2000]), mins = pick([3, 5, 6, 10]), err = pick([-3, -2, -1.5, -1, 0.5, 1, 2, 2.5]) / 100;
+    const trueE = Pw / 1000 * mins / 60, pulses = Math.round(trueE * k * (1 + err)); T = { k, Pw, mins, trueE, pulses, ans: (pulses / k - trueE) / trueE * 100 };
+    $("#emq", ui).innerHTML = `Meter constant <b>${k} imp/kWh</b>. A standard load of <b>${Pw} W</b> (unity PF) runs for <b>${mins} min</b>.`; $("#emp", ui).textContent = 0; $("#emt", ui).textContent = "0.0"; $("#emin", ui).value = ""; $("#emfb", ui).innerHTML = ""; drawM(false); }
+  function drawM(on) { $("#emsvg", ui).innerHTML = `<rect x="80" y="20" width="200" height="180" rx="12" fill="#e6e1d2" stroke="#333"/><rect x="100" y="45" width="160" height="48" fill="#0b141a"/><text x="180" y="78" fill="#7CFFB2" font-size="22" text-anchor="middle" font-family="Times New Roman">kWh</text><circle cx="180" cy="130" r="10" fill="${on ? "#FF4B3A" : "#5a1a14"}"/><text x="180" y="160" font-size="13" text-anchor="middle" fill="#333">${T ? T.k : ""} imp/kWh</text><text x="180" y="185" font-size="12" text-anchor="middle" fill="#333">Class 1.0 · 230 V 5(30) A</text>`; }
+  $("#emrun", ui).onclick = () => { cancelAnimationFrame(raf); const t0 = performance.now(), dur = 4000; let shown = 0;
+    const step = () => { if (!document.body.contains(ui)) return; const f = Math.min(1, (performance.now() - t0) / dur); const n = Math.floor(f * T.pulses); if (n > shown) { shown = n; drawM(true); setTimeout(() => drawM(false), 40); } $("#emp", ui).textContent = n; $("#emt", ui).textContent = (f * T.mins).toFixed(1); if (f < 1) raf = requestAnimationFrame(step); };
+    step(); };
+  $("#emnw", ui).onclick = setup;
+  $("#emck", ui).onclick = () => { if (solved) return; const v = +$("#emin", ui).value; if (Math.abs(v - T.ans) <= 0.15) { solved = true; fb($("#emfb", ui), true, `Correct: ${T.ans.toFixed(2)} % (registered ${(T.pulses / T.k).toFixed(4)} kWh vs true ${T.trueE.toFixed(4)} kWh). Correction = ${(-T.ans).toFixed(2)} %. +25 XP`); labWin("energy", 25, $("#emck", ui)); } else fb($("#emfb", ui), false, "Run the test, note the pulses, then compute registered energy = pulses/constant."); };
+  setup();
+} },
+{ id: "cjc", exp: 9, u: 3, icon: "🧊", name: "Cold-Junction Compensation", sub: "A type K thermocouple reads a few millivolts — but the terminals are not at 0 °C. Correct it.", run(box) {
+  const NK = [0, 4.096, 8.138, 12.209, 16.397, 20.644, 24.905, 29.129, 33.275, 37.326, 41.276];
+  const E = (T) => { const i = Math.max(0, Math.min(9, Math.floor(T / 100))), f = (T - 100 * i) / 100; return NK[i] + f * (NK[i + 1] - NK[i]); };
+  const Tinv = (e) => { let i = 0; while (i < 9 && NK[i + 1] < e) i++; return 100 * i + 100 * (e - NK[i]) / (NK[i + 1] - NK[i]); };
+  const ui = L1(`<p class="small" style="color:#9fb3c0">Type K table (NIST ITS-90, reference junction at 0 °C): ${NK.map((v, i) => `${i * 100} °C → ${v} mV`).join(" · ")}. Use linear interpolation between table points; near room temperature E ≈ 0.0397 mV/°C.</p>
+    <p id="cq3" style="font-size:19px"></p><div class="row"><input id="cin3" type="number" step="any" placeholder="hot junction °C" style="max-width:170px"><button class="btn gold sm" id="cck3">Check</button><button class="btn sm teal" id="cnw3">New reading</button></div><div id="cfb3"></div>`);
+  box.appendChild(ui); let qa, solved = false;
+  function q() { solved = false; const Th = pick([150, 220, 300, 375, 450, 520, 640, 800]), Tc = pick([25, 28, 30, 32, 35]); const ecj = Tc * 0.0397, v = E(Th) - ecj; qa = Tinv(v + ecj);
+    $("#cq3", ui).innerHTML = `The meter reads <b>${v.toFixed(3)} mV</b>. The terminal block (cold junction) is at <b>${Tc} °C</b>. What is the hot-junction temperature?`; $("#cin3", ui).value = ""; $("#cfb3", ui).innerHTML = ""; }
+  $("#cnw3", ui).onclick = q;
+  $("#cck3", ui).onclick = () => { if (solved) return; const v = +$("#cin3", ui).value; if (Math.abs(v - qa) <= 3) { solved = true; fb($("#cfb3", ui), true, `Correct: about ${qa.toFixed(0)} °C. Add the cold-junction EMF (≈ ${(0.0397).toFixed(4)} mV/°C × T_cj) to the reading, then convert using the table. +20 XP`); labWin("cjc", 20, $("#cck3", ui)); } else fb($("#cfb3", ui), false, "Do not just add the temperatures. Add the cold-junction EMF to the measured EMF first, then convert the total EMF to temperature."); };
+  q();
+} }
+];
+
+/* ===================== BOOT ===================== */
+function toggleTheme() { const r = document.documentElement; const cur = r.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); r.dataset.theme = cur === "dark" ? "light" : "dark"; store("mq_theme", r.dataset.theme); }
+(function boot() {
+  const th = store("mq_theme"); if (th) document.documentElement.dataset.theme = th;
+  $("#lgPin").addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); });
+  load(); refreshHUD();
+  if (!ME) openLogin("reg");
+  route(); if (ME && !ME.guest) sync();
+  // keep the week streak flame alive: daily reminder toast
+  if (ME && !S.daily[today()]) setTimeout(() => toast("Today's mission is waiting — 5 questions, +50 XP.", "📅"), 2500);
+})();
+</script>
+</body>
+</html>
