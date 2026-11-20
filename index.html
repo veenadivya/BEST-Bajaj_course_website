@@ -189,6 +189,14 @@ button.flip{border:0;background:none;padding:0;width:100%;font:inherit;color:inh
 .reslist{list-style:none;padding:0;margin:0}
 .reslist li{padding:8px 0;border-bottom:1px solid var(--line)}
 .reslist li:last-child{border-bottom:0}
+table.cam{min-width:640px;text-align:center}
+table.cam th,table.cam td{text-align:center;padding:7px 6px}
+table.cam td.cm{font-weight:700}
+table.cam td.c3{background:color-mix(in srgb,var(--teal) 55%,transparent)}
+table.cam td.c2{background:color-mix(in srgb,var(--teal) 35%,transparent)}
+table.cam td.c1{background:color-mix(in srgb,var(--teal) 16%,transparent)}
+table.cam tr.avg th,table.cam tr.avg td{border-top:2px solid var(--ink)}
+abbr{text-decoration:none;cursor:help}
 </style>
 </head>
 <body>
@@ -232,7 +240,13 @@ button.flip{border:0;background:none;padding:0;width:100%;font:inherit;color:inh
   <p class="muted">EE236AI · Bajaj BEST Initiative · III Semester B.E. (ECE), Section C · AY 2026-27 (Odd Semester)</p>
   <div class="grid g4" style="margin:14px 0"><div class="card center"><div class="muted small">Credits</div><b>L:T:P = 2:0:1</b></div><div class="card center"><div class="muted small">Contact hours</div><b>28 L + 18 P</b></div><div class="card center"><div class="muted small">CIE</div><b>50 + 50 marks</b></div><div class="card center"><div class="muted small">SEE</div><b>50 + 50 marks (2 + 2 h)</b></div></div>
   <h2>Syllabus</h2><div class="grid g3" id="coSyl"></div>
-  <h2 style="margin-top:22px">Course outcomes</h2><div class="card"><table class="plain" id="coCos"></table></div>
+  <h2 style="margin-top:22px">Course outcomes (syllabus copy, 29-06-2026)</h2><div class="card"><table class="plain" id="coCos"></table></div>
+  <h2 style="margin-top:22px">CO–PO–PSO articulation matrix (2025 scheme)</h2>
+  <div class="card"><p class="small muted" style="margin-top:0">Correlation: 3 = high, 2 = medium, 1 = low, – = no correlation. The last row is the course-level value (average of the mapped COs). Hover over a PO for its title.</p>
+    <div style="overflow-x:auto"><table class="plain cam" id="coCam"></table></div>
+    <h3 style="margin-top:16px">Course outcome statements used in the matrix</h3><table class="plain" id="coCamCos"></table>
+    <p class="small muted" id="coCamSrc"></p></div>
+  <h2 style="margin-top:22px">Programme outcomes and programme specific outcomes</h2><div id="coPos"></div>
   <h2 style="margin-top:22px">Laboratory experiments</h2><div class="card"><table class="plain" id="coLabs"></table></div>
   <h2 style="margin-top:22px">Reference books</h2><div class="card"><ol id="coBooks"></ol></div>
   <h2 style="margin-top:22px">Faculty</h2>
@@ -694,6 +708,33 @@ const VIDEOS = [
    ["More videos: orifice, turbine and ultrasonic flowmeters", YT("orifice plate turbine ultrasonic flow meter working animation"), "YouTube search", "animation"]] }
 ];
 
+/* ===================== CO–PO–PSO (department CAM, 2025 scheme, revised 14-10-2026) ===================== */
+const CAM = {
+  source: "RVCE ECE 2025 Scheme Course Articulation Matrix (EE236AI rows, revised 14-10-2026); PO and PSO statements from the Criterion 1 SAR, Batch 2025–2029.",
+  cols: ["PO1", "PO2", "PO3", "PO4", "PO5", "PO6", "PO7", "PO8", "PO9", "PO10", "PO11", "PSO1", "PSO2"],
+  rows: [
+    ["CO1", "Analyze measurement principles, instrument characteristics, electrical and non-electrical measurement techniques, and safety requirements.", [2, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0]],
+    ["CO2", "Apply measurement standards, instrumentation, transducers, and signal-conditioning techniques to perform electrical and non-electrical measurements safely.", [2, 1, 1, 0, 2, 1, 0, 0, 0, 0, 0, 1, 0]],
+    ["CO3", "Investigate measurement systems, instrument performance, transducer characteristics, and safety compliance through laboratory experimentation and data analysis.", [2, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1]],
+    ["CO4", "Evaluate measurement accuracy, experimental results, sensing techniques, and safety practices to implement reliable measurement solutions.", [1, 2, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0]]
+  ],
+  pos: [
+    ["PO1", "Engineering Knowledge", "Apply knowledge of mathematics, natural science, computing, engineering fundamentals and an engineering specialization as specified in WK1 to WK4 respectively to develop the solution of complex engineering problems."],
+    ["PO2", "Problem Analysis", "Identify, formulate, review research literature and analyze complex engineering problems reaching substantiated conclusions with consideration for sustainable development. (WK1 to WK4)"],
+    ["PO3", "Design/Development of Solutions", "Design creative solutions for complex engineering problems and design/develop systems/components/processes to meet identified needs with consideration for public health and safety, whole-life cost, net zero carbon, culture, society and environment as required. (WK5)"],
+    ["PO4", "Conduct Investigations of Complex Problems", "Conduct investigations of complex engineering problems using research-based knowledge including design of experiments, modelling, analysis and interpretation of data to provide valid conclusions. (WK8)"],
+    ["PO5", "Engineering Tool Usage", "Create, select and apply appropriate techniques, resources and modern engineering & IT tools, including prediction and modelling, recognizing their limitations to solve complex engineering problems. (WK2 and WK6)"],
+    ["PO6", "The Engineer and The World", "Analyze and evaluate societal and environmental aspects while solving complex engineering problems for its impact on sustainability with reference to economy, health, safety, legal framework, culture and environment. (WK1, WK5, and WK7)"],
+    ["PO7", "Ethics", "Apply ethical principles and commit to professional ethics, human values, diversity and inclusion; adhere to national & international laws. (WK9)"],
+    ["PO8", "Individual and Collaborative Team work", "Function effectively as an individual, and as a member or leader in diverse/multi-disciplinary teams."],
+    ["PO9", "Communication", "Communicate effectively and inclusively within the community and society at large, such as being able to comprehend and write effective reports and design documentation, make effective presentations considering cultural, language, and learning differences."],
+    ["PO10", "Project Management and Finance", "Apply knowledge and understanding of engineering management principles and economic decision-making and apply these to one's own work, as a member and leader in a team, and to manage projects in multidisciplinary environments."],
+    ["PO11", "Life-long Learning", "Recognize the need for, and have the preparation and ability to i) independent and life-long learning ii) adaptability to new and emerging technologies and iii) critical thinking in the broadest context of technological change. (WK8)"],
+    ["PSO1", "Programme Specific Outcome 1", "Should be able to clearly understand the concepts and applications in the field of Communication/networking, signal processing, embedded systems, and semiconductor technology."],
+    ["PSO2", "Programme Specific Outcome 2", "Should be able to associate the learning from the courses related to Microelectronics, Signal processing, Microcomputers, Embedded and Communication Systems to arrive at solutions to real-world problems."]
+  ]
+};
+
 /* ===================== CONFIG ===================== */
 const API_URL = "https://script.google.com/macros/s/AKfycbxb9Es87pNz1rKqZr0QAbqg-IUxZgVrWIuglPfc7vDiL2VI6K8KFpY9XCVBN4qdhHJq/exec"; // Apps Script web-app URL (…/exec). Empty = offline (progress kept on this device only).
 
@@ -882,6 +923,14 @@ VIEWS.course = () => {
   const c = COURSE;
   $("#coCos").innerHTML = c.cos.map(x => `<tr><th scope="row">${x[0]}</th><td>${x[1]}</td><td class="small muted">${QB.filter(q => "CO" + q.co === x[0]).length} questions</td></tr>`).join("");
   $("#coBooks").innerHTML = c.books.map(b => `<li>${b}</li>`).join("");
+  const avg = CAM.cols.map((_, j) => { const v = CAM.rows.map(r => r[2][j]).filter(x => x > 0); return v.length ? (v.reduce((s, x) => s + x, 0) / v.length) : 0; });
+  const cell = (v, t) => `<td class="cm c${Math.round(v)}" title="${t}">${v ? (Number.isInteger(v) ? v : v.toFixed(2)) : "–"}</td>`;
+  $("#coCam").innerHTML = `<thead><tr><th scope="col">CO</th>${CAM.cols.map(p => `<th scope="col"><abbr title="${esc((CAM.pos.find(x => x[0] === p) || [])[1] || p)}">${p}</abbr></th>`).join("")}</tr></thead><tbody>
+    ${CAM.rows.map(r => `<tr><th scope="row" title="${esc(r[1])}">${r[0]}</th>${r[2].map((v, j) => cell(v, r[0] + " → " + CAM.cols[j])).join("")}</tr>`).join("")}
+    <tr class="avg"><th scope="row">EE236AI</th>${avg.map((v, j) => cell(v, "Course average → " + CAM.cols[j])).join("")}</tr></tbody>`;
+  $("#coCamCos").innerHTML = CAM.rows.map(r => `<tr><th scope="row">${r[0]}</th><td>${r[1]}</td><td class="small muted">${CAM.cols.filter((_, j) => r[2][j] > 0).map((p, k) => p).join(", ")}</td></tr>`).join("");
+  $("#coPos").innerHTML = CAM.pos.map(p => `<details class="topic"><summary>${p[0]} — ${p[1]}${avg[CAM.cols.indexOf(p[0])] ? ` <span class="pill small">mapped · ${avg[CAM.cols.indexOf(p[0])].toFixed(2)}</span>` : ""}</summary><p>${p[2]}</p></details>`).join("");
+  $("#coCamSrc").textContent = CAM.source;
   $("#coSyl").innerHTML = c.units.map(u => `<div class="card" style="border-top:4px solid ${u.color}"><div class="kicker" style="color:${u.color}">Unit ${["I", "II", "III"][u.n - 1]} · ${u.hrs}</div><h3>${u.title}</h3><p class="small">${u.topics.map(t => t[0]).join(" · ")}</p><a class="btn sm ghost" href="#unit/${u.n}">Open unit</a></div>`).join("");
   $("#coLabs").innerHTML = c.labs.map((l, i) => `<tr><td><b>${i + 1}</b></td><td>${l[0]}<div class="small muted">${l[2]}</div></td><td><button class="btn sm teal" onclick="startArena('exp',${i + 1})">Pre-lab check</button></td></tr>`).join("");
 };
