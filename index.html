@@ -197,13 +197,30 @@ table.cam td.c2{background:color-mix(in srgb,var(--teal) 35%,transparent)}
 table.cam td.c1{background:color-mix(in srgb,var(--teal) 16%,transparent)}
 table.cam tr.avg th,table.cam tr.avg td{border-top:2px solid var(--ink)}
 abbr{text-decoration:none;cursor:help}
+
+/* ---------- 3D / AR ---------- */
+.arwrap{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.arwrap{grid-template-columns:1fr}}
+.arstage model-viewer{width:100%;height:min(68vh,560px);background:radial-gradient(circle at 50% 40%,#ffffff,#e4e8ec);border-radius:var(--r);border:1px solid var(--line)}
+:root[data-theme="dark"] .arstage model-viewer{background:radial-gradient(circle at 50% 40%,#2a3640,#121a20)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .arstage model-viewer{background:radial-gradient(circle at 50% 40%,#2a3640,#121a20)}}
+.arside{display:flex;flex-direction:column;gap:12px}
+.arside input{width:100%;padding:6px 8px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);box-sizing:border-box}
+.arside input[type=range]{padding:0;border:0}
+.hs{width:24px;height:24px;border-radius:50%;border:2px solid #fff;background:#B3261E;color:#fff;font:700 12px/20px Arial,sans-serif;padding:0;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.45);--min-hotspot-opacity:0.35}
+.hs.on{background:#1B5E20;transform:scale(1.25)}
+.hs:focus-visible{outline:3px solid #ffd54f}
+model-viewer.nolbl .hs{display:none}
+.arbtn{position:absolute;bottom:14px;left:50%;transform:translateX(-50%)}
+.arprog{display:none}
+.arctl .row{gap:10px;align-items:center}
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap">
   <a class="brand" href="#home"><svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#101B23"/><path d="M12 44 A20 20 0 0 1 52 44" stroke="#7CFFB2" stroke-width="4" fill="none"/><line x1="32" y1="44" x2="46" y2="26" stroke="#FF6B5B" stroke-width="4" stroke-linecap="round"/><circle cx="32" cy="44" r="4" fill="#C8962E"/></svg>
     <span>MeasureQuest<small>EE236AI · BAJAJ BEST · RVCE</small></span></a>
-  <nav class="main"><a href="#home">Home</a><a href="#course">Course</a><a href="#labs">Labs</a><a href="#watch">Watch</a><a href="#arena">Arena</a><a href="#cards">Formulas</a><a href="#board">Leaderboard</a></nav>
+  <nav class="main"><a href="#home">Home</a><a href="#course">Course</a><a href="#labs">Labs</a><a href="#ar">3D/AR</a><a href="#watch">Watch</a><a href="#arena">Arena</a><a href="#cards">Formulas</a><a href="#board">Leaderboard</a></nav>
   <div class="hud"><span class="chip hide-m" id="hudRank">🔧 Trainee</span><span class="chip">⚡ <span id="hudXP">0</span></span><span class="chip" title="Current streak of correct answers">🔥 <span id="hudStreak">0</span></span>
     <button class="avatar" id="hudAvatar" onclick="location.hash='#me'" aria-label="My profile">👤</button></div>
 </div></header>
@@ -264,6 +281,7 @@ abbr{text-decoration:none;cursor:help}
 <section class="view" id="v-unit">
   <div id="unHead"></div>
   <div class="cols" style="margin-top:14px"><div><h2>Topics</h2><div id="unTopics"></div></div><div><h2>Labs for this unit</h2><div class="grid" id="unLabs"></div></div></div>
+  <div id="unAR"></div>
   <h2 style="margin-top:22px">Notes and handouts</h2><div class="grid g2" id="unMat"></div>
   <h2 style="margin-top:22px">Formula cards — tap to flip</h2><div class="grid g4" id="unCards"></div>
   <h2 style="margin-top:22px">Watch &amp; learn — animations and explainers</h2><div class="grid g2" id="unWatch"></div>
@@ -271,6 +289,7 @@ abbr{text-decoration:none;cursor:help}
 
 <!-- LABS -->
 <section class="view" id="v-labs"><div class="kicker">Interactive labs</div><h1>Play with the physics</h1><p class="muted">Every lab is a mini-simulation with a challenge. Opening a lab earns 5 XP; solving its challenges earns more.</p><div id="labsAll"></div></section>
+<section class="view" id="v-ar"><div id="arHead"></div><div id="arBody"></div></section>
 <section class="view" id="v-lab"><div id="labHead"></div><div id="labBody"></div></section>
 
 <!-- WATCH -->
@@ -316,7 +335,7 @@ abbr{text-decoration:none;cursor:help}
 
 <footer><div class="wrap">MeasureQuest · EE236AI Foundations of Electrical and Electronics Measurements · Bajaj BEST Initiative · Department of Electronics and Communication Engineering, RV College of Engineering®, Bengaluru – 560059 · Section C, AY 2026-27 · Faculty: Dr. Veena Divya Krishnappa</div></footer>
 
-<nav class="bottom"><a href="#home"><span>🏠</span>Home</a><a href="#labs"><span>🧪</span>Labs</a><a href="#watch"><span>🎬</span>Watch</a><a href="#arena"><span>⚡</span>Arena</a><a href="#board"><span>🏆</span>Board</a><a href="#course"><span>📘</span>Course</a></nav>
+<nav class="bottom"><a href="#home"><span>🏠</span>Home</a><a href="#labs"><span>🧪</span>Labs</a><a href="#ar"><span>🧊</span>3D/AR</a><a href="#watch"><span>🎬</span>Watch</a><a href="#arena"><span>⚡</span>Arena</a><a href="#board"><span>🏆</span>Board</a><a href="#course"><span>📘</span>Course</a></nav>
 
 <div class="modal" id="login" role="dialog" aria-modal="true" aria-labelledby="lgT"><div class="box">
   <h2 id="lgT" style="margin-top:0">Sign in to MeasureQuest</h2>
@@ -852,6 +871,7 @@ const VIEWS = {};
 function route() {
   const hsh = location.hash.slice(1) || "home"; const [v, arg] = hsh.split("/");
   if (v !== "lab") $("#labBody").innerHTML = "";   // stops lab animations and timers
+  if (v !== "ar" && $("#arBody")) { $("#arBody").innerHTML = ""; if (typeof arState !== "undefined") clearInterval(arState.timer); }
   $$("section.view").forEach(s => s.classList.toggle("on", s.id === "v-" + v));
   $$("nav a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + v));
   if (VIEWS[v]) VIEWS[v](arg); window.scrollTo(0, 0);
@@ -951,6 +971,7 @@ VIEWS.unit = (n) => {
   $("#unLabs").innerHTML = LABS.filter(l => l.u === n).map(labTile).join("");
   $("#unCards").innerHTML = CARDS.filter(c => c[0] === n).map(cardHTML).join("");
   $("#unWatch").innerHTML = watchBlock(VIDEOS.filter(g => g.u === n));
+  $("#unAR").innerHTML = n === 2 ? `<h2 style="margin-top:22px">See it in 3D and AR</h2><div class="grid g2">${AR_MODELS.map(arTile).join("")}</div>` : "";
   $("#unMat").innerHTML = (u.materials || []).length ? u.materials.map(m => `<a class="card" href="${m[1]}" target="_blank" rel="noopener" style="border-top:4px solid ${u.color}"><b>📄 ${m[0]}</b><div class="small muted">Opens the PDF in a new tab</div></a>`).join("") : '<p class="muted small">Notes for this unit will be added here.</p>';
 };
 function labTile(l) {
@@ -1543,6 +1564,159 @@ const LABS = [
   q();
 } }
 ];
+
+/* ===================== AR / 3D LAB (Unit II) ===================== */
+const AR_MODELS = [
+{ id: "pmmc", u: 2, icon: "🧲", name: "PMMC instrument", sub: "Magnet, soft-iron core, coil, hairsprings and pointer: change the current and watch the deflection.",
+  orbit: "0deg 78deg auto", parts: [
+  ["magnet", "Permanent magnet", "-0.0575m -0.03m 0.016m", "A horseshoe permanent magnet (Alnico or similar) provides a strong, steady field B. Because B is constant, the deflecting torque is directly proportional to current, which is why the scale is uniform (linear).", "Tap the part that produces the steady magnetic field B."],
+  ["pole", "Pole shoes", "0.037m 0.012m 0.016m", "Soft-iron pole shoes are curved so that the air gap is uniform. With the core they give a radial field, so the coil always cuts the field at right angles and Td = B·N·A·I holds over the whole deflection.", "Tap the curved part that makes the air gap uniform and the field radial."],
+  ["core", "Soft-iron core", "-0.011m 0.011m 0.016m", "A fixed cylindrical soft-iron core sits inside the coil. It reduces the reluctance of the air gap, so B in the gap is strong and radial. The core does not rotate.", "Tap the stationary iron cylinder that the coil swings around."],
+  ["coil", "Moving coil", "0.018m 0m 0.0235m", "N turns of fine insulated copper wire on a light rectangular former. The current I in the coil sides lying in the field produces forces F = B·I·L on each side, giving the deflecting torque Td = B·N·A·I.", "Tap the part that carries the current being measured."],
+  ["former", "Aluminium former (damping)", "-0.018m 0m 0.0235m", "The coil is wound on an aluminium former. As it moves in the field, eddy currents are induced in the former and oppose the motion (Lenz's law). This eddy-current damping brings the pointer to rest quickly without oscillation.", "Tap the part responsible for eddy-current damping."],
+  ["spring", "Hairsprings (control)", "0.011m 0.008m 0.027m", "Two phosphor-bronze spiral springs, wound in opposite directions, provide the controlling torque Tc = K·θ. They also lead the current into and out of the moving coil. At balance, Td = Tc, so θ = (B·N·A/K)·I.", "Tap the part that provides the controlling torque and leads current into the coil."],
+  ["pointer", "Pointer", "0m 0.06m 0.0315m", "A light aluminium pointer fixed to the spindle moves over the scale. Its tip is knife-edged so that the reading can be taken without parallax.", "Tap the part that indicates the reading."],
+  ["scale", "Uniform scale", "0.05m 0.075m 0.029m", "Since θ ∝ I, the scale divisions are equally spaced (linear). A PMMC responds to the average value, so on pure AC it reads zero: it is a DC instrument.", "Tap the part whose equal divisions show that θ is proportional to I."],
+  ["jewel", "Jewel bearings", "0m 0m 0.038m", "The spindle is pivoted in jewel bearings (synthetic sapphire or ruby) to keep friction very low, so small torques give accurate readings.", "Tap the low-friction pivot of the spindle."],
+  ["cw", "Counterweight", "0m -0.012m 0.0325m", "Balance weights on the spindle bring the centre of gravity of the moving system onto the axis, so the reading does not change with the position of the instrument.", "Tap the part that balances the moving system."],
+  ["term", "Terminals (+ / −)", "0.08m -0.078m 0.03m", "Current must enter at the + terminal. Reversing polarity drives the pointer below zero against the stop. A shunt (ammeter) or series multiplier (voltmeter) extends the range.", "Tap the terminal at which current must enter."]] },
+{ id: "dmm", u: 2, icon: "🔢", name: "Digital multimeter", sub: "Selector, sockets, test leads and LCD: learn where each lead goes before you measure.",
+  orbit: "0deg 75deg auto", parts: [
+  ["lcd", "LCD display (3¾ digit)", "0m 0.045m 0.0215m", "A 3¾-digit display shows up to 3999 counts. Resolution on a range = range ÷ counts, for example 4 V ÷ 4000 = 1 mV. TRMS meters read the true RMS value of non-sinusoidal waveforms.", "Tap where the 3¾-digit reading appears."],
+  ["sel", "Function / range selector", "0m -0.022m 0.031m", "Selects V~, V⎓, mV, Ω, diode/continuity, capacitance, Hz and current ranges. Inside, the selector switches the input attenuator, AC-to-DC (RMS) converter, current shunts or the ohms source in front of the ADC.", "Tap the control that selects the quantity to be measured."],
+  ["hold", "HOLD button", "-0.027m 0.0165m 0.021m", "Freezes the displayed reading so it can be noted after the probes are removed.", "Tap the button that freezes the reading."],
+  ["range", "RANGE button", "-0.009m 0.0165m 0.021m", "Switches from auto-ranging to manual ranging. For best resolution, use the lowest range that is larger than the expected value.", "Tap the button used for manual ranging."],
+  ["com", "COM socket", "0.01m -0.066m 0.021m", "The common (reference) input. The black lead always goes here, for every measurement.", "Tap the socket for the black lead in every measurement."],
+  ["vohm", "VΩHz socket", "0.03m -0.066m 0.021m", "High-impedance input (typically 10 MΩ) for voltage, resistance, frequency, diode and capacitance. The meter is connected in parallel with the element for voltage.", "Tap the socket used for voltage and resistance."],
+  ["ma", "mA / µA socket", "-0.01m -0.066m 0.021m", "Low-current input through an internal shunt and a fast fuse. The meter must be connected in series with the load.", "Tap the fused socket for small currents."],
+  ["a10", "10 A socket", "-0.03m -0.066m 0.021m", "High-current input through a low-value shunt and an HRC fuse. Never connect the meter across a voltage source with a lead in this socket: it is almost a short circuit.", "Tap the socket that must never be connected across a voltage source."],
+  ["leads", "Test leads and probes", "0.085m -0.1m 0.12m", "Use leads with finger guards rated for the CAT category of the circuit (for example CAT III 600 V). Inspect insulation before use and keep fingers behind the guards.", "Tap the test probes."],
+  ["cat", "CAT rating", "0m 0.07m 0.019m", "The CAT rating states the transient over-voltage the meter can survive: CAT II for socket-outlet loads, CAT III for distribution boards, CAT IV at the supply origin.", "Tap the safety (CAT) rating."]] },
+{ id: "dso", u: 2, icon: "📈", name: "Digital storage oscilloscope", sub: "Volts/div, sec/div, trigger, BNC and the ×1/×10 probe: read actual signal values from the screen.",
+  orbit: "0deg 80deg auto", parts: [
+  ["screen", "Graticule screen", "-0.067m 0.0035m 0.0625m", "The screen has 10 horizontal and 8 vertical divisions. Vpp = (divisions peak to peak) × (V/div) × (probe factor); T = (divisions per cycle) × (time/div); f = 1/T.", "Tap the 10 × 8 division graticule."],
+  ["vdiv", "CH1 VOLTS/DIV", "0.057m -0.004m 0.072m", "Sets the vertical sensitivity of channel 1. On screen: CH1 2.00 V/div. The sine wave spans 4 divisions peak to peak, so the screen value is 8 V p-p.", "Tap the control that sets volts per division for channel 1."],
+  ["sdiv", "SEC/DIV (time base)", "0.133m -0.004m 0.072m", "Sets the horizontal sweep speed. On screen: M 200 µs/div. One cycle spans 5 divisions, so T = 5 × 200 µs = 1 ms and f = 1 kHz.", "Tap the time-base control."],
+  ["trig", "Trigger level", "0.133m -0.047m 0.07m", "The trigger starts each sweep at the same point on the waveform (here rising edge, 0 V on CH1), so the display is stable.", "Tap the control that makes the trace stand still."],
+  ["pos", "Position knobs", "0.057m 0.025m 0.07m", "Move the trace up/down (vertical position) or left/right (horizontal position) so the peaks can be lined up with the graticule.", "Tap the vertical position control of CH1."],
+  ["auto", "AUTOSET", "0.118m 0.0535m 0.065m", "Automatically chooses V/div, time/div and trigger for a stable display. Always check the settings it chose before taking readings.", "Tap the key that sets up the display automatically."],
+  ["meas", "MEASURE", "0.052m 0.0535m 0.065m", "Opens automatic measurements such as Vpp, Vrms, frequency and period. These use the stored samples in memory.", "Tap the key for automatic Vpp, Vrms and frequency."],
+  ["run", "RUN / STOP", "0.14m 0.0535m 0.065m", "STOP freezes the acquisition. Because a DSO stores the samples in memory, a single event (for example a switching transient) can be captured and studied.", "Tap the key that freezes the stored waveform."],
+  ["bnc", "CH1 BNC input", "0.052m -0.057m 0.09m", "Coaxial BNC input. Its outer shell is connected to the scope chassis and to earth through the mains plug.", "Tap the coaxial input of channel 1."],
+  ["atten", "Probe ×1 / ×10 switch", "-0.098m -0.077m 0.122m", "In ×10 the probe divides the signal by 10 (and raises the input impedance to 10 MΩ). If the probe is at ×10 but the channel is set to 1×, multiply the screen reading by 10.", "Tap the probe attenuation switch."],
+  ["gnd", "Probe ground clip", "-0.162m -0.079m 0.148m", "The ground clip is connected to earth through the scope. Connect it only to a point at earth potential; clipping it to a live point creates a short circuit through the earth.", "Tap the clip that is connected to earth."],
+  ["comp", "Probe compensation", "0.147m -0.062m 0.071m", "A 1 kHz square-wave reference. Adjust the probe trimmer until the square wave has flat tops (neither over- nor under-compensated).", "Tap the reference used to compensate the probe."]] },
+{ id: "clamp", u: 2, icon: "🧭", name: "Hall-effect clamp probe", sub: "Current in the conductor, field in the ferrite jaw, Hall sensor in the gap: measure AC and DC without breaking the circuit.",
+  orbit: "25deg 72deg auto", parts: [
+  ["cond", "Current-carrying conductor", "0m 0.047m 0.06m", "The conductor passing through the jaw is the single-turn primary. Clamp only one conductor: around a whole cable, the go and return currents cancel and the reading is zero.", "Tap the conductor whose current is measured."],
+  ["field", "Magnetic field (circular)", "-0.047m 0.023m 0m", "Current I sets up circular magnetic field lines around the conductor (right-hand rule). Reverse the current and the field reverses.", "Tap the circular field lines around the conductor."],
+  ["jaw", "Ferrite core in the jaw", "-0.024m 0.064m 0.01m", "The split ferrite core concentrates the field and guides it through the small air gap. With core reluctance neglected, B in the gap ≈ µ<sub>0</sub>·I/g.", "Tap the core that concentrates the field."],
+  ["hall", "Hall sensor in the gap", "0.034m 0.04m 0.006m", "A bias current through the Hall element and the gap field B produce the Hall voltage V<sub>H</sub> = B·I<sub>bias</sub>/(n·q·t). Since B ∝ I, V<sub>H</sub> ∝ I. It responds to steady fields, so it measures DC as well as AC.", "Tap the sensor that produces V_H."],
+  ["lever", "Jaw-opening lever", "-0.046m -0.012m 0.005m", "Press to open the jaw and close it around the conductor. The jaw faces must close fully for an accurate reading.", "Tap the lever that opens the jaw."],
+  ["guard", "Hand guard", "0m -0.006m 0.02m", "Keep the hand below this barrier. It marks the minimum safe distance from the live conductor.", "Tap the barrier that keeps fingers away from the conductor."],
+  ["lcd", "Display", "0m -0.03m 0.019m", "The amplified Hall voltage is converted by an ADC and shown in amperes (here 12.6 A DC).", "Tap where the current reading appears."],
+  ["zero", "DC ZERO", "0m -0.127m 0.021m", "Removes the Hall-element offset and residual magnetism of the core before a DC measurement. Press it with the jaw empty.", "Tap the key pressed with the jaw empty before measuring DC."],
+  ["sel", "Function selector", "0m -0.087m 0.03m", "Selects A DC, A AC, V or Ω. A current-transformer clamp works only on AC; a Hall-effect clamp works on both.", "Tap the control that selects A DC or A AC."]] }
+];
+
+let arState = { quiz: null, timer: null };
+const sci = (x) => { if (!x) return "0"; const e = Math.floor(Math.log10(Math.abs(x))); return (x / 10 ** e).toFixed(2) + " × 10<sup>" + e + "</sup>"; };
+function loadMV() {
+  if (window.customElements && customElements.get("model-viewer")) return;
+  if (document.getElementById("mvScript")) return;
+  const s = document.createElement("script"); s.type = "module"; s.id = "mvScript"; s.src = "ar/model-viewer.min.js"; document.head.appendChild(s);
+}
+function arTile(m) {
+  const c = COURSE.units[1].color;
+  return `<a class="card labtile" style="--c:${c}" href="#ar/${m.id}"><span class="ico" aria-hidden="true">${m.icon}</span><span><b>${m.name}</b> ${S.done["ar-" + m.id] ? '<span class="pill small">completed</span>' : ""}<br><span class="small muted">${m.sub}</span></span></a>`;
+}
+VIEWS.ar = (id) => {
+  clearInterval(arState.timer); arState.quiz = null;
+  const m = AR_MODELS.find(x => x.id === id);
+  if (!m) {
+    $("#arHead").innerHTML = `<div class="kicker" style="color:${COURSE.units[1].color}">Unit II · 3D and AR</div><h1>See the instruments in 3D</h1>
+      <p class="muted">Rotate, zoom and explore each instrument, then place it on your desk in augmented reality. On an Android phone (ARCore) or an iPhone/iPad, open a model and tap <b>View in your space</b>. On a laptop, drag to rotate and scroll to zoom. Each model has a <b>Spot the part</b> challenge (+20 XP).</p><div class="card row" style="gap:14px;align-items:center;margin-bottom:14px"><img src="ar/qr_ar.svg" alt="QR code that opens this 3D and AR page" width="110" height="110" style="background:#fff;border-radius:8px"><span class="small"><b>In class:</b> scan this code with a phone camera to open the 3D/AR page, then tap a model and <b>View in your space</b> to place it on the desk.</span></div>`;
+    $("#arBody").innerHTML = `<div class="grid g2">${AR_MODELS.map(arTile).join("")}</div>`; return;
+  }
+  loadMV();
+  if (!S.labs["ar-" + m.id]) { S.labs["ar-" + m.id] = 1; addXP(5); logEvent({ m: "open", i: "ar-" + m.id, u: 2, xp: 5 }); checkBadges(); save(); }
+  const c = COURSE.units[1].color;
+  $("#arHead").innerHTML = `<a href="#ar" class="small">← All 3D models</a><div class="kicker" style="color:${c}">Unit II · 3D and AR</div><h1>${m.name}</h1><p class="muted">${m.sub}</p>`;
+  const hs = m.parts.map((p, i) => `<button class="hs" slot="hotspot-${p[0]}" data-position="${p[2]}" data-normal="0m 0m 1m" data-part="${p[0]}" aria-label="${esc(p[1])}"><span>${i + 1}</span></button>`).join("");
+  const extra = m.id === "pmmc" ? `<div class="card arctl"><b>Coil current</b>
+      <div class="row"><input type="range" id="arI" min="0" max="100" value="50" style="flex:1" aria-label="Coil current in microamperes"><b id="arIv">50 µA</b></div>
+      <div class="small" id="arCalc"></div>
+      <div class="row" style="margin-top:8px"><button class="btn ghost" id="arAC">Apply 50 Hz AC</button><button class="btn ghost" id="arExp">Exploded view</button></div></div>`
+    : m.id === "clamp" ? `<div class="card arctl"><b>Conductor current</b>
+      <div class="row"><input type="range" id="arI" min="0" max="40" value="12.6" step="0.1" style="flex:1" aria-label="Conductor current in amperes"><b id="arIv">12.6 A</b></div>
+      <div class="small" id="arCalc"></div><div class="row" style="margin-top:8px"><button class="btn ghost" id="arRev">Reverse the current</button></div></div>`
+    : m.id === "dso" ? `<div class="card arctl"><b>Read the screen</b><p class="small">Screen: CH1 2.00 V/div (channel set to 1×), M 200 µs/div. The probe switch is at <b>×10</b>. Find the actual signal values.</p>
+      <div class="grid g3"><label class="small">Vpp (V)<input id="dVpp" inputmode="decimal"></label><label class="small">Vrms (V)<input id="dVrms" inputmode="decimal"></label><label class="small">f (Hz)<input id="dF" inputmode="decimal"></label></div>
+      <div class="row" style="margin-top:8px"><button class="btn" id="dChk">Check</button><span class="small" id="dMsg"></span></div></div>`
+    : `<div class="card arctl"><b>Where does each lead go?</b><p class="small">Voltage: black → COM, red → VΩHz, meter in <b>parallel</b>. Current: black → COM, red → mA or 10 A, meter in <b>series</b> with the load. Resistance: switch the circuit off first.</p></div>`;
+  $("#arBody").innerHTML = `<div class="arwrap">
+    <div class="arstage"><model-viewer id="mv" src="ar/${m.id}.glb" alt="3D model of a ${esc(m.name)}" camera-controls touch-action="pan-y" ar ar-modes="webxr scene-viewer quick-look" ar-scale="auto" shadow-intensity="1" exposure="1.05" environment-image="neutral" camera-orbit="${m.orbit}" interaction-prompt="auto" ${m.id === "clamp" ? 'autoplay animation-name="Field"' : ""}>
+      ${hs}<button slot="ar-button" class="btn arbtn">📱 View in your space</button>
+      <div class="arprog" slot="progress-bar"></div></model-viewer>
+      <div class="row small" style="margin-top:8px;justify-content:space-between"><span class="muted">Drag to rotate · scroll or pinch to zoom · tap a number to learn the part</span><label><input type="checkbox" id="arLbl" checked> Show numbers</label></div></div>
+    <div class="arside">
+      <div class="card" id="arInfo"><b>Tap a numbered point</b><p class="small muted">Each number marks a part. Its function and the related equation appear here.</p></div>
+      <div class="card" id="arQuiz"><b>Spot the part</b> <span class="small muted">(4 prompts · +20 XP)</span><p class="small">Tap the correct numbered point on the model for each prompt.</p><button class="btn" id="arQStart">Start challenge</button></div>
+      ${extra}
+      <details class="card"><summary><b>All parts</b></summary><ol class="small">${m.parts.map(p => `<li><a href="javascript:void 0" data-go="${p[0]}">${p[1]}</a></li>`).join("")}</ol></details>
+    </div></div>
+    <p class="small muted" style="margin-top:12px">AR works in Chrome on ARCore-supported Android phones and in Safari on iPhone/iPad. If the button does not appear, the device does not support AR; the 3D view still works. Models are simplified teaching models, not to scale.</p>`;
+  const mv = $("#mv");
+  const show = (pid) => { const p = m.parts.find(x => x[0] === pid); if (!p) return; const i = m.parts.indexOf(p) + 1;
+    $$(".hs", mv).forEach(b => b.classList.toggle("on", b.dataset.part === pid));
+    if (arState.quiz) return quizAnswer(pid);
+    $("#arInfo").innerHTML = `<div class="kicker">Part ${i} of ${m.parts.length}</div><b>${p[1]}</b><p class="small">${p[3]}</p>`; };
+  mv.addEventListener("click", e => { const b = e.target.closest(".hs"); if (b) show(b.dataset.part); });
+  $("#arBody").addEventListener("click", e => { const a = e.target.closest("[data-go]"); if (a) { const p = m.parts.find(x => x[0] === a.dataset.go); mv.cameraTarget = p[2]; show(p[0]); } });
+  $("#arLbl").onchange = e => mv.classList.toggle("nolbl", !e.target.checked);
+  // spot-the-part challenge
+  function quizNext() { const q = arState.quiz; if (q.i >= q.list.length) return quizEnd();
+    $("#arQuiz").innerHTML = `<div class="kicker">Prompt ${q.i + 1} of ${q.list.length} · score ${q.ok}</div><b>${q.list[q.i][4]}</b><p class="small muted">Tap a numbered point on the model.</p>`; }
+  function quizAnswer(pid) { const q = arState.quiz, want = q.list[q.i], ok = pid === want[0]; if (ok) q.ok++;
+    q.log.push(want[0] + (ok ? "+" : "-"));
+    $("#arInfo").innerHTML = `<b>${ok ? "Correct." : "Not quite."}</b> <span class="small">${ok ? "" : "That point is the " + esc(m.parts.find(x => x[0] === pid)[1]) + ". "}The answer is <b>${want[1]}</b> (point ${m.parts.indexOf(want) + 1}).</span><p class="small">${want[3]}</p>`;
+    q.i++; quizNext(); }
+  function quizEnd() { const q = arState.quiz; arState.quiz = null; const pass = q.ok >= 3;
+    logEvent({ m: "lab", i: "ar-" + m.id + "-q", u: 2, c: pass, xp: 0, d: q.log.join(" "), ms: Date.now() - q.t0 });
+    let msg = `<b>Score ${q.ok} / ${q.list.length}</b>`;
+    if (pass && !S.done["ar-" + m.id]) { S.done["ar-" + m.id] = today(); addXP(20, $("#arQuiz")); logEvent({ m: "lab", i: "ar-" + m.id, u: 2, c: true, xp: 20, d: q.ok + "/4" }); checkBadges(); save(); msg += " · +20 XP"; }
+    else if (!pass) msg += " · 3 correct are needed for XP.";
+    $("#arQuiz").innerHTML = `${msg}<p class="small muted">Prompts are drawn at random from ${m.parts.length} parts each time.</p><button class="btn" id="arQStart">Try again</button>`; }
+  $("#arQuiz").addEventListener("click", e => { if (e.target.id === "arQStart") { arState.quiz = { list: seededShuffle(m.parts, String(Math.random())).slice(0, 4), i: 0, ok: 0, log: [], t0: Date.now() }; quizNext(); } });
+  // model-specific controls
+  const pose = async (name, t) => { t = Math.min(t, 0.999); if (mv.animationName !== name) { mv.animationName = name; mv.play(); await new Promise(r => setTimeout(r, 150)); } mv.play(); mv.pause(); mv.currentTime = t; };
+  if (m.id === "pmmc") {
+    let exploded = false;
+    const setI = (I) => { $("#arIv").textContent = I.toFixed(0) + " µA"; const Td = 0.2 * 100 * 1e-4 * I * 1e-6, th = Td / 2e-9;
+      $("#arCalc").innerHTML = `B = 0.2 T, N = 100, A = 1 cm², K = 2×10⁻⁹ N·m/° <br>T<sub>d</sub> = B·N·A·I = ${sci(Td)} N·m → θ = T<sub>d</sub>/K = <b>${th.toFixed(0)}°</b> (${(th).toFixed(0)} divisions)`;
+      if (!exploded) pose("Deflect", I / 100); };
+    mv.addEventListener("load", () => { setI(+$("#arI").value); setTimeout(() => { if (!exploded && !arState.timer) setI(+$("#arI").value); }, 400); }, { once: true });
+    $("#arI").oninput = e => { clearInterval(arState.timer); $("#arAC").textContent = "Apply 50 Hz AC"; setI(+e.target.value); };
+    $("#arAC").onclick = () => { if (exploded) $("#arExp").click(); if (arState.timer) { clearInterval(arState.timer); arState.timer = null; $("#arAC").textContent = "Apply 50 Hz AC"; setI(+$("#arI").value); return; }
+      $("#arAC").textContent = "Remove AC"; let k = 0; $("#arCalc").innerHTML = "<b>50 Hz AC applied.</b> The torque reverses 100 times a second; the heavy moving system cannot follow, so it responds to the average torque, which is zero. The pointer only trembles near zero: a PMMC cannot measure AC without a rectifier.";
+      arState.timer = setInterval(() => { if (!document.body.contains(mv)) return clearInterval(arState.timer); k++; pose("Deflect", 0.012 * Math.abs(Math.sin(k * 1.7))); }, 60); };
+    $("#arExp").onclick = () => { clearInterval(arState.timer); arState.timer = null; $("#arAC").textContent = "Apply 50 Hz AC"; exploded = !exploded; $("#arExp").textContent = exploded ? "Assembled view" : "Exploded view";
+      if (exploded) pose("Explode", 1); else setI(+$("#arI").value); };
+  }
+  if (m.id === "clamp") {
+    let dir = 1; const setI = (I) => { $("#arIv").textContent = I.toFixed(1) + " A"; const B = 4e-7 * Math.PI * I / 0.002 * 1000;
+      $("#arCalc").innerHTML = `Air gap g = 2 mm: B ≈ µ<sub>0</sub>·I/g = <b>${B.toFixed(2)} mT</b><br>Hall sensitivity 5 mV/mT: V<sub>H</sub> = <b>${(5 * B).toFixed(1)} mV</b> ${dir < 0 ? "(negative: current reversed)" : ""}<br>V<sub>H</sub> ∝ B ∝ I, so the display reads ${dir < 0 ? "−" : ""}${I.toFixed(1)} A.`;
+      mv.timeScale = dir * Math.max(0.05, I / 12.6); };
+    $("#arI").oninput = e => setI(+e.target.value); $("#arRev").onclick = () => { dir = -dir; setI(+$("#arI").value); }; setI(12.6);
+  }
+  if (m.id === "dso") {
+    $("#dChk").onclick = () => { const v = [+$("#dVpp").value, +$("#dVrms").value, +$("#dF").value], a = [80, 80 / (2 * Math.SQRT2), 1000];
+      const ok = v.map((x, i) => Math.abs(x - a[i]) <= a[i] * 0.02); const all = ok.every(Boolean);
+      $("#dMsg").innerHTML = all ? "All three correct: Vpp = 4 div × 2 V × 10 = 80 V; Vrms = 80/(2√2) = 28.28 V; T = 5 × 200 µs = 1 ms, f = 1 kHz." : `${ok.map((o, i) => (o ? "✓ " : "✗ ") + ["Vpp", "Vrms", "f"][i]).join(" · ")}. Hint: count divisions peak to peak and per cycle, then apply the probe factor.`;
+      logEvent({ m: "lab", i: "ar-dso-read", u: 2, c: all, xp: 0, d: v.join("/") });
+      if (all && !S.done["ar-dso-read"]) { S.done["ar-dso-read"] = today(); addXP(15, $("#dChk")); logEvent({ m: "lab", i: "ar-dso-read", u: 2, c: true, xp: 15, d: "solved" }); save(); } };
+  }
+};
 
 /* ===================== BOOT ===================== */
 function toggleTheme() { const r = document.documentElement; const cur = r.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); r.dataset.theme = cur === "dark" ? "light" : "dark"; store("mq_theme", r.dataset.theme); }
