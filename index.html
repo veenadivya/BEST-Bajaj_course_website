@@ -264,6 +264,7 @@ abbr{text-decoration:none;cursor:help}
 <section class="view" id="v-unit">
   <div id="unHead"></div>
   <div class="cols" style="margin-top:14px"><div><h2>Topics</h2><div id="unTopics"></div></div><div><h2>Labs for this unit</h2><div class="grid" id="unLabs"></div></div></div>
+  <h2 style="margin-top:22px">Notes and handouts</h2><div class="grid g2" id="unMat"></div>
   <h2 style="margin-top:22px">Formula cards — tap to flip</h2><div class="grid g4" id="unCards"></div>
   <h2 style="margin-top:22px">Watch &amp; learn — animations and explainers</h2><div class="grid g2" id="unWatch"></div>
 </section>
@@ -387,6 +388,7 @@ const COURSE = {
         ["Safety standards and LOTO", "ISO 45001, IEC/UL product safety, GHS and REACH, ISO/ANSI/ASME machinery standards; Lockout–Tagout procedure."]
       ] },
     { n: 2, hrs: "9 h", title: "Electrical, Electronic Instruments & Measurement Techniques", color: "var(--u2)",
+      materials: [["Unit-II Notes (updated 23-11-2026)", "materials/EE236AI_Unit2_Notes.pdf"], ["Unit-II Student Handout (updated 23-11-2026)", "materials/EE236AI_Unit2_Handout.pdf"]],
       blurb: "From the moving needle to the digital screen: analog movements, range extension, voltage/current/power measurement, the generalized digital system, DMM, DSO, PQA, LCR meter, function generator, and HV/HF probes.",
       topics: [
         ["Moving coil (PMMC) instruments", "Torque on a coil in a permanent-magnet field; spring control; eddy-current damping; uniform scale; DC only."],
@@ -394,8 +396,11 @@ const COURSE = {
         ["Measurement of V, I and power", "Shunts and multipliers; loading effect and sensitivity (Ω/V); wattmeter connections; power in AC circuits."],
         ["Major specifications", "Range, accuracy (± % of reading + digits), resolution, input impedance, bandwidth, CAT safety rating."],
         ["Generalized digital measurement system", "Input → transducer → signal conditioning → processing (ADC, µC) → output display."],
+        ["RTD signal chain — sensor to LCD and PC", "Pt100 with constant-current excitation or a Wheatstone bridge; 3-/4-wire lead compensation; instrumentation amplifier removes the 0 °C offset and scales to the ADC range; low-pass filter; n-bit ADC (ratiometric reference); microcontroller computes T = (R/R₀ − 1)/α, calibrates and averages; result shown on an LCD (I²C/parallel) and sent to a PC over USB-UART."],
         ["DMM and DSO", "Dual-slope ADC, counts and digits, True-RMS; sampling, bandwidth, rise time, triggering, probe compensation."],
+        ["Reading a DSO with a probe", "Screen Vpp = divisions × V/div; multiply by the probe ratio only if the channel is set to ×1; Vp = Vpp/2; Vrms = Vp/√2 (sine), Vp (square), Vp/√3 (triangle); T = divisions × time/div, f = 1/T."],
         ["PQA, LCR meter, function generator", "Power, PF, harmonics and THD; impedance at a test frequency, Q, D, ESR; DDS waveform generation."],
+        ["Series R-L-C — impedance and phase", "|Z| = V/I; Z = R + j(X_L − X_C); R = |Z| cos θ, |X| = |Z| sin θ; X_L > X_C → inductive, current lags; X_C > X_L → capacitive, current leads; X_L = X_C → resonance. Phasor diagram: I as reference, V_R in phase, V_L leads 90°, V_C lags 90°."],
         ["HV and HF measurement", "HV differential probe; HF current probe; clamp-on probes (CT and Hall); Rogowski coils."]
       ] },
     { n: 3, hrs: "9 h", title: "Sensing, Signal Conditioning & Non-Electrical Quantities", color: "var(--u3)",
@@ -593,6 +598,9 @@ const CARDS = [
   [2, "Q and D", "Q = X / R;  D = 1 / Q"],
   [2, "Energy meter error", "% error = (E_registered − E_true)/E_true × 100;  E_reg = pulses / meter constant"],
   [2, "Rogowski", "v = M di/dt  → integrate to get i"],
+  [2, "DSO actual voltage", "Vpp = div × V/div (× probe ratio if channel at ×1);  sine Vrms = Vp/√2"],
+  [2, "Series R-L-C", "|Z| = V/I;  X = X_L − X_C;  current leads → capacitive, lags → inductive"],
+  [2, "RTD to °C", "T = (R/R₀ − 1)/α;  Pt100: R₀ = 100 Ω, α = 0.00385/°C"],
   [3, "CMRR", "CMRR = A_d / A_cm;  dB = 20 log₁₀(A_d/A_cm);  error = V_cm / CMRR"],
   [3, "In-amp gain (AD620)", "G = 1 + 49.4 kΩ / R_G"],
   [3, "ADC LSB", "LSB = V_FS / 2ⁿ"],
@@ -943,6 +951,7 @@ VIEWS.unit = (n) => {
   $("#unLabs").innerHTML = LABS.filter(l => l.u === n).map(labTile).join("");
   $("#unCards").innerHTML = CARDS.filter(c => c[0] === n).map(cardHTML).join("");
   $("#unWatch").innerHTML = watchBlock(VIDEOS.filter(g => g.u === n));
+  $("#unMat").innerHTML = (u.materials || []).length ? u.materials.map(m => `<a class="card" href="${m[1]}" target="_blank" rel="noopener" style="border-top:4px solid ${u.color}"><b>📄 ${m[0]}</b><div class="small muted">Opens the PDF in a new tab</div></a>`).join("") : '<p class="muted small">Notes for this unit will be added here.</p>';
 };
 function labTile(l) {
   const c = COURSE.units[l.u - 1].color, seen = S.labs[l.id];
