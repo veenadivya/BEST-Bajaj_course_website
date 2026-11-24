@@ -214,6 +214,10 @@ model-viewer.nolbl .hs{display:none}
 .arbtn{position:absolute;bottom:14px;left:50%;transform:translateX(-50%)}
 .arprog{display:none}
 .arctl .row{gap:10px;align-items:center}
+
+.cocard h3{margin:0 0 6px;color:var(--teal);font-size:1.35rem}
+.lg{display:inline-block;min-width:22px;text-align:center;font-weight:700;border-radius:4px;padding:1px 4px}
+.lg.c3{background:color-mix(in srgb,var(--teal) 55%,transparent)}.lg.c2{background:color-mix(in srgb,var(--teal) 35%,transparent)}.lg.c1{background:color-mix(in srgb,var(--teal) 16%,transparent)}
 </style>
 </head>
 <body>
@@ -258,11 +262,14 @@ model-viewer.nolbl .hs{display:none}
   <div class="grid g4" style="margin:14px 0"><div class="card center"><div class="muted small">Credits</div><b>L:T:P = 2:0:1</b></div><div class="card center"><div class="muted small">Contact hours</div><b>28 L + 18 P</b></div><div class="card center"><div class="muted small">CIE</div><b>50 + 50 marks</b></div><div class="card center"><div class="muted small">SEE</div><b>50 + 50 marks (2 + 2 h)</b></div></div>
   <h2>Syllabus</h2><div class="grid g3" id="coSyl"></div>
   <h2 style="margin-top:22px">Course outcomes (syllabus copy, 29-06-2026)</h2><div class="card"><table class="plain" id="coCos"></table></div>
-  <h2 style="margin-top:22px">CO–PO–PSO articulation matrix (2025 scheme)</h2>
-  <div class="card"><p class="small muted" style="margin-top:0">Correlation: 3 = high, 2 = medium, 1 = low, – = no correlation. The last row is the course-level value (average of the mapped COs). Hover over a PO for its title.</p>
-    <div style="overflow-x:auto"><table class="plain cam" id="coCam"></table></div>
-    <h3 style="margin-top:16px">Course outcome statements used in the matrix</h3><table class="plain" id="coCamCos"></table>
+  <h2 style="margin-top:22px">What you will be able to do</h2>
+  <p class="muted" style="margin-top:-4px">Four course outcomes, and how strongly each one supports the programme outcomes (PO) and programme-specific outcomes (PSO). These are the CO statements of the course articulation sheet (18-11-2026); the syllabus-copy statements above are used to tag the practice questions.</p>
+  <div class="grid g4" id="coCards"></div>
+  <div class="card" style="margin-top:14px"><div style="overflow-x:auto"><table class="plain cam" id="coCam" aria-label="CO to PO and PSO mapping"></table></div>
+    <p class="small" style="margin:10px 0 0"><span class="lg c3">H</span> High (3) &nbsp; <span class="lg c2">M</span> Medium (2) &nbsp; <span class="lg c1">L</span> Low (1) &nbsp; – No correlation. The last row gives the course-level value (average of the mapped COs).</p>
     <p class="small muted" id="coCamSrc"></p></div>
+  <h2 style="margin-top:22px">Knowledge profile (WK) addressed by the course</h2>
+  <div class="card"><div style="overflow-x:auto"><table class="plain cam" id="coWkGrid" aria-label="Knowledge profile mapping"></table></div><table class="plain" id="coWk" style="margin-top:12px"></table></div>
   <h2 style="margin-top:22px">Programme outcomes and programme specific outcomes</h2><div id="coPos"></div>
   <h2 style="margin-top:22px">Laboratory experiments</h2><div class="card"><table class="plain" id="coLabs"></table></div>
   <h2 style="margin-top:22px">Reference books</h2><div class="card"><ol id="coBooks"></ol></div>
@@ -737,7 +744,16 @@ const VIDEOS = [
 
 /* ===================== CO–PO–PSO (department CAM, 2025 scheme, revised 14-10-2026) ===================== */
 const CAM = {
-  source: "RVCE ECE 2025 Scheme Course Articulation Matrix (EE236AI rows, revised 14-10-2026); PO and PSO statements from the Criterion 1 SAR, Batch 2025–2029.",
+  source: "Mapping as given in the EE236AI course articulation and knowledge-profile sheet (FEMS_CO_WK, Course Coordinator Dr. Harsha, 18-11-2026), which matches the RVCE ECE 2025-scheme Course Articulation Matrix (EE236AI rows, revised 14-10-2026). PO and PSO statements are from the Criterion 1 SAR, Batch 2025–2029.",
+  units: { CO1: "Units I, II, III", CO2: "Units I, II, III", CO3: "Laboratory · Experiments 1–10", CO4: "Units I, III · Laboratory" },
+  wk: [
+    ["WK1", "Natural Science", "The course applies principles of physics and natural sciences to electrical and electronic measurements, including voltage, current, resistance, temperature and sensor characteristics."],
+    ["WK2", "Mathematics", "Mathematical concepts are used for measurement calculations, error analysis, accuracy, precision, sensitivity, resolution, linearity and calibration."],
+    ["WK3", "Engineering Fundamentals", "The course develops engineering fundamentals through the working principles of measuring instruments such as the DMM, DSO, LCR meter, earth resistance meter and insulation resistance meter."],
+    ["WK6", "Engineering Practice", "Students gain practical knowledge of measurement technologies, instrument operation, calibration, testing procedures and measurement techniques through laboratory activities."],
+    ["WK7", "Engineering in Society", "The course highlights the role of engineering in protecting society through electrical safety, hazard identification, risk assessment, PPE, LOTO procedures and compliance with safety standards."],
+    ["WK9", "Ethics and Inclusion", "Students are introduced to professional responsibilities, ethical instrument usage, safe working practices and adherence to electrical safety regulations."]
+  ],
   cols: ["PO1", "PO2", "PO3", "PO4", "PO5", "PO6", "PO7", "PO8", "PO9", "PO10", "PO11", "PSO1", "PSO2"],
   rows: [
     ["CO1", "Analyze measurement principles, instrument characteristics, electrical and non-electrical measurement techniques, and safety requirements.", [2, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0]],
@@ -952,11 +968,15 @@ VIEWS.course = () => {
   $("#coCos").innerHTML = c.cos.map(x => `<tr><th scope="row">${x[0]}</th><td>${x[1]}</td><td class="small muted">${QB.filter(q => "CO" + q.co === x[0]).length} questions</td></tr>`).join("");
   $("#coBooks").innerHTML = c.books.map(b => `<li>${b}</li>`).join("");
   const avg = CAM.cols.map((_, j) => { const v = CAM.rows.map(r => r[2][j]).filter(x => x > 0); return v.length ? (v.reduce((s, x) => s + x, 0) / v.length) : 0; });
-  const cell = (v, t) => `<td class="cm c${Math.round(v)}" title="${t}">${v ? (Number.isInteger(v) ? v : v.toFixed(2)) : "–"}</td>`;
+  const HML = ["–", "L", "M", "H"];
+  const cell = (v, t, num) => `<td class="cm c${Math.round(v)}" title="${t}${v ? " = " + (Number.isInteger(v) ? v : v.toFixed(2)) : ""}">${v ? (num ? (Number.isInteger(v) ? v : v.toFixed(2)) : HML[v]) : "–"}</td>`;
+  $("#coCards").innerHTML = CAM.rows.map(r => `<div class="card cocard"><h3>${r[0]}</h3><p class="small">${r[1]}</p><div class="kicker" style="margin-top:8px">${(CAM.units || {})[r[0]] || ""}</div></div>`).join("");
   $("#coCam").innerHTML = `<thead><tr><th scope="col">CO</th>${CAM.cols.map(p => `<th scope="col"><abbr title="${esc((CAM.pos.find(x => x[0] === p) || [])[1] || p)}">${p}</abbr></th>`).join("")}</tr></thead><tbody>
     ${CAM.rows.map(r => `<tr><th scope="row" title="${esc(r[1])}">${r[0]}</th>${r[2].map((v, j) => cell(v, r[0] + " → " + CAM.cols[j])).join("")}</tr>`).join("")}
-    <tr class="avg"><th scope="row">EE236AI</th>${avg.map((v, j) => cell(v, "Course average → " + CAM.cols[j])).join("")}</tr></tbody>`;
-  $("#coCamCos").innerHTML = CAM.rows.map(r => `<tr><th scope="row">${r[0]}</th><td>${r[1]}</td><td class="small muted">${CAM.cols.filter((_, j) => r[2][j] > 0).map((p, k) => p).join(", ")}</td></tr>`).join("");
+    <tr class="avg"><th scope="row">EE236AI</th>${avg.map((v, j) => cell(v, "Course average → " + CAM.cols[j], true)).join("")}</tr></tbody>`;
+  const wks = ["WK1", "WK2", "WK3", "WK4", "WK5", "WK6", "WK7", "WK8", "WK9"], wkOn = (CAM.wk || []).map(w => w[0]);
+  $("#coWkGrid").innerHTML = `<thead><tr><th scope="col">Course</th>${wks.map(w => `<th scope="col">${w}</th>`).join("")}</tr></thead><tbody><tr><th scope="row">EE236AI</th>${wks.map(w => wkOn.includes(w) ? '<td class="cm c2">✓</td>' : '<td>–</td>').join("")}</tr></tbody>`;
+  $("#coWk").innerHTML = (CAM.wk || []).map(w => `<tr><th scope="row">${w[0]}</th><td><b>${w[1]}</b><div class="small">${w[2]}</div></td></tr>`).join("");
   $("#coPos").innerHTML = CAM.pos.map(p => `<details class="topic"><summary>${p[0]} — ${p[1]}${avg[CAM.cols.indexOf(p[0])] ? ` <span class="pill small">mapped · ${avg[CAM.cols.indexOf(p[0])].toFixed(2)}</span>` : ""}</summary><p>${p[2]}</p></details>`).join("");
   $("#coCamSrc").textContent = CAM.source;
   $("#coSyl").innerHTML = c.units.map(u => `<div class="card" style="border-top:4px solid ${u.color}"><div class="kicker" style="color:${u.color}">Unit ${["I", "II", "III"][u.n - 1]} · ${u.hrs}</div><h3>${u.title}</h3><p class="small">${u.topics.map(t => t[0]).join(" · ")}</p><a class="btn sm ghost" href="#unit/${u.n}">Open unit</a></div>`).join("");
